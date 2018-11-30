@@ -46,8 +46,8 @@
 
 html,
 body {
-    height: 100%;
-    width: 100%;
+    max-height: 100% !important;
+    max-width: 100% !important;
 }
 
 body {
@@ -170,9 +170,7 @@ section h2.sub-title {
   Common
   ==================================================*/
 
-.container {
-    max-width: 1050px;
-}
+
 
 section .wrapper {
     padding-top: 100px;
@@ -180,12 +178,13 @@ section .wrapper {
 }
 
 #page-contents {
-    padding: 30px 0 50px;
+    padding: 8px 0 50px;
+    background-color: #E6ECF0;
 }
 
 .btn-primary {
     background: #27aae1;
-    padding: 7px 25px;
+    
     border: none;
     font-size: 14px;
     border-radius: 4px;
@@ -375,7 +374,7 @@ textarea {
 }
 
 .menu ul.main-menu li.dropdown a {
-    color: black;
+    color: #66757F;
     font-size: 13px;
     font-weight: 600;
 }
@@ -1546,10 +1545,10 @@ video {
 /*Timeline Menu for Large Screens*/
 
 .timeline-cover .timeline-nav-bar {
-    background: rgba(0, 0, 0, .7);
+    background: white;
     width: 100%;
     position: absolute;
-    bottom: 25px;
+    bottom: 0px;
 }
 
 .timeline-cover .timeline-nav-bar .profile-info {
@@ -1579,8 +1578,9 @@ video {
 }
 
 .timeline-cover .timeline-nav-bar .profile-menu li a {
-    color: black;
+    color: #66757F;
     padding: 15px;
+    font-size: 12px;
     text-decoration: none;
 }
 
