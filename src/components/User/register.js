@@ -1,15 +1,16 @@
 import React from 'react';
 
-const Login = () => {
+const Register = () => {
     return (
         <div>
             <div class="pen-title">
-                <h1>Login to ABCD</h1>
+                <h1>Register</h1>
             </div>
             <div class="container">
                 <div class="card"></div>
-                <div class="card">
-                    <h1 class="title">Login</h1>
+                <div class="card alt">
+                    <div class="toggle"></div>
+                    <h1 class="title">Register<div class="close"></div></h1>
                     <form>
                         <div class="input-container">
                             <input type="#{type}" id="#{label}" required="required" />
@@ -21,10 +22,14 @@ const Login = () => {
                             <label for="#{label}">Password</label>
                             <div class="bar"></div>
                         </div>
-                        <div class="button-container">
-                            <button><span>Go</span></button>
+                        <div class="input-container">
+                            <input type="#{type}" id="#{label}" required="required" />
+                            <label for="#{label}">Repeat Password</label>
+                            <div class="bar"></div>
                         </div>
-                        <div class="footer"><a href="#">Need to register?</a></div>
+                        <div class="button-container">
+                            <button><span>Next</span></button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -32,4 +37,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default Register;
