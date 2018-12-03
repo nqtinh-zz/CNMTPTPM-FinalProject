@@ -1,5 +1,5 @@
 import React from 'react';
-import './User.css'
+import './User/User.css'
 const Register = () => {
     return (
             <section className="signup">
