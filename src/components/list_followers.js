@@ -1,48 +1,48 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 class ListFollowers extends Component {
+    constructor(props) {
+        super(props);
+        console.log(this.props.followers.followersList);
+    }
     render() {
         return (
             <div>
-                <div class="col-md-3"></div>
-                <div class="col-md-7 listfollowers">
-                   
-                        <div class="friend-list">
-                        <div class="row">
-                            <div class="col-md-6 col-sm-6">
-                                <div class="friend-card">
-                                    <img src="http://placehold.it/1030x360" alt="profile-cover" class="img-responsive cover" />
-                                    <div class="card-info">
-                                        <img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
-                                        <div class="friend-info">
-                                            <a href="/" class="pull-right text-green">My Friend</a>
-                                            <h5><a href="timeline.html" class="profile-link">Sophia Lee</a></h5>
-                                            <p>Student at Harvard</p>
+            <div className="col-md-3"></div>
+            <div className="col-md-7 listfollowing">
+
+                <div className="friend-list">
+                    <div className="row">
+
+                        {this.props.followers.followersList.map((item, index) => {
+                            return (
+                                <div className="col-md-6 col-sm-6">
+                                    <div className="friend-card">
+                                        <img src="http://placehold.it/1030x360" alt="profile-cover" className="img-responsive cover" />
+                                        <div className="card-info">
+                                            <img src="http://placehold.it/300x300" alt="user" className="profile-photo-lg" />
+                                            <div className="friend-info">
+                                                <a href="/" className="pull-right text-green">{item.friendOrNot ? 'My Friend' : 'Add Friend'}</a>
+                                                <h5><a href="timeline.html" className="profile-link">{item.name}</a></h5>
+                                                <p>{item.carrer}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6">
-                                <div class="friend-card">
-                                    <img src="http://placehold.it/1030x360" alt="profile-cover" class="img-responsive cover" />
-                                    <div class="card-info">
-                                        <img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
-                                        <div class="friend-info">
-                                            <a href="/" class="pull-right text-green">My Friend</a>
-                                            <h5><a href="timeline.html" class="profile-link">John Doe</a></h5>
-                                            <p>Traveler</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            
-                            
-                        </div>
+                            )
+                        })}
                     </div>
                 </div>
             </div>
+        </div>
         );
     }
 }
+function mapStateToProps(state) {
+    return {
+        followers: state.followersReducer
+    }
+}
 
-export default ListFollowers;
+export default connect(mapStateToProps)(ListFollowers);
+
