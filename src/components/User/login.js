@@ -1,34 +1,47 @@
 import React from 'react';
+import './User.css';
 
 const Login = () => {
     return (
-        <div>
-            <div class="pen-title">
-                <h1>Login to ABCD</h1>
-            </div>
+        <section class="sign-in">
             <div class="container">
-                <div class="card"></div>
-                <div class="card">
-                    <h1 class="title">Login</h1>
-                    <form>
-                        <div class="input-container">
-                            <input type="#{type}" id="#{label}" required="required" />
-                            <label for="#{label}">Username</label>
-                            <div class="bar"></div>
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <figure><img src="images/signin-image.jpg" alt="sing up image" /></figure>
+                        <a href="#" class="signup-image-link">Create an account</a>
+                    </div>
+
+                    <div class="signin-form">
+                        <h2 class="form-title">Sign up</h2>
+                        <form method="POST" class="register-form" id="login-form">
+                            <div class="form-group">
+                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="your_name" id="your_name" placeholder="Your Name"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="your_pass" id="your_pass" placeholder="Password"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
+                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
+                            </div>
+                        </form>
+                        <div class="social-login">
+                            <span class="social-label">Or login with</span>
+                            <ul class="socials">
+                                <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                                <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                                <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                            </ul>
                         </div>
-                        <div class="input-container">
-                            <input type="#{type}" id="#{label}" required="required" />
-                            <label for="#{label}">Password</label>
-                            <div class="bar"></div>
-                        </div>
-                        <div class="button-container">
-                            <button><span>Go</span></button>
-                        </div>
-                        <div class="footer"><a href="#">Need to register?</a></div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 

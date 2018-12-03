@@ -1,39 +1,45 @@
 import React from 'react';
-
+import './User.css'
 const Register = () => {
     return (
-        <div>
-            <div class="pen-title">
-                <h1>Register</h1>
-            </div>
+            <section class="signup">
             <div class="container">
-                <div class="card"></div>
-                <div class="card alt">
-                    <div class="toggle"></div>
-                    <h1 class="title">Register<div class="close"></div></h1>
-                    <form>
-                        <div class="input-container">
-                            <input type="#{type}" id="#{label}" required="required" />
-                            <label for="#{label}">Username</label>
-                            <div class="bar"></div>
-                        </div>
-                        <div class="input-container">
-                            <input type="#{type}" id="#{label}" required="required" />
-                            <label for="#{label}">Password</label>
-                            <div class="bar"></div>
-                        </div>
-                        <div class="input-container">
-                            <input type="#{type}" id="#{label}" required="required" />
-                            <label for="#{label}">Repeat Password</label>
-                            <div class="bar"></div>
-                        </div>
-                        <div class="button-container">
-                            <button><span>Next</span></button>
-                        </div>
-                    </form>
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">Sign up</h2>
+                        <form method="POST" class="register-form" id="register-form">
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="name" id="name" placeholder="Your Name"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" id="email" placeholder="Your Email"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="pass" id="pass" placeholder="Password"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+                                <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="signup-image">
+                        <figure><img src="images/signup-image.jpg" alt="sing up image" /></figure>
+                        <a href="#" class="signup-image-link">I am already member</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 
