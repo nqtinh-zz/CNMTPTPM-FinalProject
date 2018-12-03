@@ -28,7 +28,7 @@ class Login extends Component  {
         if(!this.props.login.loginStatus)
  {   return (
         <section className="sign-in">
-            <div className="container">
+            <div className="container-log">
                 <div className="signin-content">
                     <div className="signin-image">
                         <figure><img src="images/signin-image.jpg" alt="sing up image" /></figure>
@@ -38,12 +38,12 @@ class Login extends Component  {
                     <div className="signin-form">
                         <h2 className="form-title">Sign in</h2>
                         <form onSubmit={this.handleSubmit} className="register-form" id="login-form">
-                            <div className="form-group">
-                                <label ><i className="zmdi zmdi-account material-icons-name"></i></label>
-                                <input onChange={this.handleChange} type="text" /*name="your_name" id="your_name"*/ placeholder="Import your Private key"/>
+                            <div className="form-group-log">
+                                <label className="labelForm" ><i className="zmdi zmdi-account material-icons-name"></i></label>
+                                <input className="inputForm" onChange={this.handleChange} type="text" /*name="your_name" id="your_name"*/ placeholder="Import your Private key"/>
                             </div>
-                            <div className="form-group form-button">
-                                <input type="submit"  className="form-submit" value="Log in"/>
+                            <div className="form-group-log form-button">
+                                <input className="inputForm" type="submit"  className="form-submit" value="Log in"/>
                             </div>
                         </form>
                     </div>

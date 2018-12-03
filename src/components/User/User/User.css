@@ -200,7 +200,7 @@ body {
   font-weight: 400;
   font-family: Poppins; }
 
-.container {
+.container-log {
   width: 900px;
   background: #fff;
   margin: 0 auto;
@@ -249,8 +249,8 @@ body {
   -o-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%); }
 
-.signup {
-  margin-bottom: 150px; }
+.signup { 
+  margin-top:10px}
 
 .signup-content {
   padding: 75px 0; }
@@ -310,14 +310,14 @@ figure {
 .register-form {
   width: 100%; }
 
-.form-group {
+.form-group-log {
   position: relative;
   margin-bottom: 25px;
   overflow: hidden; }
-  .form-group:last-child {
+  .form-group-log:last-child {
     margin-bottom: 0px; }
 
-input {
+input.inputForm {
   width: 100%;
   display: block;
   border: none;
@@ -397,7 +397,7 @@ input[type=checkbox]:not(old):checked + label > span:before {
   display: inline-block;
   width: auto; }
 
-label {
+label.labelForm {
   position: absolute;
   left: 0;
   top: 50%;
@@ -516,11 +516,11 @@ label.valid {
   margin-top: 10px; }
 
 @media screen and (max-width: 1200px) {
-  .container {
+  .container-log {
     width: calc( 100% - 30px);
     max-width: 100%; } }
 @media screen and (min-width: 1024px) {
-  .container {
+  .container-log {
     max-width: 1200px; } }
 @media screen and (max-width: 768px) {
   .signup-content, .signin-content {

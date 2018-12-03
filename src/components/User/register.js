@@ -4,33 +4,33 @@ import { Redirect ,Link} from 'react-router-dom'
 const Register = () => {
     return (
             <section className="signup">
-            <div className="container">
+            <div className="container-log">
                 <div className="signup-content">
                     <div className="signup-form">
                         <h2 className="form-title">Sign up</h2>
                         <form method="POST" className="register-form" id="register-form">
-                            <div className="form-group">
-                                <label for="name"><i className="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="name" id="name" placeholder="Your Name"/>
+                            <div className="form-group-log">
+                                <label className="labelForm"  for="name"><i className="zmdi zmdi-account material-icons-name"></i></label>
+                                <input className="inputForm" type="text" name="name" id="name" placeholder="Your Name"/>
                             </div>
-                            <div className="form-group">
-                                <label for="email"><i className="zmdi zmdi-email"></i></label>
-                                <input type="email" name="email" id="email" placeholder="Your Email"/>
+                            <div className="form-group-log">
+                                <label className="labelForm" for="email"><i className="zmdi zmdi-email"></i></label>
+                                <input className="inputForm" type="email" name="email" id="email" placeholder="Your Email"/>
                             </div>
-                            <div className="form-group">
-                                <label for="pass"><i className="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="pass" id="pass" placeholder="Password"/>
+                            <div className="form-group-log">
+                                <label className="labelForm" for="pass"><i className="zmdi zmdi-lock"></i></label>
+                                <input className="inputForm" type="password" name="pass" id="pass" placeholder="Password"/>
                             </div>
-                            <div className="form-group">
-                                <label for="re-pass"><i className="zmdi zmdi-lock-outline"></i></label>
-                                <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
+                            <div className="form-group-log">
+                                <label className="labelForm" for="re-pass"><i className="zmdi zmdi-lock-outline"></i></label>
+                                <input className="inputForm" type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
                             </div>
-                            <div className="form-group">
-                                <input type="checkbox" name="agree-term" id="agree-term" className="agree-term" />
-                                <label for="agree-term" className="label-agree-term"><span><span></span></span>I agree all statements in  <a href="/" className="term-service">Terms of service</a></label>
+                            <div className="form-group-log">
+                                <input className="inputForm" type="checkbox" name="agree-term" id="agree-term" className="agree-term" />
+                                <label className="labelForm" for="agree-term" className="label-agree-term"><span><span></span></span>I agree all statements in  <a href="/" className="term-service">Terms of service</a></label>
                             </div>
-                            <div className="form-group form-button">
-                                <input type="submit" name="signup" id="signup" className="form-submit" value="Register"/>
+                            <div className="form-group-log form-button">
+                                <input className="inputForm" type="submit" name="signup" id="signup" className="form-submit" value="Register"/>
                             </div>
                         </form>
                     </div>
