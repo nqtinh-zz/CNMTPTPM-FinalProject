@@ -6,7 +6,7 @@ class BasicInfo extends Component {
     return (
       <div>
       	
-      	<div className="col-md-7 " styles="background-color: white">
+      	<div className="col-md-7 basicinfo" >
                      
 	            <div className="edit-profile-container">
 	                <div className="block-title">
@@ -109,7 +109,7 @@ class BasicInfo extends Component {
 	                                </select>
 	                            </div>
 	                        </div>
-	                        <div className="form-group gender">
+	                        {/* <div className="form-group gender">
                                         <span className="custom-label"><strong>I am a: </strong></span>
                                         <label className="radio-inline">
                                             <input type="radio" name="optradio" checked>Male</input>
@@ -117,7 +117,7 @@ class BasicInfo extends Component {
                                         <label className="radio-inline">
                                             <input type="radio" name="optradio">Female</input>
                                         </label>
-                            </div>
+                            </div> */}
 	                        <div className="row">
 	                            <div className="form-group col-xs-6">
 	                                <label for="city"> My city</label>

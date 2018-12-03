@@ -336,10 +336,10 @@ textarea {
 }
 
 .menu {
-    background: white;
-    border: none;
-    border-radius: 0;
-    margin-bottom: 0;
+    background: white !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 .menu form {
@@ -352,21 +352,23 @@ textarea {
 
 .menu form .form-group i.icon {
     position: absolute;
-    left: 15px;
+    left: 90px;
     top: 3px;
     color: black;
+    margin-top: 6px;
 }
 
 .menu form .form-group input.form-control {
     background: #F5F8FA;
     border: 0;
     box-shadow: none;
-    min-width: 235px;
+    width: 120px !important;
     color: #fff;
     height: 26px;
     border-radius: 13px;
     font-size: 13px;
     padding-left: 30px;
+    margin-top: 5px;
 }
 
 .menu ul.main-menu li a {
@@ -2579,4 +2581,54 @@ ul.contact li i {
     bottom: 0;
     background-color: #fff;
     z-index: 9999999;
+}
+.ProfileNav-li {
+    padding: 5px 0 !important;
+}
+
+.ProfileNav {
+    text-align: center;
+    padding: 6px;
+}
+
+.edit{
+    background-color: white; 
+    color: black;
+    border-style: solid;
+    border-width: 1px;
+    padding: 5px 5px 5px; 
+    color: #66757F
+}
+.cedit{
+    padding: 12px;
+}
+.btntweet {
+    max-height: 25px !important;
+    max-width: 80px !important;
+    padding: 3px 10px 10px !important;
+    font-size: 14px !important;
+    border-radius: 30px !important;
+    background-color: #27aae1 !important;
+
+}
+
+.btneidt {
+    background-color: white !important;
+    border-color: #66757F !important;
+    border-style: solid;
+    border-width: 1px;
+    padding: 5px 5px 5px;
+    color: #66757F !important;
+}
+.news{
+    background-color: white !important;
+}
+.basicinfo{
+    background-color: white !important;
+}
+.listfollowing{
+    background-color: white !important;
+}
+.listfollowers{
+    background-color: white !important;
 }

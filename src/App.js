@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
-import Header from './components/Header.js';
-import Footer from './components/Footer.js';
-import Timeline from './components/timeline.js';
-import Edit_Profile_Basic from './components/edit_profile_basic.js'
+import DefaultLayout from './components/DefaultLayout.js';
+
 
 class App extends Component {
   render() {
     return (
-      <div>
-      	
-      	
-        <Edit_Profile_Basic/>
-
-      </div>
-    );
+      <HashRouter>
+        <Switch>
+          <Route path="/" name="Home" component={DefaultLayout} />
+        </Switch>
+      </HashRouter>
+    ); 
   }
 }
 

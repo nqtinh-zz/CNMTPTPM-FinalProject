@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
+import { Link } from 'react-router-dom';
 
 class MenuTimeline extends Component {
-  render() {
-    return (
-      <div>
-      
-      		<div className="timeline-cover">
-                
+    render() {
+        return (
+            <div>
+
+                <div className="timeline-cover">
+
                     <div className="timeline-nav-bar hidden-sm hidden-xs">
                         <div className="row">
                             <div className="col-md-3">
@@ -18,19 +19,33 @@ class MenuTimeline extends Component {
                             </div>
                             <div className="col-md-9">
                                 <ul className="list-inline profile-menu">
-                                    <li><a href="timeline.html" >Tweets</a></li>
-                                    <li><a href="timeline-about.html">Following</a></li>
-                                    <li><a href="timeline-album.html">Followers</a></li>
-                                    <li><a href="timeline-friends.html">Lists</a></li>
-                                    <li><a href="timeline-friends.html">Moments</a></li>
+                                    <li class="ProfileNav-li">
+                                        <div class="ProfileNav">
+                                            <Link to="/tweets">Tweets</Link><br />
+                                            56
+                                            </div>
+                                    </li>
+                                    <li class="ProfileNav-li">
+                                        <div class="ProfileNav">
+                                            <Link to="/following">Following</Link><br />
+                                            56
+                                            </div>
+                                    </li>
+                                    <li class="ProfileNav-li">
+                                        <div class="ProfileNav">
+                                            <Link to="/followers">Followers</Link><br />
+                                            56
+                                            </div>
+                                    </li>
+                                    
                                 </ul>
-                                <ul className="follow-me list-inline">
-                                    <li><button className="btn-primary" styles="background-color: white; color: black;border-style: solid;border-width: 1px;padding: 5px 5px 5px; color: #66757F">Edit Profile</button></li>
+                                <ul className="follow-me list-inline cedit">
+                                <li><Link to="/editprofile"><button className="btn-primary btneidt" >Edit Profile</button></Link></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                  
+
                     <div className="navbar-mobile hidden-lg hidden-md">
                         <div className="profile-info">
                             <img src="http://placehold.it/300x300" alt="" className="img-responsive profile-photo" />
@@ -49,9 +64,9 @@ class MenuTimeline extends Component {
                         </div>
                     </div>
                 </div>
-      </div>
-    );
-  }
+            </div>
+        );
+    }
 }
 
 export default MenuTimeline;

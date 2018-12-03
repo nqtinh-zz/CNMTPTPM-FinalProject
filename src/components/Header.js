@@ -16,17 +16,17 @@ class Header extends Component {
                 <div className="navbar-header">
                     <ul className="nav navbar-nav navbar-right main-menu">
                         <li className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" ><i className="icon ion-android-mail"></i>Message </a>
+                            <a href="/" className="dropdown-toggle" data-toggle="dropdown" ><i className="icon ion-android-mail"></i>Message </a>
                         </li>
                     </ul>
                     <ul className="nav navbar-nav navbar-right main-menu">
                         <li className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="icon ion-android-notifications"></i>Notifications</a>
+                            <a href="/" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="icon ion-android-notifications"></i>Notifications</a>
                         </li>
                     </ul>
                     <ul className="nav navbar-nav navbar-right main-menu">
                         <li className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="icon ion-android-home"></i>Home </a>
+                            <a href="/" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="icon ion-android-home"></i>Home </a>
                         </li>
                     </ul>
                 </div>
@@ -34,7 +34,7 @@ class Header extends Component {
                 <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul className="nav navbar-nav navbar-right main-menu">
                         <li className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><button className="btn btn-primary " styles="max-height: 25px; max-width: 80px;padding: 3px 10px 10px ;">Tweet</button></a>
+                            <a href="/" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><button className="btn btn-primary btntweet" >Tweet</button></a>
                             <ul className="dropdown-menu newsfeed-home">
                                 <li><a href="index.html">Landing Page 1</a></li>
                                 <li><a href="index-register.html">Landing Page 2</a></li>

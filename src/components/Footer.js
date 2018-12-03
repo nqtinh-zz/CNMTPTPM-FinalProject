@@ -7,7 +7,7 @@ class Footer extends Component {
       <div>
          <footer id="footer">
 	        <div className="copyright">
-	            <p>Thunder Team © 2016. All rights reserved</p>
+	            <p>Template by Team © 2018. All rights reserved</p>
 	        </div>
   		 </footer>
   
