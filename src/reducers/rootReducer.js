@@ -4,9 +4,10 @@ import {combineReducers} from 'redux';
 import followingReducer from './FollowList/followingReducer';
 import {followersReducer} from './FollowList/followersReducer';
 const rootReducer = combineReducers({
+    followingReducer,
+    followersReducer,
     loginReducer,
     registerReducer,
-    followingReducer,
-    followersReducer
+    
 });
 export default rootReducer;
