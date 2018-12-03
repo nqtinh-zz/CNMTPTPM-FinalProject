@@ -1,32 +1,68 @@
-import React from 'react';
+import React ,{Component} from 'react';
 import './User/User.css';
+import { Redirect ,Link} from 'react-router-dom'
+import { connect } from 'react-redux';
+import {loginAction} from '../../actions/User/loginAction';
+class Login extends Component  {
+    constructor(props){
+        super(props);
+        this.state={
+            priKey : '',
+        }
+        this.handleChange  = this.handleChange.bind(this);
+        this.handleSubmit  = this.handleSubmit.bind(this);
+        console.log(this.props.login.loginStatus);
+    }
+    handleChange(event){
+        const priKey = event.target.value;
+        this.setState({priKey});
+    }
+    //console.log(this.props.login.test);
+    handleSubmit(event){
+        this.props.dispatch(loginAction(this.state.priKey));
+        event.preventDefault();
+    }
 
-const Login = () => {
-    return (
+
+    render(){
+        if(!this.props.login.loginStatus)
+ {   return (
         <section className="sign-in">
             <div className="container">
                 <div className="signin-content">
                     <div className="signin-image">
                         <figure><img src="images/signin-image.jpg" alt="sing up image" /></figure>
-                        <a href="/" className="signup-image-link">Create an account</a>
+                        <Link to="/register"><div className="signup-image-link">Create an account</div></Link>
                     </div>
 
                     <div className="signin-form">
                         <h2 className="form-title">Sign in</h2>
-                        <form method="POST" className="register-form" id="login-form">
+                        <form onSubmit={this.handleSubmit} className="register-form" id="login-form">
                             <div className="form-group">
-                                <label for="your_name"><i className="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="your_name" id="your_name" placeholder="Import your Private key"/>
+                                <label ><i className="zmdi zmdi-account material-icons-name"></i></label>
+                                <input onChange={this.handleChange} type="text" /*name="your_name" id="your_name"*/ placeholder="Import your Private key"/>
                             </div>
                             <div className="form-group form-button">
-                                <input type="submit" name="signin" id="signin" className="form-submit" value="Log in"/>
+                                <input type="submit"  className="form-submit" value="Log in"/>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </section>
-    )
+        
+       
+    )}else
+        return  ( <Redirect to="/" />)
+}
 }
 
-export default Login;
+function mapStateToProps(state) {
+    return {
+        login : state.loginReducer
+    };
+}
+
+
+
+export default connect(mapStateToProps)(Login);

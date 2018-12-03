@@ -1,5 +1,6 @@
 import React from 'react';
 import './User/User.css'
+import { Redirect ,Link} from 'react-router-dom'
 const Register = () => {
     return (
             <section className="signup">
@@ -35,7 +36,7 @@ const Register = () => {
                     </div>
                     <div className="signup-image">
                         <figure><img src="images/signup-image.jpg" alt="sing up image" /></figure>
-                        <a href="/" className="signup-image-link">I am already member</a>
+                        <Link to="/login"><div className="signup-image-link">I am already member</div></Link>
                     </div>
                 </div>
             </div>
