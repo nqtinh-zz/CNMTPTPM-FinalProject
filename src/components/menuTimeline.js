@@ -1,13 +1,12 @@
 import React, { Component} from 'react';
 import { Link } from 'react-router-dom';
+import {connect} from 'react-redux'
 
 class MenuTimeline extends Component {
     render() {
         return (
             <div>
-
                 <div className="timeline-cover">
-
                     <div className="timeline-nav-bar hidden-sm hidden-xs">
                         <div className="row">
                             <div className="col-md-3">
@@ -28,13 +27,13 @@ class MenuTimeline extends Component {
                                     <li class="ProfileNav-li">
                                         <div class="ProfileNav">
                                             <Link to="/following">Following</Link><br />
-                                            56
+                                            {this.props.followingNum}
                                             </div>
                                     </li>
                                     <li class="ProfileNav-li">
                                         <div class="ProfileNav">
                                             <Link to="/followers">Followers</Link><br />
-                                            56
+                                            {this.props.followersNum}
                                             </div>
                                     </li>
                                     
@@ -69,4 +68,13 @@ class MenuTimeline extends Component {
     }
 }
 
-export default MenuTimeline;
+
+function mapStateToProps(state) {
+    return {
+        followersNum: state.followersReducer.followersNumber,
+        followingNum: state.followingReducer.followingNumber,
+    }
+}
+
+export default connect(mapStateToProps)(MenuTimeline);
+
