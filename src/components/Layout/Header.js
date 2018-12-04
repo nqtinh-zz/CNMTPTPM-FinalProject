@@ -16,17 +16,17 @@ class Header extends Component {
                 <div className="navbar-header">
                     <ul className="nav navbar-nav navbar-right main-menu">
                         <li className="dropdown">
-                            <a href="/" className="dropdown-toggle" data-toggle="dropdown" ><i className="icon ion-android-mail"></i>Message </a>
+                            <a href="/" className="dropdown-toggle" data-toggle="dropdown" ><i className="icon ion-android-mail"></i>   Message </a>
                         </li>
                     </ul>
                     <ul className="nav navbar-nav navbar-right main-menu">
                         <li className="dropdown">
-                            <a href="/" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="icon ion-android-notifications"></i>Notifications</a>
+                            <a href="/" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="icon ion-android-notifications"></i>  Notifications</a>
                         </li>
                     </ul>
                     <ul className="nav navbar-nav navbar-right main-menu">
                         <li className="dropdown">
-                            <a href="/" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="icon ion-android-home"></i>Home </a>
+                            <a href="/" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="icon ion-android-home"></i>   Home </a>
                         </li>
                     </ul>
                 </div>

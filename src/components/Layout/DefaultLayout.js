@@ -2,7 +2,7 @@ import React, { Component, Suspense } from 'react';
 import Header from './Header.js';
 import Footer from './Footer.js';
 
-import { Route, Switch} from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import routes from '../../routes';
 import MenuTimeline from '../Menu/menuTimeline'
 class DefaultLayout extends Component {
@@ -10,15 +10,10 @@ class DefaultLayout extends Component {
     render() {
         return (
             <div>
-
                 <Header />
                 <div className="container">
-
                     <div className="timeline">
-
-
                         <MenuTimeline />
-
                         <Suspense fallback={this.loading()}>
                             <Switch>
                                 {routes.map((route, idx) => {
@@ -28,15 +23,12 @@ class DefaultLayout extends Component {
                                         )} />
                                     ) : (null);
                                 })}
-                                {/*
-                                <Redirect from="/" to="/dashboard" /> */}
+                                <Redirect from="/" to="/tweets" />
                             </Switch>
                         </Suspense>
                     </div>
                 </div>
-
                 <Footer />
-
             </div>
         );
     }
