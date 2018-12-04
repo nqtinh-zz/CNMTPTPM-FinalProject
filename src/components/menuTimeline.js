@@ -21,7 +21,7 @@ class MenuTimeline extends Component {
                                     <li class="ProfileNav-li">
                                         <div class="ProfileNav">
                                             <Link to="/tweets">Tweets</Link><br />
-                                            56
+                                            {this.props.tweetsNum}
                                             </div>
                                     </li>
                                     <li class="ProfileNav-li">
@@ -73,6 +73,7 @@ function mapStateToProps(state) {
     return {
         followersNum: state.followersReducer.followersNumber,
         followingNum: state.followingReducer.followingNumber,
+        tweetsNum: state.personalReducer.tweetsNum,
     }
 }
 

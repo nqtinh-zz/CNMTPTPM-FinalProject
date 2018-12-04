@@ -3,10 +3,12 @@ import {registerReducer} from './User/registerReducer';
 import {combineReducers} from 'redux';
 import followingReducer from './FollowList/followingReducer';
 import {followersReducer} from './FollowList/followersReducer';
+import {personalReducer} from './PersonalPage/personalReducer';
 const rootReducer = combineReducers({
     loginReducer,
     registerReducer,
     followingReducer,
-    followersReducer
+    followersReducer,
+    personalReducer,
 });
 export default rootReducer;
