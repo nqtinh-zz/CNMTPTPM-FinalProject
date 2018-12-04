@@ -1,5 +1,5 @@
 import React from 'react';
-import DefaultLayout from './components/DefaultLayout';
+import DefaultLayout from './components/Layout/DefaultLayout';
 
 const Following = React.lazy(() => import('./views/Following'));
 const Followers = React.lazy(() => import('./views/Followers'));

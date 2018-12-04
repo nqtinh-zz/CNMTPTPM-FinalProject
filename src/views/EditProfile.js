@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import ProfileMenu from '../components/profile_menu'
-import BasicInfo  from '../components/basic_info'
+import ProfileMenu from '../components/Profile/profile_menu'
+import BasicInfo  from '../components/Profile/basic_info'
 
 class EditProfile extends Component {
 

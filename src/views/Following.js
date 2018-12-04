@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ListFollowing from '../components/list_following'
+import ListFollowing from '../components/FollowList/list_following'
 
 class Following extends Component {
 

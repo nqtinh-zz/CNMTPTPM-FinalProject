@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Activity from '../components/activity'
-import News from '../components/news'
+import Activity from '../components/Activity/activity'
+import News from '../components/News/news'
 
 class Tweets extends Component {
 
