@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import {connect} from 'react-redux';
 
 class BasicInfo extends Component {
   render() {
@@ -11,8 +11,7 @@ class BasicInfo extends Component {
 	            <div className="edit-profile-container">
 	                <div className="block-title">
 	                    <h4 className="grey"><i className="icon ion-android-checkmark-circle"></i>Edit basic information</h4>
-	                    <div className="line"></div>
-	                    <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate</p>
+	                    {/*<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate</p>*/}
 	                    <div className="line"></div>
 	                </div>
 	                <div className="edit-block">
@@ -20,17 +19,17 @@ class BasicInfo extends Component {
 	                        <div className="row">
 	                            <div className="form-group col-xs-6">
 	                                <label for="firstname">First name</label>
-	                                <input id="firstname" className="form-control input-group-lg" type="text" name="firstname" title="Enter first name" placeholder="First name" value="John" />
+	                                <input id="firstname" className="form-control input-group-lg" type="text" name="firstname" title="Enter first name" placeholder="First name" value={this.props.info.firstname} />
 	                            </div>
 	                            <div className="form-group col-xs-6">
 	                                <label for="lastname" className="">Last name</label>
-	                                <input id="lastname" className="form-control input-group-lg" type="text" name="lastname" title="Enter last name" placeholder="Last name" value="Doe" />
+	                                <input id="lastname" className="form-control input-group-lg" type="text" name="lastname" title="Enter last name" placeholder="Last name" value={this.props.info.lastname} />
 	                            </div>
 	                        </div>
 	                        <div className="row">
 	                            <div className="form-group col-xs-12">
 	                                <label for="email">My email</label>
-	                                <input id="email" className="form-control input-group-lg" type="text" name="Email" title="Enter Email" placeholder="My Email" value="razor.venon@gmail.com" />
+	                                <input id="email" className="form-control input-group-lg" type="text" name="Email" title="Enter Email" placeholder="My Email" value={this.props.info.email	} />
 	                            </div>
 	                        </div>
 	                        <div className="row">
@@ -39,73 +38,21 @@ class BasicInfo extends Component {
 	                                <label for="month" className="sr-only"></label>
 	                                <select className="form-control" id="day">
 	                                    <option value="Day">Day</option>
-	                                    <option>1</option>
-	                                    <option>2</option>
-	                                    <option>3</option>
-	                                    <option>4</option>
-	                                    <option>5</option>
-	                                    <option>6</option>
-	                                    <option>7</option>
-	                                    <option>8</option>
-	                                    <option>9</option>
-	                                    <option>10</option>
-	                                    <option>11</option>
-	                                    <option>12</option>
-	                                    <option>13</option>
-	                                    <option>14</option>
-	                                    <option>15</option>
-	                                    <option>16</option>
-	                                    <option>17</option>
-	                                    <option>18</option>
-	                                    <option selected>19</option>
-	                                    <option>20</option>
-	                                    <option>21</option>
-	                                    <option>22</option>
-	                                    <option>23</option>
-	                                    <option>24</option>
-	                                    <option>25</option>
-	                                    <option>26</option>
-	                                    <option>27</option>
-	                                    <option>28</option>
-	                                    <option>29</option>
-	                                    <option>30</option>
-	                                    <option>31</option>
+	                                    <option selected>{this.props.info.birthday.day}</option>
 	                                </select>
 	                            </div>
 	                            <div className="form-group col-sm-3 col-xs-6">
 	                                <label for="month" className="sr-only"></label>
 	                                <select className="form-control" id="month">
 	                                    <option value="month">Month</option>
-	                                    <option>Jan</option>
-	                                    <option>Feb</option>
-	                                    <option>Mar</option>
-	                                    <option>Apr</option>
-	                                    <option>May</option>
-	                                    <option>Jun</option>
-	                                    <option>Jul</option>
-	                                    <option>Aug</option>
-	                                    <option>Sep</option>
-	                                    <option>Oct</option>
-	                                    <option>Nov</option>
-	                                    <option selected>Dec</option>
+	                                    <option selected>{this.props.info.birthday.month}</option>
 	                                </select>
 	                            </div>
 	                            <div className="form-group col-sm-6 col-xs-12">
 	                                <label for="year" className="sr-only"></label>
 	                                <select className="form-control" id="year">
 	                                    <option value="year">Year</option>
-	                                    <option selected>2000</option>
-	                                    <option>2001</option>
-	                                    <option>2002</option>
-	                                    <option>2004</option>
-	                                    <option>2005</option>
-	                                    <option>2006</option>
-	                                    <option>2007</option>
-	                                    <option>2008</option>
-	                                    <option>2009</option>
-	                                    <option>2010</option>
-	                                    <option>2011</option>
-	                                    <option>2012</option>
+	                                    <option selected>{this.props.info.birthday.year}</option>
 	                                </select>
 	                            </div>
 	                        </div>
@@ -121,11 +68,12 @@ class BasicInfo extends Component {
 	                        <div className="row">
 	                            <div className="form-group col-xs-6">
 	                                <label for="city"> My city</label>
-	                                <input id="city" className="form-control input-group-lg" type="text" name="city" title="Enter city" placeholder="Your city" value="New York" />
+	                                <input id="city" className="form-control input-group-lg" type="text" name="city" title="Enter city" placeholder="Your city" value={this.props.info.city} />
 	                            </div>
 	                            <div className="form-group col-xs-6">
 	                                <label for="country">My country</label>
-	                                <select className="form-control" id="country">
+									<input id="country" className="form-control input-group-lg" type="text" name="country" title="Enter country" placeholder="Your country" value={this.props.info.country} />
+	                                {/*<select className="form-control" id="country">
 	                                    <option value="country">Country</option>
 	                                    <option value="AFG">Afghanistan</option>
 	                                    <option value="ALA">Ƭand Islands</option>
@@ -376,13 +324,13 @@ class BasicInfo extends Component {
 	                                    <option value="YEM">Yemen</option>
 	                                    <option value="ZMB">Zambia</option>
 	                                    <option value="ZWE">Zimbabwe</option>
-	                                </select>
+						</select>*/}
 	                            </div>
 	                        </div>
 	                        <div className="row">
 	                            <div className="form-group col-xs-12">
 	                                <label for="my-info">About me</label>
-	                                <textarea id="my-info" name="information" className="form-control" placeholder="Some texts about me" rows="4" cols="400">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur</textarea>
+	                                <textarea id="my-info" name="information" className="form-control" placeholder="Some texts about me" rows="4" cols="400">{this.props.info.bio}</textarea>
 	                            </div>
 	                        </div>
 	                        <button className="btn btn-primary">Save Changes</button>
@@ -397,4 +345,10 @@ class BasicInfo extends Component {
   }
 }
 
-export default BasicInfo;
+function mapStateToProps(state){
+	return{
+		info: state.personInfoReducer,
+	}
+}
+
+export default connect(mapStateToProps)(BasicInfo);

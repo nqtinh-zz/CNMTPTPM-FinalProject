@@ -44,9 +44,9 @@ class News extends Component {
                                 </div>
                                 {/*bấm vào để hiển thị*/}
                                 <div data-toggle="modal" data-target={"#"+item.id}>
-                                    <img src="http://placehold.it/1920x1280" alt="post-image" className="img-responsive post-image" />
+                                    <img src={item.cover} alt="post-image" className="img-responsive post-image" />
                                     <div className="post-container " >
-                                        <img src="http://placehold.it/300x300" alt="user" className="profile-photo-md pull-left" />
+                                        <img src={item.avatar} alt="user" className="profile-photo-md pull-left" />
                                         <div className="post-detail">
                                             <div className="user-info">
                                                 <h5><a href="timeline.html" className="profile-link">{item.name}</a> <span className="following">following</span></h5>
@@ -64,13 +64,13 @@ class News extends Component {
                                             {item.comments.map((comment, index) => {
                                                 return (
                                                     <div className="post-comment">
-                                                        <img src="http://placehold.it/300x300" alt="" className="profile-photo-sm" />
+                                                        <img src={comment.avatar} alt="" className="profile-photo-sm" />
                                                         <p><a href="timeline.html" className="profile-link">{comment.name} </a><i className="em em-laughing"></i> {comment.content} </p>
                                                     </div>)
                                             })}
 
                                             <div className="post-comment">
-                                                <img src="http://placehold.it/300x300" alt="" className="profile-photo-sm" />
+                                                <img src={item.avatar} alt="" className="profile-photo-sm" />
                                                 <input type="text" className="form-control" placeholder="Post a comment"></input>
                                             </div>
                                         </div>
@@ -87,9 +87,9 @@ class News extends Component {
                                                 <h4 className="modal-title">Status detail</h4>
                                             </div>
                                             <div className="modal-body">
-                                                <img src="http://placehold.it/1920x1280" alt="post-image" className="img-responsive post-image" />
+                                                <img src={item.cover} alt="post-image" className="img-responsive post-image" />
                                                 <div className="post-container " >
-                                                    <img src="http://placehold.it/300x300" alt="user" className="profile-photo-md pull-left" />
+                                                    <img src={item.avatar} alt="user" className="profile-photo-md pull-left" />
                                                     <div className="post-detail">
                                                         <div className="user-info">
                                                             <h5><a href="timeline.html" className="profile-link">{item.name}</a> <span className="following">following</span></h5>
@@ -107,14 +107,14 @@ class News extends Component {
                                                         {item.comments.map((comment, index) => {
                                                             return (
                                                                 <div className="post-comment">
-                                                                    <img src="http://placehold.it/300x300" alt="" className="profile-photo-sm" />
+                                                                    <img src={comment.avatar} alt="" className="profile-photo-sm" />
                                                                     <p><a href="timeline.html" className="profile-link">{comment.name} </a><i className="em em-laughing"></i> {comment.content}</p>
                                                                 </div>
                                                             )
                                                         })}
 
                                                         <div className="post-comment">
-                                                            <img src="http://placehold.it/300x300" alt="" className="profile-photo-sm" />
+                                                            <img src={item.avatar} alt="" className="profile-photo-sm" />
                                                             <input type="text" className="form-control" placeholder="Post a comment"></input>
                                                         </div>
                                                     </div>

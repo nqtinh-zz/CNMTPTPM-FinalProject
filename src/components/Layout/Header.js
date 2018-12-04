@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import {Link} from 'react-router-dom';
 
 
 class Header extends Component {
@@ -26,7 +26,11 @@ class Header extends Component {
                     </ul>
                     <ul className="nav navbar-nav navbar-right main-menu">
                         <li className="dropdown">
+
                             <a href="/" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="icon ion-android-home"></i>   Home </a>
+
+                            <Link to='/'><i className="icon ion-android-home"></i>Home </Link>
+
                         </li>
                     </ul>
                 </div>

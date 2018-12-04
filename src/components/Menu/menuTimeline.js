@@ -11,9 +11,9 @@ class MenuTimeline extends Component {
                         <div className="row">
                             <div className="col-md-3">
                                 <div className="profile-info">
-                                    <img src="images/ava.jpg" alt="" className="img-responsive profile-photo" />
-                                    <h3>Sarah Cruiz</h3>
-                                    <p className="text-muted">Creative Director</p>
+                                    <img src={this.props.image.avatar} alt="" className="img-responsive profile-photo" />
+                                    <h3>{this.props.name}</h3>
+                                    <p className="text-muted">{this.props.carrer}</p>
                                 </div>
                             </div>
                             <div className="col-md-9">
@@ -48,8 +48,8 @@ class MenuTimeline extends Component {
                     <div className="navbar-mobile hidden-lg hidden-md">
                         <div className="profile-info">
                             <img src="http://placehold.it/300x300" alt="" className="img-responsive profile-photo" />
-                            <h4>Sarah Cruiz</h4>
-                            <p className="text-muted">Creative Director</p>
+                            <h4>{this.props.name}</h4>
+                            <p className="text-muted">{this.props.carrer}</p>
                         </div>
                         <div className="mobile-menu">
                             <ul className="list-inline">
@@ -74,6 +74,9 @@ function mapStateToProps(state) {
         followersNum: state.followersReducer.followersNumber,
         followingNum: state.followingReducer.followingNumber,
         tweetsNum: state.personalReducer.tweetsNum,
+        name: state.personalReducer.name,
+        carrer : state.personalReducer.carrer,
+        image: state.personInfoReducer,
     }
 }
 
