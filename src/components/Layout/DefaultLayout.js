@@ -3,8 +3,8 @@ import Header from './Header.js';
 import Footer from './Footer.js';
 
 import { Route, Switch} from 'react-router-dom';
-import routes from '../routes';
-import MenuTimeline from './menuTimeline.js'
+import routes from '../../routes';
+import MenuTimeline from '../Menu/menuTimeline'
 class DefaultLayout extends Component {
     loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
     render() {
