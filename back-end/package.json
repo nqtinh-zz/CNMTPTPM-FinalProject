@@ -1,0 +1,22 @@
+{
+  "name": "cnmtptpm-finalproject",
+  "version": "0.2.0",
+  "description": "Back-end",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Team",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "express": "^4.16.4",
+    "immutable": "^4.0.0-rc.12",
+    "mongodb": "^3.1.10",
+    "stellar-base": "^0.9.0",
+    "tendermint": "^3.3.0",
+    "varstruct": "^6.1.2"
+  }
+}
