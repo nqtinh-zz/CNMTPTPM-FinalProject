@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "base32.js": "^0.1.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "express": "^4.16.4",
