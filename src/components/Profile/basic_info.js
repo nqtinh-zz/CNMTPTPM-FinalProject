@@ -19,11 +19,11 @@ class BasicInfo extends Component {
 	                        <div className="row">
 	                            <div className="form-group col-xs-6">
 	                                <label for="firstname">First name</label>
-	                                <input id="firstname" className="form-control input-group-lg" type="text" name="firstname" title="Enter first name" placeholder="First name" value={this.props.info.firstname} />
+	                                <input id="firstname" className="form-control input-group-lg" type="text" name="firstname" title="Enter first name" placeholder={this.props.info.firstName} value={this.props.info.firstName} />
 	                            </div>
 	                            <div className="form-group col-xs-6">
 	                                <label for="lastname" className="">Last name</label>
-	                                <input id="lastname" className="form-control input-group-lg" type="text" name="lastname" title="Enter last name" placeholder="Last name" value={this.props.info.lastname} />
+	                                <input id="lastname" className="form-control input-group-lg" type="text" name="lastname" title="Enter last name" placeholder={this.props.info.lastName} value={this.props.info.lastName} />
 	                            </div>
 	                        </div>
 	                        <div className="row">

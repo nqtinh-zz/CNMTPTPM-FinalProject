@@ -70,7 +70,7 @@ class News extends Component {
                                             })}
 
                                             <div className="post-comment">
-                                                <img src={item.avatar} alt="" className="profile-photo-sm" />
+                                                <img src={this.props.avatarCurr} alt="" className="profile-photo-sm" />
                                                 <input type="text" className="form-control" placeholder="Post a comment"></input>
                                             </div>
                                         </div>
@@ -96,8 +96,8 @@ class News extends Component {
                                                             <p className="text-muted">{item.date}</p>
                                                         </div>
                                                         <div className="reaction">
-                                                            <a className="btn text-green"><i className="icon ion-thumbsup"></i> 13</a>
-                                                            <a className="btn text-red"><i className="fa fa-thumbs-down"></i> 0</a>
+                                                            <a className="btn text-green"><i className="icon ion-thumbsup"></i> {item.like}</a>
+                                                            <a className="btn text-red"><i className="fa fa-thumbs-down"></i> {item.dislike}</a>
                                                         </div>
                                                         <div className="line-divider"></div>
                                                         <div className="post-text">
@@ -114,7 +114,7 @@ class News extends Component {
                                                         })}
 
                                                         <div className="post-comment">
-                                                            <img src={item.avatar} alt="" className="profile-photo-sm" />
+                                                            <img src={this.props.avatarCurr} alt="" className="profile-photo-sm" />
                                                             <input type="text" className="form-control" placeholder="Post a comment"></input>
                                                         </div>
                                                     </div>
@@ -140,6 +140,7 @@ class News extends Component {
 function mapStateToProps(state) {
     return {
         news: state.personalReducer,
+        avatarCurr: state.personInfoReducer.avatar,
     }
 }
 
