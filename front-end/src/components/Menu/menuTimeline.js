@@ -36,6 +36,13 @@ class MenuTimeline extends Component {
                                             {this.props.followersNum}
                                             </div>
                                     </li>
+
+                                    <li class="ProfileNav-li">
+                                        <div class="ProfileNav">
+                                            <Link to="/payment">Payment</Link><br />
+                                            {this.props.followersNum}
+                                            </div>
+                                    </li>
                                     
                                 </ul>
                                 <ul className="follow-me list-inline cedit">

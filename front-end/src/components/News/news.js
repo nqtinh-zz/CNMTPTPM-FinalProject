@@ -5,9 +5,21 @@ class News extends Component {
         super(props);
         this.state = {
             name: this.props.news.name,
+            post:''
         }
-
     }
+
+    onHandleChange=(event)=> {
+        this.setState({
+            post: event.target.value
+        })
+    }
+
+    onHandleSubmit=(event)=>{
+        event.preventDefault();
+        console.log(this.state.post);
+    }
+
     render() {
         return (
             <div>
@@ -16,10 +28,11 @@ class News extends Component {
 
                     <div className="create-post">
                         <div className="row">
+                            <form onSubmit={this.onHandleSubmit}>
                             <div className="col-md-7 col-sm-7">
                                 <div className="form-group">
                                     <img src="images/ava.jpg" alt="" className="profile-photo-md" />
-                                    <textarea name="texts" id="exampleTextarea" cols="30" rows="1" className="form-control" placeholder="Write what you wish"></textarea>
+                                    <textarea onChange={this.onHandleChange} name="texts" id="exampleTextarea" cols="30" rows="1" className="form-control" placeholder="Write what you wish"></textarea>
                                 </div>
                             </div>
                             <div className="col-md-5 col-sm-5">
@@ -30,9 +43,10 @@ class News extends Component {
                                         <li><a href="/"><i className="ion-ios-videocam"></i></a></li>
                                         <li><a href="/"><i className="ion-map"></i></a></li>
                                     </ul>
-                                    <button className="btn btn-primary pull-right">Publish</button>
+                                    <button type="submit" className="btn btn-primary pull-right" >Post</button>
                                 </div>
                             </div>
+                            </form>
                         </div>
                     </div>
                     {this.props.news.posts.map((item, index) => {
