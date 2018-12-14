@@ -1,4 +1,20 @@
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const sendPayment = require('./router/api/sendPayment');
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
+
+app.use('/api/payment', sendPayment);
+
+const port = process.env.PORT || 5000;
+
+app.listen(port, ()=>console.log(`Server running on port ${port}`));
+
+
+
 //test net
+/*
 const {sign,encode, decode} = require('./lib/transaction/index');
 const publicKey ='GDMNG3PLGUMPHXPPMRZ7EQRMT34F4JU6574OZIQL3LIK5P76CVW5QMTL';
 const axios = require('axios');
@@ -46,4 +62,4 @@ const sendToken = async () => {
     console.error(error)
   }
 }
-sendToken();
+sendToken();*/

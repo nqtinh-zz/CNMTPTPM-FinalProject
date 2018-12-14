@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-
+import {sendPayment} from '../../actions/Payment/sendPaymentAction';
 class Payment extends Component {
 
 	constructor(props) {
         super(props);
         this.state = {
-			address:'',
-			amount:''
+			publickey:'',
+			amount:0,
+			privatekey:'',
         }
 	}
 	
@@ -22,7 +23,8 @@ class Payment extends Component {
 
     onHandleSubmit=(event)=>{
         event.preventDefault();
-        console.log(this.state);
+		console.log(this.state);
+		this.props.sendPayment(this.state);
 	}
 	
   render() {
@@ -41,8 +43,8 @@ class Payment extends Component {
 	                    <form onSubmit={this.onHandleSubmit}  id="basic-info" className="form-inline">
 	                        <div className="row">
 	                            <div className="form-group col-xs-10">
-	                                <label for="firstname">Address</label>
-	                                <input onChange={this.onHandleChange} id="firstname" className="form-control input-group-lg" type="text" name="address" title="Enter address" placeholder='Gxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'  />
+	                                <label for="publickey">Public Key</label>
+	                                <input onChange={this.onHandleChange} id="publickey" className="form-control input-group-lg" type="text" name="publickey" title="Enter public key" placeholder='Gxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'  />
 	                            </div>
 	                            
 	                        </div>
@@ -50,7 +52,14 @@ class Payment extends Component {
 	                        <div className="row">
 	                            <div className="form-group col-xs-10">
 	                                <label for="email">Amount</label>
-	                                <input onChange={this.onHandleChange} id="email" className="form-control input-group-lg" type="number" name="amount" title="Enter amount" placeholder="1000"  />
+	                                <input onChange={this.onHandleChange} id="amount" className="form-control input-group-lg" type="number" name="amount" title="Enter amount" placeholder="1000"  />
+	                            </div>
+	                        </div>
+	                        <br></br>
+							<div className="row">
+	                            <div className="form-group col-xs-10">
+	                                <label for="email">Private Key</label>
+	                                <input onChange={this.onHandleChange} id="privatekey" className="form-control input-group-lg" type="text" name="privatekey" title="Enter private key" placeholder="Sxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"  />
 	                            </div>
 	                        </div>
 	                        <br></br>
@@ -74,4 +83,4 @@ function mapStateToProps(state){
 	}
 }
 
-export default connect(mapStateToProps)(Payment);
+export default connect(mapStateToProps,{sendPayment})(Payment);
