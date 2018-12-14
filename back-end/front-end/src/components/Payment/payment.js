@@ -59,7 +59,7 @@ class Payment extends Component {
 							<div className="row">
 	                            <div className="form-group col-xs-10">
 	                                <label for="email">Private Key</label>
-	                                <input onChange={this.onHandleChange} id="privatekey" className="form-control input-group-lg" type="text" name="privatekey" title="Enter private key" placeholder="Sxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"  />
+	                                <input onChange={this.onHandleChange} id="privatekey" className="form-control input-group-lg" type="password" name="privatekey" title="Enter private key" placeholder="Sxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"  />
 	                            </div>
 	                        </div>
 	                        <br></br>

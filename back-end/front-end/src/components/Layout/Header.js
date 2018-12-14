@@ -37,8 +37,8 @@ class Header extends Component {
                         <li className="dropdown">
                             <a href="/" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><button className="btn btn-primary btntweet" >Tweet</button></a>
                             <ul className="dropdown-menu newsfeed-home">
-                                <li><a href="index.html">Landing Page 1</a></li>
-                                <li><a href="index-register.html">Landing Page 2</a></li>
+                                <li><a href="index.html">Profile</a></li>
+                             
                             </ul>
                         </li>
                     </ul>
