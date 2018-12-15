@@ -1,0 +1,16 @@
+{
+  "name": "cnmtptpm-finalproject",
+  "version": "0.2.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "dev": "concurrently \"cd ./back-end && node index.js\" \" cd ./front-end && npm start\""
+  },
+  "author": "Team",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^4.1.0"
+  }
+}

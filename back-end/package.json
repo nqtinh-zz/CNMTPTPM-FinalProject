@@ -4,11 +4,9 @@
   "description": "Back-end",
   "main": "index.js",
   "scripts": {
-    "client-install": "npm install --prefix front-end",
+
     "start": "node index.js",
-    "server": "nodemon index.js",
-    "client": "npm start --prefix front-end",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "server": "nodemon index.js"
   },
   "author": "Team",
   "license": "ISC",

@@ -15,7 +15,7 @@ router.post('/send', (req,res)=>{
     const {publickey, amount, privatekey} = req.body;
     const tx= {
         version: 1,
-        sequence : 5,
+        sequence :8,
         memo: Buffer.alloc(0),
         operation:'payment',
         params:{
