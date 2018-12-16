@@ -1,36 +1,47 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './User/User.css'
-import { Redirect ,Link} from 'react-router-dom'
-const Register = () => {
-    return (
+import { Redirect, Link } from 'react-router-dom'
+import { connect } from 'react-redux';
+import { registerAccount ,signNewAccount} from '../../actions/User/authAction';
+import { throws } from 'assert';
+
+class Register extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            click: false,
+            privateKey: '',
+            publicKey:'',
+            priKeySign:'SBS67SFDK6XTWIVB57EUZCNQO4XZXNMSFHHUJCPLVXRCEG44UGPHSE6P',
+        }
+        this.onClick = this.onClick.bind(this);
+    }
+    onClick(e) {
+        e.preventDefault();
+        this.setState({ click: true });
+        this.props.signNewAccount(
+            {priKeySign: this.state.priKeySign}
+         ); 
+        this.setState({
+            privateKey: this.props.privateKey,
+            publicKey: this.props.publicKey,
+        })
+        //console.log(this.state);
+            
+    }
+    render() {
+        const registerPage = (
             <section className="signup">
-            <div className="container-log">
-                <div className="signup-content">
+                <div className="container-log"><div className="signup-content">
                     <div className="signup-form">
                         <h2 className="form-title">Sign up</h2>
-                        <form method="POST" className="register-form" id="register-form">
+                        <form onClick={this.onClick} className="register-form" id="register-form">
                             <div className="form-group-log">
-                                <label className="labelForm"  for="name"><i className="zmdi zmdi-account material-icons-name"></i></label>
-                                <input className="inputForm" type="text" name="name" id="name" placeholder="Your Name"/>
-                            </div>
-                            <div className="form-group-log">
-                                <label className="labelForm" for="email"><i className="zmdi zmdi-email"></i></label>
-                                <input className="inputForm" type="email" name="email" id="email" placeholder="Your Email"/>
-                            </div>
-                            <div className="form-group-log">
-                                <label className="labelForm" for="pass"><i className="zmdi zmdi-lock"></i></label>
-                                <input className="inputForm" type="password" name="pass" id="pass" placeholder="Password"/>
-                            </div>
-                            <div className="form-group-log">
-                                <label className="labelForm" for="re-pass"><i className="zmdi zmdi-lock-outline"></i></label>
-                                <input className="inputForm" type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
-                            </div>
-                            <div className="form-group-log">
-                                <input className="inputForm" type="checkbox" name="agree-term" id="agree-term" className="agree-term" />
-                                <label className="labelForm" for="agree-term" className="label-agree-term"><span><span></span></span>I agree all statements in  <a href="/" className="term-service">Terms of service</a></label>
+                                <label className="labelForm" className="label-agree-term"><span><span></span></span>After click Register , we will send you your Public and PrivateKey.</label>
+                                <label className="labelForm" className="label-agree-term"><span><span></span></span>You must save your private key and never public it.</label>
                             </div>
                             <div className="form-group-log form-button">
-                                <input className="inputForm" type="submit" name="signup" id="signup" className="form-submit" value="Register"/>
+                                <input className="inputForm" type="submit" name="signup" id="signup" className="form-submit" value="Register" />
                             </div>
                         </form>
                     </div>
@@ -39,9 +50,41 @@ const Register = () => {
                         <Link to="/login"><div className="signup-image-link">I am already member</div></Link>
                     </div>
                 </div>
+                </div>
+            </section>);
+        const privateKeyPage = (<div className="pri-container">
+            <div className="privatekey-content">
+                <div className="title-container">Save Your <span className="pri-title">Private Key</span>.</div>
+                <div className="form-group">
+                    <textarea className="form-control rounded-0" id="exampleFormControlTextarea1" rows="3" value={this.props.privateKey}></textarea>
+                    <textarea className="form-control rounded-0" id="exampleFormControlTextarea1" rows="3" value={this.props.publicKey}></textarea>
+                </div>
+                <div className="">**Do not lose it!** It cannot be recovered if you lose it.</div>
+                <div>**Make a backup!** Secure it like the millions of dollars it may one day be worth.</div>
+                <div className="">**Do not share it!** Your funds will be stolen if you use this file on a malicious/phishing site.</div>
+                <br></br>
+                <Link to="/login"><button className="form-submit">To Login</button></Link>
+                <br/>
+                <br/>
             </div>
-        </section>
-    )
+
+            </div>
+
+        )
+        return (
+            <div>
+                {this.state.click ? privateKeyPage : registerPage}
+            </div>
+        )
+    }
 }
 
-export default Register;
+const mapStateToProps = (state) => {
+
+    return {
+        privateKey: state.registerReducer.privateKey,
+        publicKey : state.registerReducer.publicKey,
+    }
+}
+
+export default connect(mapStateToProps, { registerAccount, signNewAccount })(Register);

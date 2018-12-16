@@ -589,4 +589,24 @@ label.valid {
     margin-right: 0px;
     margin-bottom: 10px; } }
 
+  .privatekey-content{
+    background-color: white;
+    margin:50px
+  }
+  .pri-container{
+    text-align: center;
+    width:900px;
+    backgroun-color:gray;
+    margin-left: 225px
+  }
+  .title-container{
+    text-align: center;
+    font-size:2.5em;
+  }
+  .pri-title{
+    color:#C9254E;
+    font-weight: bold;
+    background-color:#F9F2F4
+  }
+
 /*# sourceMappingURL=style.css.map */

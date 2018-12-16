@@ -8,11 +8,11 @@ router.post('/', (req,res)=>{
 
     const tx= {
         version: 1,
-        sequence :8,
+        sequence :12,
         memo: Buffer.alloc(0),
         operation:'update_account',
         params:{
-          value:Buffer.from(value,'utf-8'),
+          value:Buffer.from(value,'base64'),
           key
         }
       }

@@ -15,6 +15,16 @@ class BasicInfo extends Component {
 		}
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onChange = this.onChange.bind(this);
+		this.onSubmitAvatar = this.onSubmitAvatar.bind(this);
+	}
+	onSubmitAvatar(e){
+		e.preventDefault();
+		this.props.updateAccount({
+			key: "picture",
+			value: this.state.imagePreviewUrl.replace(/^data:image\/(png|jpeg|jpg);base64,/, ""),
+			privatekey: 'SBS67SFDK6XTWIVB57EUZCNQO4XZXNMSFHHUJCPLVXRCEG44UGPHSE6P'
+		})
+	
 	}
 	onChange(e) {
 		this.setState({ [e.target.name]: e.target.value })
@@ -27,7 +37,7 @@ class BasicInfo extends Component {
 			value: name,
 			privatekey: 'SBS67SFDK6XTWIVB57EUZCNQO4XZXNMSFHHUJCPLVXRCEG44UGPHSE6P'
 		})
-		console.log(name);
+		//console.log(name);
 	}
 	fileChangedHandler = (e) => {
 		e.preventDefault();
@@ -44,30 +54,7 @@ class BasicInfo extends Component {
 
 		reader.readAsDataURL(file)
 
-	}
-	_handleSubmit(e) {
-		e.preventDefault();
-		const { imagePreviewUrl } = this.state;
-
-
-		if (this.state.imagePreviewUrl == '') {
-			this.setState({
-				isOpenAdd: false,
-				messError: "Wrong Image Preview Url",
-				isError: true
-			});
-			return;
 		}
-		// var promotion={
-
-		//   imagePreviewUrl,
-
-		// }
-		// axios.post('/manage/promotion/init',{
-		//   promotion: promotion
-		// })
-		// .then()
-	}
 	render() {
 		let { imagePreviewUrl } = this.state;
 		let $imagePreview = null;
@@ -76,7 +63,7 @@ class BasicInfo extends Component {
 		} else {
 			$imagePreview = (<div>Please select an Image for Preview</div>);
 		}
-		console.log('hình ' + imagePreviewUrl);
+		//console.log('hình ' + imagePreviewUrl);
 		return (
 
 			<div className="col-md-7 basicinfo" >
@@ -87,9 +74,11 @@ class BasicInfo extends Component {
 						{/*<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate</p>*/}
 						<div className="line"></div>
 					</div>
-					<input type="file" onChange={this.fileChangedHandler} />
-
-					<div className="imagePreviewStyle"  >{$imagePreview}</div>
+					<form onSubmit={this.onSubmitAvatar}>
+						<input type="file" onChange={this.fileChangedHandler} />
+						<div className="imagePreviewStyle"  >{$imagePreview}</div>
+						<button className="btn btn-primary">Save Changes</button>
+					</form>
 					<div className="edit-block">
 						<form name="basic-info" id="basic-info" className="form-inline" onSubmit={this.onSubmit}>
 							<div className="row">

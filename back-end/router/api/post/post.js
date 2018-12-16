@@ -12,7 +12,7 @@ router.post('/', (req,res)=>{
         memo: Buffer.alloc(0),
         operation:'post',
         params:{
-          content:Buffer.from(content,'utf-8'),
+          content:Buffer.from(JSON.stringify(content)),
           keys: keys
         }
       }
@@ -20,7 +20,7 @@ router.post('/', (req,res)=>{
       const etx=encode(tx).toString('hex');
       console.log(etx);
       axios.post('https://komodo.forest.network/broadcast_tx_commit?tx=0x'+etx)
-        .then(data=>console.log("good"));
+        .then(data=>console.log(data.data.result.check_tx.log));
       
 })
 
