@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import {postAction} from '../../actions/User/postAction';
+
 class News extends Component {
     constructor(props) {
         super(props);
@@ -17,7 +19,11 @@ class News extends Component {
 
     onHandleSubmit=(event)=>{
         event.preventDefault();
-        console.log(this.state.post);
+        this.props.postAction({
+            content: this.state.post,
+            keys: [],
+            privatekey: 'SBS67SFDK6XTWIVB57EUZCNQO4XZXNMSFHHUJCPLVXRCEG44UGPHSE6P'
+        });
     }
 
     render() {
@@ -158,4 +164,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(News);
+export default connect(mapStateToProps,{postAction})(News);

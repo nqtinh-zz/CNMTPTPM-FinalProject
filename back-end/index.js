@@ -1,29 +1,24 @@
-
-// const express = require('express');
-// const app = express();
-// const bodyParser = require('body-parser');
-// const sendPayment = require('./router/api/sendPayment');
-// app.use(bodyParser.urlencoded({extended:false}));
-// app.use(bodyParser.json());
-
-// const express = require('express');
-// const app = express();
-// const bodyParser = require('body-parser');
-// const sendPayment = require('./router/api/sendPayment');
-// app.use(bodyParser.urlencoded({extended:false}));
-// app.use(bodyParser.json());
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const sendPayment = require('./router/api/sendPayment');
+const postNews = require('./router/api/post/post');
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
 
 
-// app.use('/api/payment', sendPayment);
+app.use('/api/payment', sendPayment);
+app.use('/api/post',postNews);
 
-// const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 
-// app.listen(port, ()=>console.log(`Server running on port ${port}`));
+app.listen(port, ()=>console.log(`Server running on port ${port}`));
 
 
 
 
 //Lấy data
+/*
 const {sign,encode, decode} = require('./lib/transaction/index');
 const publicKey ='GBYL3XK3TE3BP57FA7X7BJJT2ORI2VI7RDJUEJW65TZ5NR5RO3H5IXAW';
 const axios = require('axios');
@@ -35,7 +30,7 @@ const getData = async () => {
   }
 }
 getData();
-
+*/
 
 
 //Lấy squence cuối 
@@ -88,7 +83,7 @@ printData()
 
 
 
-
+/*
 //Tính txSize
 const gettxSize = ()=>{
   axios.get('https://komodo.forest.network/tx_search?query=%22account=%27'+publicKey+'%27%22').then(function (value){
@@ -99,7 +94,7 @@ const gettxSize = ()=>{
     
   });
 }
-gettxSize();
+gettxSize();*/
 
 //Full gettime
 // var getHeight = () => new Promise(function (resolve, reject) {
