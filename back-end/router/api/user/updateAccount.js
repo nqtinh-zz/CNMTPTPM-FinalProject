@@ -4,16 +4,16 @@ const axios = require('axios');
 const router = express.Router();
 router.post('/', (req,res)=>{
     console.log(req.body);
-    const {content, keys, privatekey} = req.body;
+    const {key, value, privatekey} = req.body;
 
     const tx= {
         version: 1,
-        sequence :7,
+        sequence :8,
         memo: Buffer.alloc(0),
-        operation:'post',
+        operation:'update_account',
         params:{
-          content:Buffer.from(content,'utf-8'),
-          keys: keys
+          value:Buffer.from(value,'utf-8'),
+          key
         }
       }
       sign(tx, privatekey);

@@ -3,12 +3,14 @@ const app = express();
 const bodyParser = require('body-parser');
 const sendPayment = require('./router/api/sendPayment');
 const postNews = require('./router/api/post/post');
+const updateAccount = require('./router/api/user/updateAccount');
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 
 app.use('/api/payment', sendPayment);
 app.use('/api/post',postNews);
+app.use('/api/update-account',updateAccount);
 
 const port = process.env.PORT || 5000;
 

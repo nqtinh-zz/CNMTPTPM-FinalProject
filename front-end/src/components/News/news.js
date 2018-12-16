@@ -7,20 +7,23 @@ class News extends Component {
         super(props);
         this.state = {
             name: this.props.news.name,
-            post:''
+            content:{
+                type:1,
+                text:''
+            }
         }
     }
 
     onHandleChange=(event)=> {
         this.setState({
-            post: event.target.value
+            content : {text:event.target.value}
         })
     }
 
     onHandleSubmit=(event)=>{
         event.preventDefault();
         this.props.postAction({
-            content: this.state.post,
+            content: this.state.content,
             keys: [],
             privatekey: 'SBS67SFDK6XTWIVB57EUZCNQO4XZXNMSFHHUJCPLVXRCEG44UGPHSE6P'
         });
