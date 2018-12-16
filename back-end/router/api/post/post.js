@@ -2,14 +2,6 @@ const express = require('express');
 const {sign,encode, decode} = require('../../../lib/transaction/index');
 const axios = require('axios');
 const router = express.Router();
-const postNews = async (etx) => {
-    try {
-      return await axios.get('https://komodo.forest.network/broadcast_tx_commit?tx=0x'+etx)
-    } catch (error) {
-      console.error(error)
-    }
-    console.log(etx);
-  }
 router.post('/', (req,res)=>{
     console.log(req.body);
     const {content, keys, privatekey} = req.body;

@@ -1,14 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { updateAccount } from '../../actions/User/updateAccountAction';
+
+
+
 
 class BasicInfo extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			firstname: '',
+			lastname: '',
 			imagePreviewUrl: '',
-
-		};
-
+		}
+		this.onSubmit = this.onSubmit.bind(this);
+		this.onChange = this.onChange.bind(this);
+	}
+	onChange(e) {
+		this.setState({ [e.target.name]: e.target.value })
+	}
+	onSubmit(e) {
+		e.preventDefault();
+		const name = this.state.firstname + " " + this.state.lastname;
+		this.props.updateAccount({
+			key: "name",
+			value: name,
+			privatekey: 'SBS67SFDK6XTWIVB57EUZCNQO4XZXNMSFHHUJCPLVXRCEG44UGPHSE6P'
+		})
+		console.log(name);
 	}
 	fileChangedHandler = (e) => {
 		e.preventDefault();
@@ -49,7 +68,6 @@ class BasicInfo extends Component {
 		// })
 		// .then()
 	}
-
 	render() {
 		let { imagePreviewUrl } = this.state;
 		let $imagePreview = null;
@@ -60,91 +78,88 @@ class BasicInfo extends Component {
 		}
 		console.log('hình ' + imagePreviewUrl);
 		return (
-			<div>
 
-				<div className="col-md-7 basicinfo" >
+			<div className="col-md-7 basicinfo" >
 
-					<div className="edit-profile-container">
-						<div className="block-title">
-							<h4 className="grey"><i className="icon ion-android-checkmark-circle"></i>Edit basic information</h4>
-							{/*<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate</p>*/}
-							<div className="line"></div>
-						</div>
-						<div className="edit-block">
-							<form name="basic-info" id="basic-info" className="form-inline">
-								<input type="file" onChange={this.fileChangedHandler} />
-								
-								<div className="imagePreviewStyle"  >{$imagePreview}</div>
+				<div className="edit-profile-container">
+					<div className="block-title">
+						<h4 className="grey"><i className="icon ion-android-checkmark-circle"></i>Edit basic information</h4>
+						{/*<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate</p>*/}
+						<div className="line"></div>
+					</div>
+					<input type="file" onChange={this.fileChangedHandler} />
 
-								<div className="row">
-									<div className="form-group col-xs-6">
-										<label for="firstname">First name</label>
-										<input id="firstname" className="form-control input-group-lg" type="text" name="firstname" title="Enter first name" placeholder={this.props.info.firstName} value={this.props.info.firstName} />
-									</div>
-									<div className="form-group col-xs-6">
-										<label for="lastname" className="">Last name</label>
-										<input id="lastname" className="form-control input-group-lg" type="text" name="lastname" title="Enter last name" placeholder={this.props.info.lastName} value={this.props.info.lastName} />
-									</div>
+					<div className="imagePreviewStyle"  >{$imagePreview}</div>
+					<div className="edit-block">
+						<form name="basic-info" id="basic-info" className="form-inline" onSubmit={this.onSubmit}>
+							<div className="row">
+								<div className="form-group col-xs-6">
+									<label for="firstname">First name</label>
+									<input onChange={this.onChange} id="firstname" className="form-control input-group-lg" type="text" name="firstname" title="Enter first name" placeholder={this.props.info.firstName} value={this.state.firstname} />
 								</div>
-								<div className="row">
-									<div className="form-group col-xs-12">
-										<label for="email">My email</label>
-										<input id="email" className="form-control input-group-lg" type="text" name="Email" title="Enter Email" placeholder="My Email" value={this.props.info.email} />
-									</div>
+								<div className="form-group col-xs-6">
+									<label for="lastname" className="">Last name</label>
+									<input onChange={this.onChange} id="lastname" className="form-control input-group-lg" type="text" name="lastname" title="Enter last name" placeholder={this.props.info.lastName} value={this.state.lastName} />
 								</div>
-								<div className="row">
-									<p className="custom-label"><strong>Date of Birth</strong></p>
-									<div className="form-group col-sm-3 col-xs-6">
-										<label for="month" className="sr-only"></label>
-										<select className="form-control" id="day">
-											<option value="Day">Day</option>
-											<option selected>{this.props.info.birthday.day}</option>
-										</select>
-									</div>
-									<div className="form-group col-sm-3 col-xs-6">
-										<label for="month" className="sr-only"></label>
-										<select className="form-control" id="month">
-											<option value="month">Month</option>
-											<option selected>{this.props.info.birthday.month}</option>
-										</select>
-									</div>
-									<div className="form-group col-sm-6 col-xs-12">
-										<label for="year" className="sr-only"></label>
-										<select className="form-control" id="year">
-											<option value="year">Year</option>
-											<option selected>{this.props.info.birthday.year}</option>
-										</select>
-									</div>
+							</div>
+							<div className="row">
+								<div className="form-group col-xs-12">
+									<label for="email">My email</label>
+									<input id="email" className="form-control input-group-lg" type="text" name="Email" title="Enter Email" placeholder="My Email" value={this.props.info.email} />
 								</div>
-								
-								<div className="row">
-									<div className="form-group col-xs-6">
-										<label for="city"> My city</label>
-										<input id="city" className="form-control input-group-lg" type="text" name="city" title="Enter city" placeholder="Your city" value={this.props.info.city} />
-									</div>
-									<div className="form-group col-xs-6">
-										<label for="country">My country</label>
-										<input id="country" className="form-control input-group-lg" type="text" name="country" title="Enter country" placeholder="Your country" value={this.props.info.country} />
-								
-									</div>
+							</div>
+							<div className="row">
+								<p className="custom-label"><strong>Date of Birth</strong></p>
+								<div className="form-group col-sm-3 col-xs-6">
+									<label for="month" className="sr-only"></label>
+									<select className="form-control" id="day">
+										<option value="Day">Day</option>
+										<option selected>{this.props.info.birthday.day}</option>
+									</select>
 								</div>
-								<div className="row">
-									<div className="form-group col-xs-12">
-										<label for="my-info">About me</label>
-										<textarea id="my-info" name="information" className="form-control" placeholder="Some texts about me" rows="4" cols="400">{this.props.info.bio}</textarea>
-									</div>
+								<div className="form-group col-sm-3 col-xs-6">
+									<label for="month" className="sr-only"></label>
+									<select className="form-control" id="month">
+										<option value="month">Month</option>
+										<option selected>{this.props.info.birthday.month}</option>
+									</select>
 								</div>
-								<button className="btn btn-primary">Save Changes</button>
-							</form>
-						</div>
+								<div className="form-group col-sm-6 col-xs-12">
+									<label for="year" className="sr-only"></label>
+									<select className="form-control" id="year">
+										<option value="year">Year</option>
+										<option selected>{this.props.info.birthday.year}</option>
+									</select>
+								</div>
+							</div>
+							<div className="row">
+								<div className="form-group col-xs-6">
+									<label for="city"> My city</label>
+									<input id="city" className="form-control input-group-lg" type="text" name="city" title="Enter city" placeholder="Your city" value={this.props.info.city} />
+								</div>
+								<div className="form-group col-xs-6">
+									<label for="country">My country</label>
+									<input id="country" className="form-control input-group-lg" type="text" name="country" title="Enter country" placeholder="Your country" value={this.props.info.country} />
+								</div>
+							</div>
+							<div className="row">
+								<div className="form-group col-xs-12">
+									<label for="my-info">About me</label>
+									<textarea id="my-info" name="information" className="form-control" placeholder="Some texts about me" rows="4" cols="400">{this.props.info.bio}</textarea>
+								</div>
+							</div>
+							<button className="btn btn-primary">Save Changes</button>
+						</form>
 					</div>
 				</div>
-
-
 			</div>
-		);
+
+		)
 	}
+
 }
+
+
 
 
 
@@ -154,4 +169,4 @@ function mapStateToProps(state) {
 	}
 }
 
-export default connect(mapStateToProps)(BasicInfo);
+export default connect(mapStateToProps, { updateAccount })(BasicInfo);
