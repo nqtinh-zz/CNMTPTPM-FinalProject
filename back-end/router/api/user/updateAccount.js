@@ -7,16 +7,33 @@ router.post('/', (req,res)=>{
     const {key, value, privatekey} = req.body;
     getSequence(privatekey)
     .then(sequence=>{
-    const tx= {
-        version: 1,
-        sequence :sequence+1,
-        memo: Buffer.alloc(0),
-        operation:'update_account',
-        params:{
-          value:Buffer.from(value,'base64'),
-          key
+      if(key === 'name')
+      {
+        const tx= {
+          version: 1,
+          sequence :sequence+1,
+          memo: Buffer.alloc(0),
+          operation:'update_account',
+          params:{
+            value:Buffer.from(value,'utf-8'),
+            key
+          }
         }
       }
+      if(key === 'picture')
+      {
+        const tx= {
+          version: 1,
+          sequence :sequence+1,
+          memo: Buffer.alloc(0),
+          operation:'update_account',
+          params:{
+            value:Buffer.from(value,'base64'),
+            key
+          }
+        }
+      }
+    
       sign(tx, privatekey);
       const etx=encode(tx).toString('hex');
       console.log(etx);
