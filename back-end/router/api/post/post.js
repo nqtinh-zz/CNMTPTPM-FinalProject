@@ -4,8 +4,10 @@ const axios = require('axios');
 const getSequence = require('../../../lib/getSequence');
 const router = express.Router();
 router.post('/', (req,res)=>{
-    console.log(req.body);
-    const {content, keys, privatekey} = req.body;
+    console.log(req.body.type);
+    const {text,type, keys, privatekey} = req.body;
+    const content = {text, type}
+    console.log(content);
     getSequence(privatekey)
       .then(sequence=>{
         const tx= {

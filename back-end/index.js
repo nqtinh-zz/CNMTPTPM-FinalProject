@@ -21,20 +21,6 @@ app.listen(port, ()=>console.log(`Server running on port ${port}`));
 
 
 
-//Lấy data
-
-// const {sign,encode, decode} = require('./lib/transaction/index');
-// const publicKey ='GBYL3XK3TE3BP57FA7X7BJJT2ORI2VI7RDJUEJW65TZ5NR5RO3H5IXAW';
-// const axios = require('axios');
-// const getSeque = ()=>{
-//   axios.get('https://forest.network/blocks/2238')
-//   .then(data=>{console.log(data.data);
-//   });
-  
-// }
-
-// getSeque();
-
 
 // Lấy squence cuối 
 // const getSequence = async()=>{

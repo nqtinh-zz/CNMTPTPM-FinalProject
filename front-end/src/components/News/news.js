@@ -8,7 +8,7 @@ class News extends Component {
         this.state = {
             name: this.props.news.name,
             content:{
-                type:1,
+                type: '1',
                 text:''
             }
         }
@@ -23,7 +23,8 @@ class News extends Component {
     onHandleSubmit=(event)=>{
         event.preventDefault();
         this.props.postAction({
-            content: this.state.content,
+            type:1,
+            text:this.state.content.text,
             keys: [],
             privatekey: 'SBS67SFDK6XTWIVB57EUZCNQO4XZXNMSFHHUJCPLVXRCEG44UGPHSE6P'
         });
