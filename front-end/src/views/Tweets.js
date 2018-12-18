@@ -11,7 +11,7 @@ class Tweets extends Component {
                 </Helmet>
                 <div className="row">
                     <News />
-                    <Activity />
+                    
                 </div>
             </div>
 
