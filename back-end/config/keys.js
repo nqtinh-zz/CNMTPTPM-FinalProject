@@ -1,4 +1,4 @@
 module.exports ={
-    mongoURI:'mongodb://forest-network-app:forestapp123@ds159866.mlab.com:59866/block-chain-app',
+    mongoURI:'mongodb://nqtinh97:tinh123@ds037478.mlab.com:37478/forest-network',
     secretOrkeys : 'secret',
 }
