@@ -35,6 +35,7 @@ class Payment extends Component {
                      
 	            <div className="edit-profile-container">
 	                <div className="block-title">
+	                	<br></br>
 	                    <h4 className="grey"><i className="icon ion-android-checkmark-circle"></i>Payment</h4>
 	                    {/*<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate</p>*/}
 	                    <div className="line"></div>

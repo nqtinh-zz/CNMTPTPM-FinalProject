@@ -5,6 +5,8 @@ const sendPayment = require('./router/api/sendPayment');
 const postNews = require('./router/api/post/post');
 const updateAccount = require('./router/api/user/updateAccount');
 const register = require('./router/api/user/register');
+const user = require('./router/api/user/user');
+const login = require('./router/api/user/login');
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
@@ -13,6 +15,8 @@ app.use('/api/payment', sendPayment);
 app.use('/api/post',postNews);
 app.use('/api/update-account',updateAccount);
 app.use('/api/register',register);
+app.use('/api/user',user);
+app.use('/api/login',login);
 
 const port = process.env.PORT || 5000;
 
