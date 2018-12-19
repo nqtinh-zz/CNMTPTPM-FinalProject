@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './User/User.css'
-import { Redirect, Link } from 'react-router-dom'
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { registerAccount ,signNewAccount} from '../../actions/User/authAction';
-import { throws } from 'assert';
 
 class Register extends Component {
     constructor(props) {
@@ -29,6 +29,14 @@ class Register extends Component {
         //console.log(this.state);
             
     }
+    componentDidMount(){
+        if(this.props.auth.isAuthenticated){
+          this.props.history.push('/tweets');
+        }
+        else{
+            this.props.history.push('/register');
+        }
+      }
     render() {
         const registerPage = (
             <section className="signup">
@@ -78,12 +86,17 @@ class Register extends Component {
         )
     }
 }
-
+Register.proptypes = {
+    registerAccount: PropTypes.func.isRequired,
+    signNewAccount: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+}
 const mapStateToProps = (state) => {
 
     return {
         privateKey: state.registerReducer.privateKey,
         publicKey : state.registerReducer.publicKey,
+        auth: state.authReducer,
     }
 }
 

@@ -1,14 +1,14 @@
 const express = require('express');
-const axios = require('axios');
-const {sign,encode, decode} = require('../../../lib/transaction/index');
-const getSequence = require('../../../lib/getSequence');
 const { Keypair } = require('stellar-base');
 const router = express.Router();
 const User = require('../../../models/User');
+const jwt = require('jsonwebtoken');
+const keys = require('../../../config/keys');
 
 router.post('/', (req,res)=>{
     //req.body.secretKey <- from login react
-    const publicKey = Keypair.fromSecret(req.body.secretKey).publicKey();
+    const{privateKey} = req.body;
+    const publicKey = Keypair.fromSecret(privateKey).publicKey();
     User.findOne({publicKey})
         .then(user=>{
             if(!user){
@@ -25,10 +25,15 @@ router.post('/', (req,res)=>{
                 transactions: user.transactions,
             }
             jwt.sign(payload, keys.secretOrkeys,{expiresIn:3600},(err,token)=>{
+                console.log(token);
                 res.json({
                     success: true,
                     token: 'Bearer '+token,
                 })
             })
         })
+        .catch(err =>console.log(err));
 })
+
+
+module.exports = router;

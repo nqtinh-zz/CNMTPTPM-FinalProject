@@ -6,18 +6,29 @@ const postNews = require('./router/api/post/post');
 const updateAccount = require('./router/api/user/updateAccount');
 const register = require('./router/api/user/register');
 const user = require('./router/api/user/user');
-const login = require('./router/api/user/login');
+const passport = require('passport');   
+const mongoose = require('mongoose');
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
+
+//connect database
+const db = require('./config/keys').mongoURI;
+mongoose
+    .connect(db)
+    .then(()=>console.log('Mongoosedb connected'))
+    .catch((err)=>console.log(err));
+//passport middleware
+app.use(passport.initialize());
+
+//passport  config
+require('./config/passport')(passport);
 
 app.use('/api/payment', sendPayment);
 app.use('/api/post',postNews);
 app.use('/api/update-account',updateAccount);
 app.use('/api/register',register);
 app.use('/api/user',user);
-app.use('/api/login',login);
-
 const port = process.env.PORT || 5000;
 
 app.listen(port, ()=>console.log(`Server running on port ${port}`));
