@@ -9,6 +9,7 @@ import jwt_decode from 'jwt-decode';
 import setAuthToken from './config/setAuthToken';
 import { setCurrentUser, logoutUser } from './actions/User/authAction';
 import store from './store/configStore';
+import Header from './components/Layout/Header'
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
   const decoded = jwt_decode(localStorage.jwtToken);
@@ -25,13 +26,11 @@ class App extends Component {
       <Provider store={store}>
       <Router>
         <div className="App">
-        <Route path="/register" name="Register" component={Register} />
-        <Route path="/login" name="Login" component={Login} />
+        <Header />
+        <Route exact path="/register" name="Register" component={Register} />
+        <Route  exact path="/login" name="Login" component={Login} />
         <Switch>
           <PrivateRoute path="/" name="Home" component={DefaultLayout} />
-        </Switch>
-        <Switch>
-          <PrivateRoute exact path="/tweets" component={DefaultLayout} />
         </Switch>
         </div>
       </Router>

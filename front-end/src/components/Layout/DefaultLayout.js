@@ -15,7 +15,6 @@ class DefaultLayout extends Component {
                     <div className="timeline">
                         <MenuTimeline />
                         <Suspense fallback={this.loading()}>
-                            <Router>
                                 {routes.map((route, idx) => {
                                     return route.component ? (
                                         <Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
@@ -24,7 +23,6 @@ class DefaultLayout extends Component {
                                     ) : (null);
                                 })}
                                 <Redirect from="/" to="/tweets" />
-                            </Router>
                         </Suspense>
                     </div>
                 </div>

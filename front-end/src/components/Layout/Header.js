@@ -1,22 +1,32 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link , Redirect} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/User/authAction';
 
 class Header extends Component {
+    constructor(props){
+        super(props);
+    }
     onLogoutClick(e) {
         e.preventDefault();
         this.props.logoutUser();
         //this.props.clearCurrentProfile();
     }
-    render() {
-        return (
+    onClickLogin(e){
+        e.preventDefault();
+        Redirect('/login');
+    }
+    onClickRegister(e){
+        e.preventDefault();
+        Redirect('/login');
+    }
+    render() { 
+        const authLink=(
             <div>
                 <header id="header">
                     <nav className="navbar navbar-default navbar-fixed-top menu">
                         <div className="container">
-
                             <div className="navbar-header">
                                 <ul className="nav navbar-nav navbar-right main-menu">
                                     <li className="dropdown">
@@ -35,7 +45,6 @@ class Header extends Component {
                                     </li>
                                 </ul>
                             </div>
-
                             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <ul className="nav navbar-nav navbar-right main-menu">
                                     <li className="dropdown">
@@ -44,7 +53,6 @@ class Header extends Component {
                                         </a>
                                         <ul className="dropdown-menu newsfeed-home">
                                             <li><a href="index.html">Profile</a></li>
-
                                         </ul>
                                     </li>
                                 </ul>
@@ -58,13 +66,39 @@ class Header extends Component {
                         </div>
                     </nav>
                 </header>
-
-
-
-
-
-
             </div>
+        );
+        const guestLink= (
+            <div>
+                <header id="header">
+                    <nav className="navbar navbar-default navbar-fixed-top menu">
+                        <div className="container">
+                            <div className="navbar-header">
+                                <ul className="nav navbar-nav navbar-right main-menu">
+                                    <li className="dropdown">
+                                        <Link to='/login'><i className="icon ion-android-home"></i>  Home </Link>
+
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                <ul className="nav navbar-nav navbar-right main-menu">
+                                    <li className="">
+                                    <Link to="/login"><div className="signup-image-link">Login</div></Link>
+                                    </li>
+                                    
+                                    <li className="">
+                                    <Link to="/register"><div className="signup-image-link">Register</div></Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </header>
+            </div>
+        )
+        return (
+            (this.props.auth.isAuthenticated? authLink: guestLink)
         );
     }
 }
@@ -75,8 +109,7 @@ Header.propTypes = {
     auth: PropTypes.object.isRequired,
 }
 
-const mapStateToProps = (state)=>({
+const mapStateToProps = (state) => ({
     auth: state.authReducer,
 })
-
 export default connect(mapStateToProps, {logoutUser /*,clearCurrentProfile*/})(Header);
