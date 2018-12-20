@@ -42,7 +42,7 @@ class News extends Component {
                             <form onSubmit={this.onHandleSubmit}>
                             <div className="col-md-7 col-sm-7">
                                 <div className="form-group">
-                                    <img src="images/ava.jpg" alt="" className="profile-photo-md" />
+                                    <img src={"data:image/jpeg;base64,"+this.props.auth.user.avatar} alt="" className="profile-photo-md" />
                                     <textarea onChange={this.onHandleChange} name="texts" id="exampleTextarea" cols="30" rows="1" className="form-control" placeholder="Write what you wish"></textarea>
                                 </div>
                             </div>
@@ -165,7 +165,7 @@ class News extends Component {
 function mapStateToProps(state) {
     return {
         news: state.personalReducer,
-        avatarCurr: state.personInfoReducer.avatar,
+        auth: state.authReducer
     }
 }
 

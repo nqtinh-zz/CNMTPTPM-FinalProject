@@ -11,9 +11,11 @@ class MenuTimeline extends Component {
                         <div className="row">
                             <div className="col-md-3">
                                 <div className="profile-info">
-                                    <img src={this.props.image.avatar} alt="" className="img-responsive profile-photo" />
-                                    <h3>{this.props.name}</h3>
-                                    <p className="text-muted">{this.props.carrer}</p>
+                                    <img src={"data:image/jpeg;base64,"+this.props.auth.user.avatar} alt="" className="img-responsive profile-photo" />
+                                    <h3>{this.props.auth.user.name}</h3>
+                                    <Link to="/payment"><h4>Send payment</h4></Link>
+                                    <Link to="/account"><h4>Account Information</h4></Link>
+                                    {/* <p className="text-muted">{this.props.carrer}</p> */}
                                 </div>
                             </div>
                             <div className="col-md-9">
@@ -37,20 +39,7 @@ class MenuTimeline extends Component {
                                             </div>
                                     </li>
 
-                                    <li class="ProfileNav-li">
-                                        <div class="ProfileNav">
-                                            <Link to="/payment">Payment</Link><br />
-                                            {this.props.followersNum}
-                                            </div>
-                                    </li>
-
                                     {/*thêm nút account hiển thị bandwidth...*/}
-                                    <li class="ProfileNav-li">
-                                        <div class="ProfileNav">
-                                            <Link to="/account">Account</Link><br />
-                                            {this.props.followersNum}
-                                            </div>
-                                    </li>
                                     
                                 </ul>
                                 <ul className="follow-me list-inline cedit">
@@ -91,7 +80,7 @@ function mapStateToProps(state) {
         tweetsNum: state.personalReducer.tweetsNum,
         name: state.personalReducer.name,
         carrer : state.personalReducer.carrer,
-        image: state.personInfoReducer,
+        auth: state.authReducer,
     }
 }
 

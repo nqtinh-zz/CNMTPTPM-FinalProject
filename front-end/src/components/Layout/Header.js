@@ -3,7 +3,6 @@ import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/User/authAction';
-
 class Header extends Component {
     constructor(props) {
         super(props);
@@ -43,10 +42,10 @@ class Header extends Component {
                             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <ul className="nav navbar-nav navbar-right main-menu">
                                     <li className="nav-item">
-                                        <a href="" onClick={this.onClickAvatar.bind(this)} className="nav-link">
-                                            <img src="" alt="avatarlink" className="rounded-circle"
+                                        <Link to='/account'>
+                                            <img src= {"data:image/jpeg;base64,"+this.props.auth.user.avatar} alt="avatarlink" className="img-circle"
                                                 title="You must have a gravatar connected to your email"
-                                                style={{ width: '25px', marginRight: '5px' }} /></a>
+                                                style={{ width: '30px', marginRight: '0px' }} /></Link>
                                     </li>
                                     <li className="dropdown">
                                         <a href="#" onClick={this.onLogoutClick.bind(this)} className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

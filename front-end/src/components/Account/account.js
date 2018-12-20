@@ -14,7 +14,7 @@ class Account extends Component {
 	          <div className="edit-profile-container">
 	                <div className="block-title">
 	                	<br></br>
-	                    <h4 className="grey">Account</h4>
+	                    <h4 className="grey">Account Information</h4>
 	                    {/*<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate</p>*/}
 	                    <div className="line"></div>
 	                </div>
@@ -22,35 +22,39 @@ class Account extends Component {
 	                    <form   id="basic-info" className="form-inline">
 	                        <div className="row">
 	                            <div className="form-group col-xs-12">
-	                                <label for="publickey">Balance</label>
-	                                <input  className="form-control input-group-lg"     />
+	                                <p>Balance : {this.props.auth.user.balance} </p>
+	                            </div>
+	                            
+	                        </div>
+							<br></br>
+							<div className="row">
+	                            <div className="form-group col-xs-12">
+	                                <p>Name : {this.props.auth.user.name} </p>
 	                            </div>
 	                            
 	                        </div>
 							<br></br>
 	                        <div className="row">
 	                            <div className="form-group col-xs-12">
-	                                <label for="email">Sequence</label>
-	                                <input className="form-control input-group-lg"     />
+	                                <p>Sequence : {this.props.auth.user.sequence} </p>
 	                            </div>
 	                        </div>
 	                        <br></br>
 							<div className="row">
 	                            <div className="form-group col-xs-12">
-	                                <label for="email">Bandwidths</label>
-	                                <input  className="form-control input-group-lg"   />
+	                                <p>Bandwidth :  {this.props.auth.user.bandwidth}</p>
 	                            </div>
 	                        </div>
+							<br></br>
 	                        <div className="row">
 	                            <div className="form-group col-xs-12">
-	                                <label for="email">Transiction</label>
-	                                <input  className="form-control input-group-lg"  />
+	                                <p>Transactions : {this.props.auth.user.transactions} </p>
 	                            </div>
 	                        </div>
+							<br></br>
 	                        <div className="row">
 	                            <div className="form-group col-xs-12">
-	                                <label for="email">Public Key</label>
-	                                <input  className="form-control input-group-lg"    />
+	                                <p>Public Key : {this.props.auth.user.publicKey}</p>
 	                            </div>
 	                        </div>
 	                        <br></br>
@@ -69,5 +73,8 @@ class Account extends Component {
   }
 }
 
+const mapStateToProps =(state)=>({
+	auth: state.authReducer
+})
 
-export default Account;
+export default connect(mapStateToProps)(Account);

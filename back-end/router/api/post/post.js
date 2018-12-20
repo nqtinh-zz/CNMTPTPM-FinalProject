@@ -27,8 +27,6 @@ router.post('/', passport.authenticate('jwt',{session:false}),(req,res)=>{
         axios.post('https://komodo.forest.network/broadcast_tx_commit?tx=0x'+etx)
           .then(data=>console.log(data.data));
       })
-    
-      
 })
 
 module.exports = router;
