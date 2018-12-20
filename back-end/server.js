@@ -1,6 +1,6 @@
 const express = require('express');
 const User = require('./models/users');
-const Block = require('./models/block');
+const Block = require('./models/blocks');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express();
@@ -34,16 +34,17 @@ getSequence = async (secret) => {
   return sequeLast;
 }
 const saveBlock = async () => {
-  for (i = 1; i < 10500; i++) {
+  for (i = 1; i < 12500; i++) {
     const blocks = await getData(i);
-    const blockData = blocks.data.result.block;
+    const blockData = blocks.data.result;
     const block = new Block({
-      height: blockData.header.height,
-      time: blockData.header.time,
-      data: blockData.data.txs,
-      hash: blockData.header.data_hash,
+      height: blockData.block.header.height,
+      time: blockData.block.header.time,
+      txs: blockData.block.data.txs,
+      hash: blockData.block_meta.block_id.hash,
+      appHash: blockData.block.header.app_hash,
     })
-    if (blockData.data.txs != null) {
+    if (blockData.block.data.txs != null) {
       block.save()
         .then(block => console.log(block.height))
         .catch(err => console.log(err));

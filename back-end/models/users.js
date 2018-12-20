@@ -1,30 +1,42 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
 // Create Schema
 const UserSchema = new Schema({
-    name :{
+    name: {
         type: String,
+        defaultValue: null,
     },
-    avatar:{
+    avatar: {
         type: String,
+        defaultValue: null,
     },
-    publicKey:{
-       type: String,
-       
+    publicKey: {
+        type: String,
+        primaryKey: true,
     },
-    sequence:{
-        type:Number,
-    },
-    balance:{
+    balance: {
         type: Number,
+        allowNull: false,
+        defaultValue: 0,
     },
-    energy:{
+    sequence: {
         type: Number,
+        allowNull: false,
+        defaultValue: 0,
     },
-    transactions:{
-        type:Number,
+    bandwidth: {
+        type: Number,
+        allowNull: false,
+        defaultValue: 0,
+    },
+    // Last transaction date for bandwidth calculate
+    bandwidthTime: {
+        type: Date,
+    },
+    transactions: {
+        type: Number,
+        defaultValue: null,
     }
 })
 
-module.exports =  User = mongoose.model('users',UserSchema);
+module.exports = User = mongoose.model('users', UserSchema);
