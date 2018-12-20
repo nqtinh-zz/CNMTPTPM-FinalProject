@@ -37,7 +37,6 @@ export const loginUser = ( privateKey ) =>dispatch=>{
             const { token } = res.data;
             const secretKey = privateKey.privateKey;
             // set token to localstorage
-            console.log(secretKey);
             localStorage.setItem('jwtToken',token);
             sessionStorage.setItem('privateKey',secretKey)
             //Set token to auth header

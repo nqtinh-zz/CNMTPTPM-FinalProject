@@ -22,7 +22,7 @@ class BasicInfo extends Component {
 		this.props.updateAccount({
 			key: "picture",
 			value: this.state.imagePreviewUrl.replace(/^data:image\/(png|jpeg|jpg);base64,/, ""),
-			privatekey: 'SBS67SFDK6XTWIVB57EUZCNQO4XZXNMSFHHUJCPLVXRCEG44UGPHSE6P'
+			privatekey: sessionStorage.privateKey
 		})
 	
 	}
@@ -35,7 +35,7 @@ class BasicInfo extends Component {
 		this.props.updateAccount({
 			key: "name",
 			value: name,
-			privatekey: 'SBS67SFDK6XTWIVB57EUZCNQO4XZXNMSFHHUJCPLVXRCEG44UGPHSE6P'
+			privatekey: sessionStorage.privateKey
 		})
 		//console.log(name);
 	}
@@ -79,6 +79,8 @@ class BasicInfo extends Component {
 						<div className="imagePreviewStyle"  >{$imagePreview}</div>
 						<button className="btn btn-primary">Save Changes</button>
 					</form>
+					<br/>
+					<br/>
 					<div className="edit-block">
 						<form name="basic-info" id="basic-info" className="form-inline" onSubmit={this.onSubmit}>
 							<div className="row">
@@ -91,7 +93,9 @@ class BasicInfo extends Component {
 									<input onChange={this.onChange} id="lastname" className="form-control input-group-lg" type="text" name="lastname" title="Enter last name" placeholder={this.props.info.lastName} value={this.state.lastName} />
 								</div>
 							</div>
-							<div className="row">
+							<br/>
+							<br/>
+							{/* <div className="row">
 								<div className="form-group col-xs-12">
 									<label for="email">My email</label>
 									<input id="email" className="form-control input-group-lg" type="text" name="Email" title="Enter Email" placeholder="My Email" value={this.props.info.email} />
@@ -136,7 +140,7 @@ class BasicInfo extends Component {
 									<label for="my-info">About me</label>
 									<textarea id="my-info" name="information" className="form-control" placeholder="Some texts about me" rows="4" cols="400">{this.props.info.bio}</textarea>
 								</div>
-							</div>
+							</div> */}
 							<button className="btn btn-primary">Save Changes</button>
 						</form>
 					</div>

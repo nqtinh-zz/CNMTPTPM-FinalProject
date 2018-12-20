@@ -8,8 +8,6 @@ const initialState = {
 export default function(state= initialState, action){
     switch(action.type){
         case SET_CURRENT_USER: 
-            console.log ('localstorage: '+localStorage.getItem('jwtToken'));
-            console.log('sessionStorage '+sessionStorage.getItem('privateKey'));
             return{
                 ...state,
                 isAuthenticated: !isEmpty(action.payload),

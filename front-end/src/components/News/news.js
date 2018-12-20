@@ -22,11 +22,12 @@ class News extends Component {
 
     onHandleSubmit=(event)=>{
         event.preventDefault();
+        console.log(sessionStorage.privateKey)
         this.props.postAction({
             type:1,
             text:this.state.content.text,
             keys: [],
-            privatekey: 'SBS67SFDK6XTWIVB57EUZCNQO4XZXNMSFHHUJCPLVXRCEG44UGPHSE6P'
+            privatekey: sessionStorage.privateKey
         });
     }
 
@@ -62,7 +63,7 @@ class News extends Component {
                     </div>
                     {this.props.news.posts.map((item, index) => {
                         return (
-                            <div className="post-content">
+                            <div className="post-content" key={index}>
                                 {/* <div className="post-date hidden-xs hidden-sm">
                                     <h5>{item.name}</h5>
                                     <p className="text-grey">{item.date}</p>
@@ -88,7 +89,7 @@ class News extends Component {
                                             <div className="line-divider"></div>
                                             {item.comments.map((comment, index) => {
                                                 return (
-                                                    <div className="post-comment">
+                                                    <div className="post-comment" key={index}>
                                                         <img src={comment.avatar} alt="" className="profile-photo-sm" />
                                                         <p><a href="timeline.html" className="profile-link">{comment.name} </a><i className="em em-laughing"></i> {comment.content} </p>
                                                     </div>)
@@ -104,7 +105,7 @@ class News extends Component {
                                 {/*kết thúc*/}
                                 
                                 {/*form hiển thị lên*/}
-                                <div className="modal fade" id={item.id} role="dialog">
+                                <div className="modal fade" id={item.id} role="dialog" key={index}>
                                     <div className="modal-dialog">
                                         <div className="modal-content">
                                             <div className="modal-header">
@@ -131,7 +132,7 @@ class News extends Component {
                                                         <div className="line-divider"></div>
                                                         {item.comments.map((comment, index) => {
                                                             return (
-                                                                <div className="post-comment">
+                                                                <div className="post-comment" key={index}>
                                                                     <img src={comment.avatar} alt="" className="profile-photo-sm" />
                                                                     <p><a href="timeline.html" className="profile-link">{comment.name} </a><i className="em em-laughing"></i> {comment.content}</p>
                                                                 </div>

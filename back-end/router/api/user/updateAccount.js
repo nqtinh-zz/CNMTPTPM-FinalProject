@@ -8,9 +8,10 @@ router.post('/', passport.authenticate('jwt',{session:false}),(req,res)=>{
     const {key, value, privatekey} = req.body;
     getSequence(privatekey)
     .then(sequence=>{
+      let tx={};
       if(key === 'name')
       {
-        const tx= {
+        tx= {
           version: 1,
           sequence :sequence+1,
           memo: Buffer.alloc(0),
@@ -23,7 +24,7 @@ router.post('/', passport.authenticate('jwt',{session:false}),(req,res)=>{
       }
       if(key === 'picture')
       {
-        const tx= {
+        tx= {
           version: 1,
           sequence :sequence+1,
           memo: Buffer.alloc(0),

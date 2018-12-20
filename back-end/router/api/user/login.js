@@ -25,7 +25,6 @@ router.post('/', (req,res)=>{
                 transactions: user.transactions,
             }
             jwt.sign(payload, keys.secretOrkeys,{expiresIn:3600},(err,token)=>{
-                console.log(token);
                 res.json({
                     success: true,
                     token: 'Bearer '+token,

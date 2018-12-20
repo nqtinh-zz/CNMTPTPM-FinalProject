@@ -1,8 +1,10 @@
 import React, { Component} from 'react';
 import { Link } from 'react-router-dom';
 import {connect} from 'react-redux'
+import ProfileMenu from '../Profile/profile_menu';
 
 class MenuTimeline extends Component {
+    
     render() {
         return (
             <div>
@@ -12,28 +14,27 @@ class MenuTimeline extends Component {
                             <div className="col-md-3">
                                 <div className="profile-info">
                                     <img src={"data:image/jpeg;base64,"+this.props.auth.user.avatar} alt="" className="img-responsive profile-photo" />
-                                    <h3>{this.props.auth.user.name}</h3>
-                                    <Link to="/payment"><h4>Send payment</h4></Link>
-                                    <Link to="/account"><h4>Account Information</h4></Link>
+                                    <h3>{this.props.auth.user.name+""}</h3>
+                                    <ProfileMenu ></ProfileMenu>
                                     {/* <p className="text-muted">{this.props.carrer}</p> */}
                                 </div>
                             </div>
                             <div className="col-md-9">
                                 <ul className="list-inline profile-menu">
-                                    <li class="ProfileNav-li">
-                                        <div class="ProfileNav">
+                                    <li className="ProfileNav-li">
+                                        <div className="ProfileNav">
                                             <Link to="/tweets">Tweets</Link><br />
                                             {this.props.tweetsNum}
                                             </div>
                                     </li>
-                                    <li class="ProfileNav-li">
-                                        <div class="ProfileNav">
+                                    <li className="ProfileNav-li">
+                                        <div className="ProfileNav">
                                             <Link to="/following">Following</Link><br />
                                             {this.props.followingNum}
                                             </div>
                                     </li>
-                                    <li class="ProfileNav-li">
-                                        <div class="ProfileNav">
+                                    <li className="ProfileNav-li">
+                                        <div className="ProfileNav">
                                             <Link to="/followers">Followers</Link><br />
                                             {this.props.followersNum}
                                             </div>
@@ -83,6 +84,5 @@ function mapStateToProps(state) {
         auth: state.authReducer,
     }
 }
-
 export default connect(mapStateToProps)(MenuTimeline);
 

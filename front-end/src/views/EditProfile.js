@@ -11,7 +11,8 @@ class EditProfile extends Component {
                     <title>Edit Profile</title>
                 </Helmet>
                 <div className="row">
-                    <ProfileMenu />
+                <div className="col-md-3">
+                     </div>
                     <BasicInfo />
                 </div>
             </div>

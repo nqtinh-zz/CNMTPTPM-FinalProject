@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { loginUser } from '../../actions/User/authAction';
+import {getPost} from '../../actions/User/getPost';
 class Login extends Component {
     constructor() {
         super();
@@ -21,11 +22,12 @@ class Login extends Component {
     handleSubmit(event) {
         event.preventDefault();
         this.props.loginUser({privateKey: this.state.priKey});
-
+        
     }
     componentDidMount(){
         if(this.props.auth.isAuthenticated){
           this.props.history.push('/tweets');
+          this.props.getPost({publicKey: this.props.auth.publicKey});
         }
       }
       componentWillReceiveProps(nextProps){
@@ -77,4 +79,4 @@ const mapStateToProps= (state)=>({
 
 
 
-export default connect(mapStateToProps, { loginUser })(Login);
+export default connect(mapStateToProps, { loginUser, getPost })(Login);
