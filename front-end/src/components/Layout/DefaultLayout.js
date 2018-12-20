@@ -2,7 +2,7 @@ import React, { Component, Suspense } from 'react';
 import Header from './Header.js';
 import Footer from './Footer.js';
 
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router,Redirect, Route, Switch } from 'react-router-dom';
 import routes from '../../routes';
 import MenuTimeline from '../Menu/menuTimeline'
 class DefaultLayout extends Component {
@@ -15,7 +15,6 @@ class DefaultLayout extends Component {
                     <div className="timeline">
                         <MenuTimeline />
                         <Suspense fallback={this.loading()}>
-                            <Switch>
                                 {routes.map((route, idx) => {
                                     return route.component ? (
                                         <Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
@@ -24,7 +23,6 @@ class DefaultLayout extends Component {
                                     ) : (null);
                                 })}
                                 <Redirect from="/" to="/tweets" />
-                            </Switch>
                         </Suspense>
                     </div>
                 </div>

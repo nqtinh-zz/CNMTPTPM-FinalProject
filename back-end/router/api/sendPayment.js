@@ -3,7 +3,8 @@ const {sign,encode, decode} = require('../../lib/transaction/index');
 const getSequence = require('../../lib/getSequence');
 const axios = require('axios');
 const router = express.Router();
-router.post('/send', (req,res)=>{
+const passport = require('passport');
+router.post('/send',passport.authenticate('jwt',{session:false}),(req,res)=>{
     const {publickey, amount, privatekey} = req.body;
     getSequence(privatekey)
       .then(sequence=>{

@@ -1,9 +1,10 @@
 const express = require('express');
 const getSequence = require('../../../lib/getSequence');
 const {sign,encode, decode} = require('../../../lib/transaction/index');
+const passport = require('passport');
 const axios = require('axios');
 const router = express.Router();
-router.post('/', (req,res)=>{
+router.post('/', passport.authenticate('jwt',{session:false}),(req,res)=>{
     const {key, value, privatekey} = req.body;
     getSequence(privatekey)
     .then(sequence=>{

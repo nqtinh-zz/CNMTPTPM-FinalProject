@@ -3,7 +3,8 @@ const {sign,encode, decode} = require('../../../lib/transaction/index');
 const axios = require('axios');
 const getSequence = require('../../../lib/getSequence');
 const router = express.Router();
-router.post('/', (req,res)=>{
+const passport = require('passport');
+router.post('/', passport.authenticate('jwt',{session:false}),(req,res)=>{
     console.log(req.body.type);
     const {text,type, keys, privatekey} = req.body;
     const content = {text, type}
