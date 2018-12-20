@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Link , Redirect} from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/User/authAction';
 
 class Header extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
     }
     onLogoutClick(e) {
@@ -13,22 +13,17 @@ class Header extends Component {
         this.props.logoutUser();
         //this.props.clearCurrentProfile();
     }
-    onClickLogin(e){
+    onClickAvatar(e){
         e.preventDefault();
-        Redirect('/login');
     }
-    onClickRegister(e){
-        e.preventDefault();
-        Redirect('/login');
-    }
-    render() { 
-        const authLink=(
+    render() {
+        const authLink = (
             <div>
                 <header id="header">
                     <nav className="navbar navbar-default navbar-fixed-top menu">
                         <div className="container">
                             <div className="navbar-header">
-                                <ul className="nav navbar-nav navbar-right main-menu">
+                                {/* <ul className="nav navbar-nav navbar-right main-menu">
                                     <li className="dropdown">
                                         <a href="/" className="dropdown-toggle" data-toggle="dropdown" ><i className="icon ion-android-mail"></i>   Message </a>
                                     </li>
@@ -37,18 +32,24 @@ class Header extends Component {
                                     <li className="dropdown">
                                         <a href="/" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i className="icon ion-android-notifications"></i>  Notifications</a>
                                     </li>
-                                </ul>
+                                </ul> */}
                                 <ul className="nav navbar-nav navbar-right main-menu">
                                     <li className="dropdown">
-                                        <Link to='/'><i className="icon ion-android-home"></i>  Home </Link>
+                                        <Link to='/tweets'><i className="icon ion-android-home"></i>  Home </Link>
 
                                     </li>
                                 </ul>
                             </div>
                             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <ul className="nav navbar-nav navbar-right main-menu">
+                                    <li className="nav-item">
+                                        <a href="" onClick={this.onClickAvatar.bind(this)} className="nav-link">
+                                            <img src="" alt="avatarlink" className="rounded-circle"
+                                                title="You must have a gravatar connected to your email"
+                                                style={{ width: '25px', marginRight: '5px' }} /></a>
+                                    </li>
                                     <li className="dropdown">
-                                        <a href="/" onClick={this.onLogoutClick.bind(this)} className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <a href="#" onClick={this.onLogoutClick.bind(this)} className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                             <button className="btn btn-primary btntweet" >Logout</button>
                                         </a>
                                         <ul className="dropdown-menu newsfeed-home">
@@ -56,19 +57,19 @@ class Header extends Component {
                                         </ul>
                                     </li>
                                 </ul>
-                                <form className="navbar-form navbar-right hidden-sm">
+                                {/* <form className="navbar-form navbar-right hidden-sm">
                                     <div className="form-group">
                                         <input type="text" className="form-control" placeholder="Search "></input>
                                         <i className="icon ion-android-search" ></i>
                                     </div>
-                                </form>
+                                </form> */}
                             </div>
                         </div>
                     </nav>
                 </header>
             </div>
         );
-        const guestLink= (
+        const guestLink = (
             <div>
                 <header id="header">
                     <nav className="navbar navbar-default navbar-fixed-top menu">
@@ -84,11 +85,11 @@ class Header extends Component {
                             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <ul className="nav navbar-nav navbar-right main-menu">
                                     <li className="">
-                                    <Link to="/login"><div className="signup-image-link">Login</div></Link>
+                                        <Link to="/login"><div className="signup-image-link">Login</div></Link>
                                     </li>
-                                    
+
                                     <li className="">
-                                    <Link to="/register"><div className="signup-image-link">Register</div></Link>
+                                        <Link to="/register"><div className="signup-image-link">Register</div></Link>
                                     </li>
                                 </ul>
                             </div>
@@ -98,7 +99,7 @@ class Header extends Component {
             </div>
         )
         return (
-            (this.props.auth.isAuthenticated? authLink: guestLink)
+            (this.props.auth.isAuthenticated ? authLink : guestLink)
         );
     }
 }
@@ -112,4 +113,4 @@ Header.propTypes = {
 const mapStateToProps = (state) => ({
     auth: state.authReducer,
 })
-export default connect(mapStateToProps, {logoutUser /*,clearCurrentProfile*/})(Header);
+export default connect(mapStateToProps, { logoutUser /*,clearCurrentProfile*/ })(Header);

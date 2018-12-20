@@ -33,9 +33,10 @@ class News extends Component {
     render() {
         return (
             <div>
-                <div className="col-md-3"></div>
-                <div className="col-md-7 news" >
-
+                {/* <div className="col-md-3"></div> */}
+                <div className="col-md-3">
+                </div>
+                <div className="col-md-8 news" >
                     <div className="create-post">
                         <div className="row">
                             <form onSubmit={this.onHandleSubmit}>
@@ -62,10 +63,10 @@ class News extends Component {
                     {this.props.news.posts.map((item, index) => {
                         return (
                             <div className="post-content">
-                                <div className="post-date hidden-xs hidden-sm">
+                                {/* <div className="post-date hidden-xs hidden-sm">
                                     <h5>{item.name}</h5>
                                     <p className="text-grey">{item.date}</p>
-                                </div>
+                                </div> */}
                                 {/*bấm vào để hiển thị*/}
                                 <div data-toggle="modal" data-target={"#"+item.id}>
                                     <img src={item.cover} alt="post-image" className="img-responsive post-image" />

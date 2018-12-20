@@ -1060,9 +1060,9 @@ ul.nav-news-feed li i {
     float: left;
 }
 
-ul.nav-news-feed i.ion-ios-paper {
+/* ul.nav-news-feed i.ion-ios-paper {
     color: #8dc63f;
-}
+} */
 
 ul.nav-news-feed i.ion-ios-people {
     color: #662d91;
@@ -1702,7 +1702,7 @@ video {
     width: 1px;
     height: 98%;
     left: -145px;
-    border-left: 2px solid #8dc63f;
+    border-left: 0px solid #8dc63f;
     top: 15px;
 }
 
