@@ -78,8 +78,8 @@ class News extends Component {
                                                 <p className="text-muted">{item.date}</p>
                                             </div>
                                             <div className="reaction">
-                                                <a className="btn text-green"><i className="icon ion-thumbsup"></i> {item.like}</a>
-                                                <a className="btn text-red"><i className="fa fa-thumbs-down"></i>{item.dislike}</a>
+                                                <p className="btn text-green"><i className="icon ion-thumbsup"></i> {item.like}</p>
+                                                <p className="btn text-red"><i className="fa fa-thumbs-down"></i>{item.dislike}</p>
                                             </div>
                                             <div className="line-divider"></div>
                                             <div className="post-text">

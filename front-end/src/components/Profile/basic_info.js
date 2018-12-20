@@ -59,7 +59,7 @@ class BasicInfo extends Component {
 		let { imagePreviewUrl } = this.state;
 		let $imagePreview = null;
 		if (imagePreviewUrl) {
-			$imagePreview = (<img src={imagePreviewUrl} />);
+			$imagePreview = (<img src={imagePreviewUrl} alt="alt"/>);
 		} else {
 			$imagePreview = (<div>Please select an Image for Preview</div>);
 		}

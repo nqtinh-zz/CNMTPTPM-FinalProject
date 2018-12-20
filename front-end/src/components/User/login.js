@@ -41,7 +41,7 @@ class Login extends Component {
                 <div className="container-log">
                     <div className="signin-content">
                         <div className="signin-image">
-                            <figure><img src="images/signin-image.jpg" alt="sing up image" /></figure>
+                            // <figure><img src="images/signin-image.jpg" alt="sing up image" /></figure>
                             <Link to="/register"><div className="signup-image-link">Create an account</div></Link>
                         </div>
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Account from '../components/Account/account';
 import { Helmet } from 'react-helmet';
-import InfoAccount from '../components/Profile/info_account';
 class PayMent extends Component {
 
     render() {

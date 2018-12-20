@@ -7,8 +7,6 @@ const Tweets = React.lazy(() => import('./views/Tweets'));
 const Payment = React.lazy(() => import('./views/Payment'));
 const EditProfile = React.lazy(() => import('./views/EditProfile'));
 const Account = React.lazy(()=>import('./views/Account'));
-const Register = React.lazy(()=>import('./components/User/register'))
-const Login = React.lazy(()=>import('./components/User/login'))
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [

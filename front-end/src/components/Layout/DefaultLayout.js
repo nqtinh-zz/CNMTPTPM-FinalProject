@@ -2,7 +2,7 @@ import React, { Component, Suspense } from 'react';
 import Header from './Header.js';
 import Footer from './Footer.js';
 
-import { BrowserRouter as Router,Redirect, Route, Switch } from 'react-router-dom';
+import { Route,Redirect } from 'react-router-dom';
 import routes from '../../routes';
 import MenuTimeline from '../Menu/menuTimeline'
 class DefaultLayout extends Component {

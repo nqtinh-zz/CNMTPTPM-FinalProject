@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Payment from '../components/Payment/payment';
 import { Helmet } from 'react-helmet';
-{/*import InfoAccount from '../components/Profile/info_account';*/}
 class PayMent extends Component {
 
     render() {

@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/User/authAction';
 class Header extends Component {
-    constructor(props) {
-        super(props);
-    }
     onLogoutClick(e) {
         e.preventDefault();
         this.props.logoutUser();
@@ -42,7 +39,7 @@ class Header extends Component {
                             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <ul className="nav navbar-nav navbar-right main-menu">
                                     <li className="nav-item">
-                                        <Link to='/account'>
+                                        <Link to="/account">
                                             <img src= {"data:image/jpeg;base64,"+this.props.auth.user.avatar} alt="avatarlink" className="img-circle"
                                                 title="You must have a gravatar connected to your email"
                                                 style={{ width: '30px', marginRight: '0px' }} /></Link>
@@ -51,9 +48,6 @@ class Header extends Component {
                                         <a href="#" onClick={this.onLogoutClick.bind(this)} className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                             <button className="btn btn-primary btntweet" >Logout</button>
                                         </a>
-                                        <ul className="dropdown-menu newsfeed-home">
-                                            <li><a href="index.html">Profile</a></li>
-                                        </ul>
                                     </li>
                                 </ul>
                                 {/* <form className="navbar-form navbar-right hidden-sm">
