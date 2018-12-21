@@ -44,7 +44,15 @@ const AllTxSchema = new Schema({
         type: String,
         allowNull: false,
     },
-    value: {
+    picture: {
+        type: String,
+        allowNull: false,
+    },
+    name: {
+        type: String,
+        allowNull: false,
+    },
+    post: {
         type: String,
         allowNull: false,
     },

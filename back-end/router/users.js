@@ -3,8 +3,7 @@ var router = express.Router();
 var blocks = require('../models/blocks');
 var { decode } = require('../lib/transaction/index');
 router.get("/users", function (req, res) {
-  var tmp = [];
-
+  //Sửa lại chạy sau khi  for (i; i <= curheight; i++) của bên server kết thúc
   console.log("data");
   blocks.find({}).then((block) => {
     for (let i = 0; i < block.length; i++) {

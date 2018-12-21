@@ -1,5 +1,5 @@
 const express = require('express');
-const Block = require('./models/blocks');
+const block = require('./models/blocks');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express();
@@ -7,7 +7,7 @@ const axios = require('axios');
 var users = require('./router/users');
 var account = require('./router/account');
 //DB config
-
+// đang test chưa xài đc
 const getData1 = async (i) => {
   try {
     return await axios.get('https://komodo.forest.network/block?height=' + i)
@@ -15,42 +15,57 @@ const getData1 = async (i) => {
     console.log("loi roi")
   }
 }
-
-
-// getSequence = async (secret) => {
-//   const keyPublic = Keypair.fromSecret(secret).publicKey();
-//   const blocks = await getData(keyPublic);
-//   let sequeLast = 0;
-
-//   if (blocks.data) {
-//     blocks.data.result.txs.map(tx => {
-//       const seque = decode(Buffer.from(tx.tx, 'base64'));
-//       // console.log(seque);
-//       sequeLast = seque.sequence;
-
-//     })
-//   }
-//   return sequeLast;
-// }
 const saveBlock = async () => {
-  for (i = 1; i < 14330; i++) {
-    const blocks = await getData1(i);
-    const blockData = blocks.data.result;   
-    const block = new Block({
-      height: blockData.block.header.height,
-      time: blockData.block.header.time,
-      txs: blockData.block.data.txs,
-      hash: blockData.block_meta.block_id.hash,
-      appHash: blockData.block.header.app_hash,
-    })
-    if (blockData.block.data.txs != null) {
-      block.save()
-        .then(block => console.log(block.height))
-        .catch(err => console.log(err));
-    }
+  await axios.get('https://fox.forest.network/abci_info')
+    .then(function (response) {
+      let curheight = response.data.result.response.last_block_height;
+      console.log(curheight);
+      block.find({}).sort({ height: -1 }).then((data) => {
+        //console.log(data[0].height);
+        let i = data[0].height;
+        for (i; i <= curheight; i++) {
+          const save = async () => {
+            const blocks = await getData1(i);
+            const blockData = blocks.data.result;
+            let time=blockData.block.header.time.setHours( blockData.block.header.time.getHours() + 7 );
+            const block = new Block({
+              height: blockData.block.header.height,
+              //đổi h +7 lên nữa nha
+              time: time,
+              txs: blockData.block.data.txs,
+              hash: blockData.block_meta.block_id.hash,
+              appHash: blockData.block.header.app_hash,
+            })
+            if (blockData.block.data.txs != null) {
+              block.save()
+                .then(block => console.log(block.height))
+                .catch(err => console.log(err));
+            }
+          }
+          save().then(() => console.log("Lấy full block"));
+        }
+      });
 
-  }
-  // Block.find({}).sort([['height', -1]]).exec(function (err, docs) { console.log(err) });
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+  // for (i = 1; i < 14330; i++) {
+  //   const blocks = await getData1(i);
+  //   const blockData = blocks.data.result;   
+  //   const block = new Block({
+  //     height: blockData.block.header.height,
+  //     time: blockData.block.header.time,
+  //     txs: blockData.block.data.txs,
+  //     hash: blockData.block_meta.block_id.hash,
+  //     appHash: blockData.block.header.app_hash,
+  //   })
+  //   if (blockData.block.data.txs != null) {
+  //     block.save()
+  //       .then(block => console.log(block.height))
+  //       .catch(err => console.log(err));
+  //   }
+  // }
 }
 
 

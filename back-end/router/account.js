@@ -24,7 +24,7 @@ const getAccount = async (keyy, page) => {
     }
 }
 
-
+//chạy lấy totalcount sau đó chia trang get dữ liệu đúng theo txsearch
 router.get("/gettransactions", function (req, res) {
     var key = [];
     console.log("data");
@@ -68,9 +68,10 @@ router.get("/alluser", function (req, res) {
                     let txs = blocks.data.result.txs;
                     for (let j = 0; j < txs.length; j++) {
                         var byte = Buffer.from(txs[j].tx, 'base64').length;
-
-                        if (tmp == "GBYL3XK3TE3BP57FA7X7BJJT2ORI2VI7RDJUEJW65TZ5NR5RO3H5IXAW")
-                            console.log(j);
+                        if(txs[j].height==100)
+                        {
+                            console.log(j+'-'+txs[j].height);
+                        }
                         const alltx = new AllTx(
                             {
                                 height: txs[j].height,
@@ -83,7 +84,9 @@ router.get("/alluser", function (req, res) {
                                 operation: null,
                                 address: null,
                                 key: null,
-                                value: null,
+                                name: null,
+                                post: null,
+                                picture: null,
                                 amount: 0,
                             })
                         alltx.save()
@@ -104,20 +107,20 @@ router.get("/allinfo", function (req, res) {
             let txs = decode(Buffer.from(data[i].tx, 'base64'));
             // console.log(data[i].height);
             // console.log(txs);
-            let tmp, value, amount;
+            let tmp, name,post,picture, amount;
             if (txs.operation == 'post' || txs.operation == 'update_account') {
                 if (txs.params.key == 'picture') {
                     tmp = txs.params.value;
-                    value = tmp.toString('base64')
+                    picture = tmp.toString('base64')
                 }
                 if (txs.params.key == 'name') {
                     tmp = txs.params.value;
-                    value = tmp.toString()
+                    name = tmp.toString()
                 }
 
                 if (txs.params.value == null) {
                     tmp = txs.params.content;
-                    value = tmp.toString();
+                    post = tmp.toString();
                 }
             }
 
@@ -136,7 +139,9 @@ router.get("/allinfo", function (req, res) {
                         operation: txs.operation,
                         address: txs.params.address,
                         key: txs.params.key,
-                        value: value,
+                        name:name,
+                        picture:picture,
+                        post:post,
                         amount: amount,
                     }
                 })
@@ -260,21 +265,23 @@ router.get("/copytime", function (req, res) {
 router.get("/test2", function (req, res) {
     users.find({ publicKey: "GDBKL674OZL6KRC7G5L6BOGAPQDKXLOMOF7RUAJM344WQ3AX6S2WSFP7" }).then((user) => {
         let balances = user[0].balance;
-        console.log(balances);
+        //console.log(balances);
         alltx.find({ publicKey: "GDBKL674OZL6KRC7G5L6BOGAPQDKXLOMOF7RUAJM344WQ3AX6S2WSFP7" }).sort({ height: 1 }).then((alltxx) => {
             let energy;
             let B = 0;
             let currentdate = new Date();
-            let day = currentdate.getDate();
+            currentdate.setHours( currentdate.getHours() + 7 );
+            console.log(currentdate);
             alltxx.forEach(element => {
                 //console.log(element.publicKey+' '+element.bytetx + " " + +element.time);
                 //console.log(element.height+'-'+element.time.getDate());
-                let times;
-                if (element.time != null) {
+                let tmptime;
+                let time=element.time.setHours( element.time.getHours() + 7 );
+                if (time != null) {
 
-                    times = (element.time.getHours() * 3600 + element.time.getMinutes() * 60 + element.time.getSeconds());
-                    if (day == element.time.getDate()) {
-                        B = Math.ceil(Math.max(0, (86400 - parseFloat(times)) / 86400) * B + parseFloat(element.bytetx));
+                    tmptime = (time.getHours() * 3600 + time.getMinutes() * 60 + time.getSeconds());
+                    if (day == time.getDate()) {
+                        B = Math.ceil(Math.max(0, (86400 - parseFloat(tmptime)) / 86400) * B + parseFloat(element.bytetx));
                     }
                 }
                 else { B = 0; }
@@ -291,7 +298,7 @@ router.get("/test2", function (req, res) {
 router.get("/test3", function (req, res) {
     users.find({}).then((user) => {
         for (let i = 0; i < user.length; i++) {
-            let balances = user[0].balance;
+            let balances = user[i].balance;
             let energy;
             let B = 0;
             let currentdate = new Date();
@@ -312,8 +319,14 @@ router.get("/test3", function (req, res) {
                 }
             });
             energy = parseInt(balances * BLOCK - B);
-            console.log(energy);
+            console.log(user[i].publicKey+'--'+energy);
         }
     })
+});
+
+router.get("/test4", function (req, res) {
+    block.find({}).sort({ height: -1 }).then((data) => {
+       console.log(data[0].height); 
+    });
 });
 module.exports = router;
