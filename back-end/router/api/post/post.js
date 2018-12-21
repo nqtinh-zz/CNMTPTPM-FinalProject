@@ -35,8 +35,9 @@ router.post('/getUserPost', passport.authenticate('jwt', { session: false }), (r
   AllTxSchema.find({ operation: 'post', publicKey: req.body.publicKey })
     .then(data => {
       const postValid = [];
+      console.log(data[0].value)
       for (i = 0; i < data.length; i++) {
-        const subString1 = '';
+        const subString1 = '{';
         const subString2 = '}';
         const subString3 = '\"type\"';
         const subString4 = '\"text\"';
@@ -45,7 +46,6 @@ router.post('/getUserPost', passport.authenticate('jwt', { session: false }), (r
           const convertToJson = JSON.parse(string);
           postValid.push(data[i]);
         }
-
       }
       res.send(postValid);
     })
