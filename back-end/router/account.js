@@ -1,9 +1,12 @@
-var express = require('express');
+const express = require('express');
 var router = express.Router();
-var users = require('../models/users');
+var users = require('../models/User');
 var alltx = require('../models/alltx');
+var block = require('../models/blocks');
 const axios = require('axios');
 var { decode } = require('../lib/transaction/index');
+
+const BLOCK = parseFloat(22020096 * 86400 / 9007199254740991);
 
 const getData = async (keyy) => {
     try {
@@ -65,6 +68,9 @@ router.get("/alluser", function (req, res) {
                     let txs = blocks.data.result.txs;
                     for (let j = 0; j < txs.length; j++) {
                         var byte = Buffer.from(txs[j].tx, 'base64').length;
+
+                        if (tmp == "GBYL3XK3TE3BP57FA7X7BJJT2ORI2VI7RDJUEJW65TZ5NR5RO3H5IXAW")
+                            console.log(j);
                         const alltx = new AllTx(
                             {
                                 height: txs[j].height,
@@ -113,17 +119,17 @@ router.get("/allinfo", function (req, res) {
                     tmp = txs.params.content;
                     value = tmp.toString();
                 }
-
-
             }
+
             if (txs.operation == 'payment') {
                 amount = txs.params.amount;
             }
             if (txs.operation != 'payment') {
                 amount = 0;
             }
-            //console.log(data[i].height + '--' + amount);
-            alltx.findOneAndUpdate({ height: data[i].height },
+            if (data[i].height == 2358)
+                console.log(txs.params);
+            alltx.findOneAndUpdate({ height: data[i].height, publicKey: data[i].publicKey },
                 {
                     $set: {
                         sequence: txs.sequence,
@@ -144,41 +150,39 @@ router.get("/allinfo", function (req, res) {
     users.find({}).then((user) => {
         for (let i = 0; i < user.length; i++) {
             alltx.find({}).then((alltx) => {
-                let lastsequence = 0,tmp=0,tp=0;
+                let lastsequence = 0, tmp = 0, tp = 0;
                 let amount = 0;
-                let name,picture;
+                let name, picture;
                 for (let j = 0; j < alltx.length; j++) {
                     if (user[i].publicKey == alltx[j].publicKey) {
                         if (alltx[j].publicKey != alltx[j].address && alltx[j].sequence > lastsequence) {
                             lastsequence = alltx[j].sequence;
                         }
-                        if (alltx[j].operation == 'payment') {
-                            if (alltx[j].publicKey != alltx[j].address) {
-                                amount = amount - alltx[j].amount;
-                            }
-                            else {
-                                amount = amount + alltx[j].amount;
-                            }
+                        if (alltx[j].publicKey != alltx[j].address) {
+                            amount = amount - alltx[j].amount;
                         }
-                        if (alltx[j].key=='name' && alltx[j].sequence >= tmp) {
+                        if (alltx[j].publicKey == alltx[j].address) {
+                            amount = amount + alltx[j].amount;
+                        }
+                        if (alltx[j].key == 'name' && alltx[j].sequence >= tmp) {
                             tmp = alltx[j].sequence;
-                            name=alltx[j].value;
+                            name = alltx[j].value;
                         }
-                        if (alltx[j].key=='picture' && alltx[j].sequence >= tp) {
+                        if (alltx[j].key == 'picture' && alltx[j].sequence >= tp) {
                             tp = alltx[j].sequence;
-                            picture=alltx[j].value;
+                            picture = alltx[j].value;
                         }
                     }
                 }
-                console.log(i+' - '+user[i].publicKey + '---' + lastsequence);
-                
+                //console.log(i + ' - ' + user[i].publicKey + '---' + lastsequence);
+
                 users.findOneAndUpdate({ publicKey: user[i].publicKey },
                     {
                         $set: {
                             sequence: lastsequence,
                             balance: amount,
-                            name:name,
-                            avatar:picture,
+                            name: name,
+                            avatar: picture,
                         }
                     })
                     .then().catch((error) => {
@@ -191,4 +195,125 @@ router.get("/allinfo", function (req, res) {
 });
 
 
+router.get("/copytime", function (req, res) {
+    block.find({}).then((data) => {
+        for (let i = 0; i < data.length; i++) {
+            //console.log(data[i].time);
+            let tmptime = data[i].time;
+            //let times = (tmptime.getHours() * 3600 + tmptime.getMinutes() * 60 + tmptime.getSeconds()).toString();
+            //bị fail chỗ này sẽ tạo ra height có time mới là null
+            alltx.find({ height: data[i].height })
+                .then((all) => {
+                    for (let j = 0; j < all.length; j++) {
+                        alltx.findOneAndUpdate({ publicKey: all[j].publicKey, height: all[j].height },
+                            {
+                                $set: {
+                                    time: tmptime
+                                }
+                            })
+                            .then().catch((error) => {
+                                console.log(error);
+                            });
+                    }
+                }).catch((error) => {
+
+                    console.log(error);
+                });
+        }
+    })
+    console.log("copytime");
+
+    // users.find({}).then((user) => {
+    //     for (let i = 0; i < user.length; i++) {
+    //         alltx.find({}).then((data) => {
+    //             let arrtxsize = [];
+    //             let arrtime = [];
+    //             for (let j = 0; j < data.length; j++) {
+    //                 if (user[i].publicKey == data[j].publicKey) {
+    //                     let time = (new Date(data[j].time));
+    //                     arrtime.push(time.getHours() * 3600 + time.getMinutes() * 60 + time.getSeconds());
+    //                     arrtxsize.push(data[j].bytetx)
+    //                 }
+    //             }
+    //             for (let t = 0; t < arrtxsize.length; t++) {
+    //                 console.log(user[i].publicKey + '--' + arrtxsize[t] + '--' + arrtime[t]);
+    //             }
+    //         })
+    //     }
+    // })
+
+});
+// router.get("/test1", function (req, res) {
+//     users.find({}).then((user) => {
+//         for (let i = 0; i < user.length; i++) {
+//             alltx.find({ publicKey: user[i].publicKey }).sort({ height: 1 }).then((alltx) => {
+//                 alltx.forEach(element => {
+//                     console.log(element.height + " " + element.publicKey+' '+element.time);
+//                 });
+
+//             });
+//         }
+//     });
+// });
+
+//Test energy của 1 acc bất kì
+router.get("/test2", function (req, res) {
+    users.find({ publicKey: "GDBKL674OZL6KRC7G5L6BOGAPQDKXLOMOF7RUAJM344WQ3AX6S2WSFP7" }).then((user) => {
+        let balances = user[0].balance;
+        console.log(balances);
+        alltx.find({ publicKey: "GDBKL674OZL6KRC7G5L6BOGAPQDKXLOMOF7RUAJM344WQ3AX6S2WSFP7" }).sort({ height: 1 }).then((alltxx) => {
+            let energy;
+            let B = 0;
+            let currentdate = new Date();
+            let day = currentdate.getDate();
+            alltxx.forEach(element => {
+                //console.log(element.publicKey+' '+element.bytetx + " " + +element.time);
+                //console.log(element.height+'-'+element.time.getDate());
+                let times;
+                if (element.time != null) {
+
+                    times = (element.time.getHours() * 3600 + element.time.getMinutes() * 60 + element.time.getSeconds());
+                    if (day == element.time.getDate()) {
+                        B = Math.ceil(Math.max(0, (86400 - parseFloat(times)) / 86400) * B + parseFloat(element.bytetx));
+                    }
+                }
+                else { B = 0; }
+                //console.log(B);
+            });
+            energy = parseInt(balances * BLOCK - B);
+            console.log(energy);
+        });
+    })
+
+});
+
+//Test mọi acc nhưng phải chạy lại server để lấy time các height mới nhất, tránh time=null
+router.get("/test3", function (req, res) {
+    users.find({}).then((user) => {
+        for (let i = 0; i < user.length; i++) {
+            let balances = user[0].balance;
+            let energy;
+            let B = 0;
+            let currentdate = new Date();
+            let day = currentdate.getDate();
+            alltx.find({}).sort({ height: 1 }).then((data) => {
+                for (let j = 0; j < data.length; j++) {
+                    if (user[i].publicKey == data[j].publicKey) {
+                        if (data[j].address == null || data[j].address != data[j].publicKey) {
+                            //console.log(element.publicKey+' '+element.bytetx + " " + +element.time);
+                            //console.log(element.height+'-'+element.time.getDate());
+                            let times = (data[j].time.getHours() * 3600 + data[j].time.getMinutes() * 60 + data[j].time.getSeconds());
+                            if (day == data[j].time.getDate()) {
+                                B = Math.ceil(Math.max(0, (86400 - parseFloat(times)) / 86400) * B + parseFloat(data[j].bytetx));
+                            }
+                            //console.log(B);}
+                        }
+                    }
+                }
+            });
+            energy = parseInt(balances * BLOCK - B);
+            console.log(energy);
+        }
+    })
+});
 module.exports = router;

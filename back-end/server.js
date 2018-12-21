@@ -1,5 +1,4 @@
 const express = require('express');
-const User = require('./models/users');
 const Block = require('./models/blocks');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -9,7 +8,7 @@ var users = require('./router/users');
 var account = require('./router/account');
 //DB config
 
-const getData = async (i) => {
+const getData1 = async (i) => {
   try {
     return await axios.get('https://komodo.forest.network/block?height=' + i)
   } catch (error) {
@@ -18,25 +17,25 @@ const getData = async (i) => {
 }
 
 
-getSequence = async (secret) => {
-  const keyPublic = Keypair.fromSecret(secret).publicKey();
-  const blocks = await getData(keyPublic);
-  let sequeLast = 0;
+// getSequence = async (secret) => {
+//   const keyPublic = Keypair.fromSecret(secret).publicKey();
+//   const blocks = await getData(keyPublic);
+//   let sequeLast = 0;
 
-  if (blocks.data) {
-    blocks.data.result.txs.map(tx => {
-      const seque = decode(Buffer.from(tx.tx, 'base64'));
-      // console.log(seque);
-      sequeLast = seque.sequence;
+//   if (blocks.data) {
+//     blocks.data.result.txs.map(tx => {
+//       const seque = decode(Buffer.from(tx.tx, 'base64'));
+//       // console.log(seque);
+//       sequeLast = seque.sequence;
 
-    })
-  }
-  return sequeLast;
-}
+//     })
+//   }
+//   return sequeLast;
+// }
 const saveBlock = async () => {
-  for (i = 1; i < 12500; i++) {
-    const blocks = await getData(i);
-    const blockData = blocks.data.result;
+  for (i = 1; i < 14330; i++) {
+    const blocks = await getData1(i);
+    const blockData = blocks.data.result;   
     const block = new Block({
       height: blockData.block.header.height,
       time: blockData.block.header.time,
@@ -70,7 +69,7 @@ app.use('/', account);
 
 
 //connect to mongoosedb
-const db = require('./config/keys').mongoURI;
+const db = require('./config/keys').MONGO_OFFLINE;
 mongoose
   .connect(db)
   .then(() => console.log('Mongoosedb connected'))
