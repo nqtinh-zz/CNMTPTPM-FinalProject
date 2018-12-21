@@ -1,7 +1,7 @@
 const express = require('express');
 const { Keypair } = require('stellar-base');
 const router = express.Router();
-const User = require('../../../models/User');
+const User = require('../../../models/users');
 const jwt = require('jsonwebtoken');
 const keys = require('../../../config/keys');
 
