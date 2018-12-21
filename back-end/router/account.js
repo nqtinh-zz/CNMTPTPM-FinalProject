@@ -68,10 +68,6 @@ router.get("/alluser", function (req, res) {
                     let txs = blocks.data.result.txs;
                     for (let j = 0; j < txs.length; j++) {
                         var byte = Buffer.from(txs[j].tx, 'base64').length;
-                        if(txs[j].height==100)
-                        {
-                            console.log(j+'-'+txs[j].height);
-                        }
                         const alltx = new AllTx(
                             {
                                 height: txs[j].height,
@@ -154,34 +150,31 @@ router.get("/allinfo", function (req, res) {
     });
     users.find({}).then((user) => {
         for (let i = 0; i < user.length; i++) {
-            alltx.find({}).then((alltx) => {
+            alltx.find({ publicKey:user[i].publicKey }).sort({sequence:1}).then((alltx) => {
                 let lastsequence = 0, tmp = 0, tp = 0;
                 let amount = 0;
                 let name, picture;
                 for (let j = 0; j < alltx.length; j++) {
-                    if (user[i].publicKey == alltx[j].publicKey) {
-                        if (alltx[j].publicKey != alltx[j].address && alltx[j].sequence > lastsequence) {
-                            lastsequence = alltx[j].sequence;
-                        }
-                        if (alltx[j].publicKey != alltx[j].address) {
-                            amount = amount - alltx[j].amount;
-                        }
-                        if (alltx[j].publicKey == alltx[j].address) {
-                            amount = amount + alltx[j].amount;
-                        }
-                        if (alltx[j].key == 'name' && alltx[j].sequence >= tmp) {
-                            tmp = alltx[j].sequence;
-                            name = alltx[j].value;
-                        }
-                        if (alltx[j].key == 'picture' && alltx[j].sequence >= tp) {
-                            tp = alltx[j].sequence;
-                            picture = alltx[j].value;
-                        }
+                    if (alltx[j].publicKey != alltx[j].address && alltx[j].sequence > lastsequence) {
+                        lastsequence = alltx[j].sequence;
+                    }
+                    console.log(alltx[j].address);
+                    if (alltx[j].address==null || (alltx[j].publicKey != alltx[j].address)) {
+                        amount = amount - alltx[j].amount;
+                    }
+                    if (alltx[j].publicKey == alltx[j].address) {
+                        amount = amount + alltx[j].amount;
+                    }
+                    if (alltx[j].name!=null) {  
+                        name = alltx[j].name;
+                    }
+                    if (alltx[j].picture!=null) {
+                        picture = alltx[j].picture;
                     }
                 }
                 //console.log(i + ' - ' + user[i].publicKey + '---' + lastsequence);
 
-                users.findOneAndUpdate({ publicKey: user[i].publicKey },
+                users.findOneAndUpdate({ publicKey: alltx[0].publicKey },
                     {
                         $set: {
                             sequence: lastsequence,
@@ -298,28 +291,31 @@ router.get("/test2", function (req, res) {
 router.get("/test3", function (req, res) {
     users.find({}).then((user) => {
         for (let i = 0; i < user.length; i++) {
-            let balances = user[i].balance;
-            let energy;
-            let B = 0;
-            let currentdate = new Date();
-            let day = currentdate.getDate();
-            alltx.find({}).sort({ height: 1 }).then((data) => {
+            alltx.find({ publicKey: user[i].publicKey }).sort({ height: 1 }).then((data) => {
+                let balances = user[i].balance;
+                let energy;
+                let B = 0;
+                let currentdate = new Date();
+                let day = currentdate.getDate();
                 for (let j = 0; j < data.length; j++) {
-                    if (user[i].publicKey == data[j].publicKey) {
-                        if (data[j].address == null || data[j].address != data[j].publicKey) {
-                            //console.log(element.publicKey+' '+element.bytetx + " " + +element.time);
-                            //console.log(element.height+'-'+element.time.getDate());
-                            let times = (data[j].time.getHours() * 3600 + data[j].time.getMinutes() * 60 + data[j].time.getSeconds());
-                            if (day == data[j].time.getDate()) {
-                                B = Math.ceil(Math.max(0, (86400 - parseFloat(times)) / 86400) * B + parseFloat(data[j].bytetx));
-                            }
-                            //console.log(B);}
+                    if (data[j].address == null || data[j].address != data[j].publicKey) {
+                        //console.log(element.publicKey+' '+element.bytetx + " " + +element.time);
+                        //console.log(element.height+'-'+element.time.getDate());
+                        let times = (data[j].time.getHours() * 3600 + data[j].time.getMinutes() * 60 + data[j].time.getSeconds());
+                        if (day == data[j].time.getDate()) {
+                            B = Math.ceil(Math.max(0, (86400 - parseFloat(times)) / 86400) * B + parseFloat(data[j].bytetx));
                         }
+                        //console.log(B);}
                     }
                 }
+                energy = parseInt(balances * BLOCK - B);
+                users.findOneAndUpdate({ publicKey: user[i].publicKey }, { $set: { bandwidth: energy } }).then(() => {
+                    // console.log("OK");
+                }).catch((error) => {
+                    console.log(error);
+                });
             });
-            energy = parseInt(balances * BLOCK - B);
-            console.log(user[i].publicKey+'--'+energy);
+
         }
     })
 });

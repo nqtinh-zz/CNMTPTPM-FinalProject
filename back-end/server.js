@@ -27,11 +27,11 @@ const saveBlock = async () => {
           const save = async () => {
             const blocks = await getData1(i);
             const blockData = blocks.data.result;
-            let time=blockData.block.header.time.setHours( blockData.block.header.time.getHours() + 7 );
             const block = new Block({
               height: blockData.block.header.height,
               //đổi h +7 lên nữa nha
-              time: time,
+              //hk cần đổi cũng đc
+              time: blockData.block.header.time,
               txs: blockData.block.data.txs,
               hash: blockData.block_meta.block_id.hash,
               appHash: blockData.block.header.app_hash,

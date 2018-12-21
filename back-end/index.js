@@ -177,3 +177,42 @@ gettxSize();*/
 //   }
 // }
 // sendToken();
+
+// const axios = require('axios');
+// getDataT = (i) => {
+//     return axios.get("https://komodo.forest.network/block", {
+//             params: {
+//                 height: i
+//             }
+//         })
+//         .then(res => {
+//             const data = res.data;
+//             const txs = data["result"]["block"]["data"]["txs"];
+//             const height = data["result"]["block"]["header"]["height"];
+//             const time = data["result"]["block"]["header"]["time"];
+//             console.log(txs);
+//             return txs;
+//         });
+// }
+
+// function processArray(array) {
+//   return array.reduce(function (p,i) {
+//     return p.then(function () {  
+//       return getDataT(i);
+//     });
+//   }, Promise.resolve());
+// }
+
+// const promises = [];
+// const array = [];
+// for (let t = 1; t < 5; t++) {
+//     array.push(t);
+// }
+
+// const demo =() => {
+//     processArray(array).then(function (result) {    
+//     }, function (reason) {
+//       console.log("fail");
+//     });
+// }
+// demo();
