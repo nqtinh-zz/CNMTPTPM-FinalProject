@@ -12,16 +12,17 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 
-//connect database
+
 const db = require('./config/keys').mongoURI;
 mongoose
     .connect(db)
     .then(()=>console.log('Mongoosedb connected'))
     .catch((err)=>console.log(err));
-//passport middleware
+
+
 app.use(passport.initialize());
 
-//passport  config
+
 require('./config/passport')(passport);
 
 app.use('/api/payment', sendPayment);
@@ -30,6 +31,139 @@ app.use('/api/update-account',updateAccount);
 app.use('/api/register',register);
 app.use('/api/user',user);
 const port = process.env.PORT || 5000;
+const axios = require('axios');
+const {decode,encode,sign}=require('./lib/transaction/index');
+const {Followings}=require('./lib/transaction/v1');
+
+const base32 = require('base32.js');
+var users = require('./models/users');
+
+const getData = async (keyy) => {
+    try {
+        return await axios.get('https://komodo.forest.network/tx_search?query=%22account=%27' + keyy + '%27%22')
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+
+const getUser = ()=>{
+    var key = [];
+    console.log("data");
+    users.find({}).then((data) => {
+        for (let i = 0; i < data.length; i++) {
+            let tmp = data[i].publicKey;
+            key.push(tmp);
+        }
+        for (let i = 0; i < 1; i++) {
+            let keyy = 'GDLLXAEH3MYZ3IYEE4JNVYPXXQDA5HY6JMVLU7UFNZJVY7CDVCURFED3';
+            console.log(keyy);     
+            var getData2 = async(keyy)=>{
+                var data= await getData(keyy);
+                data.data.result.txs.map(tx =>{
+                  const txdata = decode(Buffer.from(tx.tx,'base64'));
+                  var operation=txdata.operation;
+                  if(operation==="update_account")
+                  {
+                    if(txdata.params.key ==='followings')
+                    {
+                         var dtvalue=txdata.params.value;
+                        var y=Followings.decode(dtvalue);
+                        const add = y.addresses;
+                        add.map((item,index)=>{
+                            console.log(base32.encode(item))
+                        })
+                        console.log(Followings.decode(dtvalue));
+
+                    }
+                  }
+
+                })
+
+            };
+             getData2(keyy);
+        }
+
+
+        })
+
+}
+
+getUser();
+
+
+{/*var ten="Nguyen Neirt";
+const tx= {
+  version: 1,
+  sequence : 9,
+  memo: Buffer.alloc(0),
+  operation:'update-account',
+  params:{
+    
+    value: Buffer.from(ten,'utf-8'),
+    key: "name"
+   
+    
+  }
+}
+sign(tx, 'SBGQIYPLJGXMDXHG7T5ZQLG6YWZBS4KPPUPNEAWLHLHZB55B4ULS3YUP');
+const etx=encode(tx).toString('hex');
+console.log(etx);
+*/}
+
+
+{/*let data2="ATDWu4CH2zGdowQnEtrh97wGDp8eSyq6foVuU1x8Q6ipEpB7AAAAAAAAAC0ABAB4CmZvbGxvd2luZ3MAawADMB3E9jeB6Vq5oRwzKMwi5omyIV71sg7mRlMKKXqNwzMkDCgwL1XhNMNH6CjHVwpmc5dW6f+pOO8rOiWodHAJOo49ne3D8DDWu4CH2zGdowQnEtrh97wGDp8eSyq6foVuU1x8Q6ipEpB7PTYCbXVd4gjhHTZwJgcf3dfGB7sB+ZZQw8A98V2vlY58BImVaCnVpJhoE5cSjMEk+YwZ0vfzYheytIogh05GAQ==";
+    var xxx=decode(Buffer.from(data2,'base64'));
+    var y=base32.encode(xxx.params.value);
+    console.log("xx: ",xxx.params.valuex);
+    
+    console.log("encode: ",y);*/}
+
+
+{/*
+const getData = async() =>{
+  var i=0;
+  for(i=0;i<1;i++)
+  {
+    var t=15288;
+    var x = await axios.get('https://komodo.forest.network/block?height=%22'+t+'%22');
+    if(x.data)
+    {
+        var vheight=x.data.result.block.header.height;
+        var vtxs=x.data.result.block.data.txs;
+        axios.post(
+            'https://api.mlab.com/api/1/databases/chatfinal01/collections/data_01?apiKey=DhIXZARMoECCJ5edpVHEgsv76dT4xwHq',
+            {
+                height: vheight,
+                txs: vtxs
+            }
+        );
+
+    } 
+  }
+  
+      
+
+}
+
+getData();  */}
+
+{/* 
+    var txs='ATDWu4CH2zGdowQnEtrh97wGDp8eSyq6foVuU1x8Q6ipEpB7AAAAAAAAAC0ABAB4CmZvbGxvd2luZ3MAawADMB3E9jeB6Vq5oRwzKMwi5omyIV71sg7mRlMKKXqNwzMkDCgwL1XhNMNH6CjHVwpmc5dW6f+pOO8rOiWodHAJOo49ne3D8DDWu4CH2zGdowQnEtrh97wGDp8eSyq6foVuU1x8Q6ipEpB7PTYCbXVd4gjhHTZwJgcf3dfGB7sB+ZZQw8A98V2vlY58BImVaCnVpJhoE5cSjMEk+YwZ0vfzYheytIogh05GAQ==';
+
+var xxx=decode(Buffer.from(txs,'base64'));
+console.log(xxx);
+    var y=base32.encode(xxx.params.value);
+    console.log("xx: ",xxx.params.value);
+    
+    console.log("encode: ",y);
+*/}
+
+
+
+
+
+
 
 app.listen(port, ()=>console.log(`Server running on port ${port}`));
 
@@ -83,7 +217,7 @@ const printData = async () => {
   }
 }
 printData()
-*/
+
 
 
 
@@ -177,42 +311,3 @@ gettxSize();*/
 //   }
 // }
 // sendToken();
-
-// const axios = require('axios');
-// getDataT = (i) => {
-//     return axios.get("https://komodo.forest.network/block", {
-//             params: {
-//                 height: i
-//             }
-//         })
-//         .then(res => {
-//             const data = res.data;
-//             const txs = data["result"]["block"]["data"]["txs"];
-//             const height = data["result"]["block"]["header"]["height"];
-//             const time = data["result"]["block"]["header"]["time"];
-//             console.log(txs);
-//             return txs;
-//         });
-// }
-
-// function processArray(array) {
-//   return array.reduce(function (p,i) {
-//     return p.then(function () {  
-//       return getDataT(i);
-//     });
-//   }, Promise.resolve());
-// }
-
-// const promises = [];
-// const array = [];
-// for (let t = 1; t < 5; t++) {
-//     array.push(t);
-// }
-
-// const demo =() => {
-//     processArray(array).then(function (result) {    
-//     }, function (reason) {
-//       console.log("fail");
-//     });
-// }
-// demo();

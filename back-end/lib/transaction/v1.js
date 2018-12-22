@@ -45,9 +45,18 @@ const InteractParams = vstruct([
   { name: 'content', type: vstruct.VarBuffer(vstruct.UInt16BE) },
   // React if '', like, love, haha, anrgy, sad, wow
 ]);
+
 function decodeFollowings(tx){
   return Followings.decode(tx);
 }
+
+
+const Followings = vstruct([
+  { name: 'addresses', type: vstruct.VarArray(vstruct.UInt16BE, vstruct.Buffer(35)) },
+]);
+
+
+
 function encode(tx) {
   let params, operation;
   if (tx.version !== 1) {
@@ -157,5 +166,10 @@ function decode(data) {
 module.exports = {
   encode,
   decode,
-  decodeFollowings
+
+  decodeFollowings,
+
+
+
 };
+
