@@ -56,6 +56,9 @@ const AllTxSchema = new Schema({
         type: String,
         allowNull: false,
     },
+    following: {
+        type: Array,
+    },
 })
 AllTxSchema.index({ publicKey: 1, height: 1 }, { unique: true });
 

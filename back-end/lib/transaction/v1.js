@@ -34,7 +34,9 @@ const UpdateAccountParams = vstruct([
   { name: 'key', type: vstruct.VarString(vstruct.UInt8) },
   { name: 'value', type: vstruct.VarBuffer(vstruct.UInt16BE) },
 ]);
-
+const Followings = vstruct([
+  { name: 'addresses', type: vstruct.VarArray(vstruct.UInt16BE, vstruct.Buffer(35)) },
+]);
 const InteractParams = vstruct([
   // Post or comment (or something else?)
   { name: 'object', type: vstruct.Buffer(32) },
@@ -43,7 +45,9 @@ const InteractParams = vstruct([
   { name: 'content', type: vstruct.VarBuffer(vstruct.UInt16BE) },
   // React if '', like, love, haha, anrgy, sad, wow
 ]);
-
+function decodeFollowings(tx){
+  return Followings.decode(tx);
+}
 function encode(tx) {
   let params, operation;
   if (tx.version !== 1) {
@@ -153,4 +157,5 @@ function decode(data) {
 module.exports = {
   encode,
   decode,
+  decodeFollowings
 };

@@ -20,7 +20,9 @@ router.get("/users", function (req, res) {
             balance:0,
             sequence:0,
             bandwidth:0,
-            bandwidthTime:0,
+            energy:0,
+            post:null,
+            following:null,
             transactions:0,
           })
         users.save();

@@ -29,8 +29,7 @@ const saveBlock = async () => {
             const blockData = blocks.data.result;
             const block = new Block({
               height: blockData.block.header.height,
-              //đổi h +7 lên nữa nha
-              //hk cần đổi cũng đc
+              
               time: blockData.block.header.time,
               txs: blockData.block.data.txs,
               hash: blockData.block_meta.block_id.hash,
@@ -42,7 +41,7 @@ const saveBlock = async () => {
                 .catch(err => console.log(err));
             }
           }
-          save().then(() => console.log("Lấy full block"));
+          save().then(() => console.log("Đang lưu"));
         }
       });
 
@@ -50,9 +49,11 @@ const saveBlock = async () => {
     .catch(function (error) {
       console.log(error);
     })
-  // for (i = 1; i < 14330; i++) {
+
+  //chạy cái này trước để có dữ liệu trong block đã
+  // for (i = 1; i < 18000; i++) {
   //   const blocks = await getData1(i);
-  //   const blockData = blocks.data.result;   
+  //   const blockData = blocks.data.result;
   //   const block = new Block({
   //     height: blockData.block.header.height,
   //     time: blockData.block.header.time,

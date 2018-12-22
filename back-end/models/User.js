@@ -24,14 +24,16 @@ const UserSchema = new Schema({
         allowNull: false,
         defaultValue: 0,
     },
-    bandwidth: {
+    energy: {
         type: Number,
         allowNull: false,
         defaultValue: 0,
     },
-    // Last transaction date for bandwidth calculate
-    bandwidthTime: {
-        type: Date,
+    post: {
+        type: String,
+    },
+    following: {
+        type: Array,
     },
     transactions: {
         type: Number,
