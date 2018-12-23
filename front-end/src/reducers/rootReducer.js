@@ -5,7 +5,7 @@ import followingReducer from './FollowList/followingReducer';
 import {followersReducer} from './FollowList/followersReducer';
 import {personalReducer} from './PersonalPage/personalReducer';
 import {personInfoReducer} from './PersonalPage/personInfoReducer';
-import {postReducer} from './User/postReducer';
+import postReducer from './User/postReducer';
 const rootReducer = combineReducers({
     registerReducer,
     followingReducer,

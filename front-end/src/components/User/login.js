@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import './User/User.css';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { loginUser } from '../../actions/User/authAction';
-import {getPost} from '../../actions/User/getPost';
+
 class Login extends Component {
     constructor() {
         super();
@@ -27,7 +27,6 @@ class Login extends Component {
     componentDidMount(){
         if(this.props.auth.isAuthenticated){
           this.props.history.push('/tweets');
-          this.props.getPost({publicKey: this.props.auth.publicKey});
         }
       }
       componentWillReceiveProps(nextProps){
@@ -43,7 +42,7 @@ class Login extends Component {
                 <div className="container-log">
                     <div className="signin-content">
                         <div className="signin-image">
-                            // <figure><img src="images/signin-image.jpg" alt="sing up image" /></figure>
+                             <figure><img src="images/signin-image.jpg" alt="sing up image" /></figure>
                             <Link to="/register"><div className="signup-image-link">Create an account</div></Link>
                         </div>
 
@@ -79,4 +78,4 @@ const mapStateToProps= (state)=>({
 
 
 
-export default connect(mapStateToProps, { loginUser, getPost })(Login);
+export default connect(mapStateToProps, { loginUser })(withRouter(Login));

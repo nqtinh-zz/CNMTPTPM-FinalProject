@@ -7,12 +7,11 @@ const jwt = require('jsonwebtoken');
 const keys = require('../../../config/keys');
 
 router.post('/login', (req,res)=>{
-    const {privateKey} = req.body;
-    const publicKey = Keypair.fromSecret(privateKey).publicKey();
-    User.findOne({publicKey})
+    const {publicKey} = req.body;
+    User.findOne({publicKey: publicKey})
         .then(user=>{
             if(!user){
-                return res.status(404).json({email: 'User not found'});
+                return res.status(404).json({user: 'User not found'});
             }
             const payload = {
                 id: user.id,

@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 
 
-const db = require('./config/keys').mongoURI;
+const db = require('./config/keys').MONGO_OFFLINE;
 mongoose
     .connect(db)
     .then(()=>console.log('Mongoosedb connected'))
@@ -31,65 +31,65 @@ app.use('/api/update-account',updateAccount);
 app.use('/api/register',register);
 app.use('/api/user',user);
 const port = process.env.PORT || 5000;
-const axios = require('axios');
-const {decode,encode,sign}=require('./lib/transaction/index');
-const {Followings}=require('./lib/transaction/v1');
+// const axios = require('axios');
+// const {decode,encode,sign}=require('./lib/transaction/index');
+// const {Followings}=require('./lib/transaction/v1');
 
-const base32 = require('base32.js');
-var users = require('./models/users');
+// const base32 = require('base32.js');
+// var users = require('./models/users');
 
-const getData = async (keyy) => {
-    try {
-        return await axios.get('https://komodo.forest.network/tx_search?query=%22account=%27' + keyy + '%27%22')
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-
-const getUser = ()=>{
-    var key = [];
-    console.log("data");
-    users.find({}).then((data) => {
-        for (let i = 0; i < data.length; i++) {
-            let tmp = data[i].publicKey;
-            key.push(tmp);
-        }
-        for (let i = 0; i < 1; i++) {
-            let keyy = 'GDLLXAEH3MYZ3IYEE4JNVYPXXQDA5HY6JMVLU7UFNZJVY7CDVCURFED3';
-            console.log(keyy);     
-            var getData2 = async(keyy)=>{
-                var data= await getData(keyy);
-                data.data.result.txs.map(tx =>{
-                  const txdata = decode(Buffer.from(tx.tx,'base64'));
-                  var operation=txdata.operation;
-                  if(operation==="update_account")
-                  {
-                    if(txdata.params.key ==='followings')
-                    {
-                         var dtvalue=txdata.params.value;
-                        var y=Followings.decode(dtvalue);
-                        const add = y.addresses;
-                        add.map((item,index)=>{
-                            console.log(base32.encode(item))
-                        })
-                        console.log(Followings.decode(dtvalue));
-
-                    }
-                  }
-
-                })
-
-            };
-             getData2(keyy);
-        }
+// const getData = async (keyy) => {
+//     try {
+//         return await axios.get('https://komodo.forest.network/tx_search?query=%22account=%27' + keyy + '%27%22')
+//     } catch (error) {
+//         console.error(error)
+//     }
+// }
 
 
-        })
+// const getUser = ()=>{
+//     var key = [];
+//     console.log("data");
+//     users.find({}).then((data) => {
+//         for (let i = 0; i < data.length; i++) {
+//             let tmp = data[i].publicKey;
+//             key.push(tmp);
+//         }
+//         for (let i = 0; i < 1; i++) {
+//             let keyy = 'GDLLXAEH3MYZ3IYEE4JNVYPXXQDA5HY6JMVLU7UFNZJVY7CDVCURFED3';
+//             console.log(keyy);     
+//             var getData2 = async(keyy)=>{
+//                 var data= await getData(keyy);
+//                 data.data.result.txs.map(tx =>{
+//                   const txdata = decode(Buffer.from(tx.tx,'base64'));
+//                   var operation=txdata.operation;
+//                   if(operation==="update_account")
+//                   {
+//                     if(txdata.params.key ==='followings')
+//                     {
+//                          var dtvalue=txdata.params.value;
+//                         var y=Followings.decode(dtvalue);
+//                         const add = y.addresses;
+//                         add.map((item,index)=>{
+//                             console.log(base32.encode(item))
+//                         })
+//                         console.log(Followings.decode(dtvalue));
 
-}
+//                     }
+//                   }
 
-getUser();
+//                 })
+
+//             };
+//              getData2(keyy);
+//         }
+
+
+//         })
+
+// }
+
+// getUser();
 
 
 {/*var ten="Nguyen Neirt";
