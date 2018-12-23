@@ -13,7 +13,7 @@ const UserSchema = new Schema({
     publicKey: {
         type: String,
         primaryKey: true,
-
+        unique: true,
     },
     balance: {
         type: Number,

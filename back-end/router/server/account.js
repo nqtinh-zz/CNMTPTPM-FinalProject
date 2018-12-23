@@ -22,125 +22,126 @@ const getAccount = async (keyy, page) => {
 }
 
 //chạy lấy totalcount sau đó chia trang get dữ liệu đúng theo txsearch
-exports.getTransactions = () => {
+exports.getTransactions = async () => {
     var key = [];
-    console.log("data");
-    users.find({}).then((data) => {
-        for (let i = 0; i < data.length; i++) {
-            let tmp = data[i].publicKey;
-            key.push(tmp);
-        }
-        for (let i = 0; i < key.length; i++) {
-            let keyy = key[i];
-            getTcount = async (keyy) => {
-                const blocks = await getData(keyy);
-                let total_count = blocks.data.result.total_count;
-                users.findOneAndUpdate({ publicKey: keyy }, { $set: { transactions: total_count } }).then(() => {
-                    console.log("OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
-                }).catch((error) => {
-                    console.log(error);
-                });
+    const data = await users.find({});
+    for (let i = 0; i < data.length; i++) {
+        let tmp = data[i].publicKey;
+        key.push(tmp);
+    }
+    let arr = [];
+    for (let i = 0; i < key.length; i++) {
+        let keyy = key[i];
+        arr.push(new Promise(async (resolve, reject) => {
+            const blocks = await getData(keyy);
+            let total_count = blocks.data.result.total_count;
+            try {
+                await users.findOneAndUpdate({ publicKey: keyy }, { $set: { transactions: total_count } });
+            } catch (error) {
 
-                //console.log(keyy+'-'+total_count);
             }
-            getTcount(keyy);
-        }
-
-
-    })
+            resolve("");
+        }));
+    }
+    console.log("Tạo transactions");
+    const result = await Promise.all(arr);
+    console.log(result);
+    return result;
 
 };
-exports.createFullInfo = () => {
-    users.find({}).then((data) => {
-        for (let i = 0; i < data.length; i++) {
-            let tmp = data[i].publicKey;
-            let count = data[i].transactions;
-            let page = parseInt(count / 30) + 1;
-            //console.log(page);
-            getTcount = async (tmp, page) => {
-                for (let i = 1; i <= page; i++) {
-                    let blocks = await getAccount(tmp, i);
-                    let arrtmp = [];
-                    let txs = blocks.data.result.txs;
-                    for (let j = 0; j < txs.length; j++) {
-                        var byte = Buffer.from(txs[j].tx, 'base64').length;
-                        const alltx = new AllTx(
-                            {
-                                height: txs[j].height,
-                                publicKey: tmp,
-                                tx: txs[j].tx,
-                                bytetx: byte,
-                                time: null,
-                                sequence: 0,
-                                bandwidth: null,
-                                operation: null,
-                                address: null,
-                                key: null,
-                                name: null,
-                                post: null,
-                                picture: null,
-                                following: null,
-                                amount: 0,
-                            })
-                        alltx.save()
-                            .then()
-                            .catch(err => console.log(err));
-                    }
-                }
+exports.createFullInfo = async () => {
+    //alltx.dropDatabase();
+    const data = await users.find({});
+    let arr = [];
+    for (let i = 0; i < data.length; i++) {
+        let tmp = data[i].publicKey;
+        let count = data[i].transactions;
+        let page = parseInt(count / 30) + 1;
+
+        for (let j = 1; j <= page; j++) {
+            let blocks = await getAccount(tmp, j);
+            let txs = blocks.data.result.txs;
+            for (let k = 0; k < txs.length; k++) {
+                var byte = Buffer.from(txs[k].tx, 'base64').length;
+                arr.push(new Promise(async (resolve) => {
+                    const alltx = new AllTx(
+                        {
+                            height: txs[k].height,
+                            publicKey: tmp,
+                            tx: txs[k].tx,
+                            bytetx: byte,
+                            time: null,
+                            sequence: 0,                       
+                            operation: null,
+                            address: null,
+                            key: null,
+                            name: null,
+                            post: null,
+                            picture: null,
+                            following: null,
+                            amount: 0,
+                        })
+                    await alltx.save();
+                    resolve("");
+                }));
             }
-            getTcount(tmp, page);
         }
-    })
-    console.log("xong");
+    }
+    console.log("Tạo fullinfo");
+    const result = await Promise.all(arr);
+    console.log(result);
+    return result;
 };
-exports.getAllInfo = () => {
-    alltx.find({}).then((data) => {
-        for (let i = 0; i < data.length; i++) {
-            let txs = decode(Buffer.from(data[i].tx, 'base64'));
-            let tmp, name, post, picture, amount;
-            let tmpfollowing = [];
-            if (txs.operation == 'post' || txs.operation == 'update_account') {
-                if (txs.params.key == 'picture') {
-                    tmp = txs.params.value;
-                    picture = tmp.toString('base64')
-                }
-                if (txs.params.key == 'name') {
-                    tmp = txs.params.value;
-                    name = tmp.toString()
-                }
-                //có vấn để ở hàm này khi mảng following nhiều
-                if (txs.params.key == 'followings') {
-                    tmp = txs.params.value;
-                    try {
-                        let decoded = decodeFollowings(tmp).addresses;
-
-                        for (let j = 0; j < decoded.length; j++) {
-                            //console.log(base32.encode(decoded[j]));
-                            tmpfollowing.push(base32.encode(decoded[j]));
-                            //console.log(tmpfollowing[j]);
-                        }
-                    } catch (er) {
-                        console.log("lỗi");
-                    }
-
-                }
-                if (txs.params.value == null) {
-                    tmp = txs.params.content;
-                    post = tmp.toString();
-                }
+exports.getAllInfo = async () => {
+    const data = await alltx.find({});
+    let arr = [];
+    for (let i = 0; i < data.length; i++) {
+        let txs = decode(Buffer.from(data[i].tx, 'base64'));
+        let tmp, name, post, picture, amount;
+        let tmpfollowing = [];
+        if (txs.operation == 'post' || txs.operation == 'update_account') {
+            if (txs.params.key == 'picture') {
+                tmp = txs.params.value;
+                picture = tmp.toString('base64')
             }
-            if (txs.operation == 'payment') {
-                amount = txs.params.amount;
+            if (txs.params.key == 'name') {
+                tmp = txs.params.value;
+                name = tmp.toString()
             }
-            if (txs.operation != 'payment') {
-                amount = 0;
-            }
+            //có vấn để ở hàm này khi mảng following nhiều
+            // if (txs.params.key == 'followings') {
+            //     tmp = txs.params.value;
+            //     try {
+            //         let decoded = decodeFollowings(tmp).addresses;
 
-            // for (let j = 0; j < tmpfollowing.length; j++) {
-            //     tmpfollowing.push(base32.encode(decoded[j]));
-            //     console.log(i+'--'+tmpfollowing[j]);
+            //         for (let j = 0; j < decoded.length; j++) {
+            //             //console.log(base32.encode(decoded[j]));
+            //             tmpfollowing.push(base32.encode(decoded[j]));
+            //             //console.log(tmpfollowing[j]);
+            //         }
+            //     } catch (er) {
+            //         console.log("lỗi");
+            //     }
+
             // }
-            alltx.findOneAndUpdate({ height: data[i].height, publicKey: data[i].publicKey },
+            if (txs.params.value == null) {
+                tmp = txs.params.content;
+                post = tmp.toString();
+            }
+        }
+        if (txs.operation == 'payment') {
+            amount = txs.params.amount;
+        }
+        if (txs.operation != 'payment') {
+            amount = 0;
+        }
+
+        // for (let j = 0; j < tmpfollowing.length; j++) {
+        //     tmpfollowing.push(base32.encode(decoded[j]));
+        //     console.log(i+'--'+tmpfollowing[j]);
+        // }
+        arr.push(new Promise(async (resolve) => {
+            await alltx.findOneAndUpdate({ height: data[i].height, publicKey: data[i].publicKey },
                 {
                     $set: {
                         sequence: txs.sequence,
@@ -154,22 +155,19 @@ exports.getAllInfo = () => {
                         amount: amount,
                     }
                 })
-                .then().catch((error) => {
-                    console.log(error);
-                });
-        }
-
-
-    }).then().catch((error) => {
-        console.log(error);
-    });
-
+            resolve("");
+        }));
+    }
+    const result = await Promise.all(arr);
+    console.log(result);
+    return result;
 };
-exports.getFollowing = () => {
-
-    users.find({}).then((user) => {
-        for (let i = 0; i < user.length; i++) {
-            alltx.find({ publicKey: user[i].publicKey }).sort({ sequence: 1 }).then((alltx) => {
+exports.getFollowing = async () => {
+    const user = await users.find({});
+    let arr = [];
+    for (let i = 0; i < user.length; i++) {
+        arr.push(new Promise(async (resolve) => {
+            await alltx.find({ publicKey: user[i].publicKey }).sort({ sequence: 1 }).then(async (alltx) => {
                 let lastsequence = 0, tmp = 0, tp = 0;
                 let amount = 0;
                 let name, picture;
@@ -194,66 +192,70 @@ exports.getFollowing = () => {
                     if (alltx[j].post != null) {
                         post.push(alltx[j].post);
                     }
-                    if (alltx[j].following.length != 0) {
-                        following = alltx[j].following;
-                        console.log(following[0]);
-                    }
+                    // if (alltx[j].following.length != 0) {
+                    //     following = alltx[j].following;
+                    //     //console.log(following[0]);
+                    // }
                 }
                 //let following = tmpfollowing.filter((v, i) => tmpfollowing.indexOf(v) === i)
                 // for(let t=0;t<tmpfollowing.length;t++)
                 //console.log(i + ' - ' + user[i].publicKey + '---' + following);
-
-                users.findOneAndUpdate({ publicKey: alltx[0].publicKey },
-                    {
-                        $set: {
-                            sequence: lastsequence,
-                            balance: amount,
-                            name: name,
-                            avatar: picture,
-                            post: post,
-                            following: following,
-                        }
-                    })
-                    .then().catch((error) => {
-                        console.log(error);
-                    });
+                if (alltx[0]) {
+                    await users.findOneAndUpdate({ publicKey: alltx[0].publicKey },
+                        {
+                            $set: {
+                                sequence: lastsequence,
+                                balance: amount,
+                                name: name,
+                                avatar: picture,
+                                post: post,
+                                following: following,
+                            }
+                        })
+                }
             });
-        }
-    })
-
+            resolve("");
+        }));
+    }
+    const result = await Promise.all(arr);
+    console.log(result);
+    return result;
 };
-exports.getFullTime = () => {
-    block.find({}).then((data) => {
-        for (let i = 0; i < data.length; i++) {
-            //console.log(data[i].time);
-            let tmptime = data[i].time;
-            //let times = (tmptime.getHours() * 3600 + tmptime.getMinutes() * 60 + tmptime.getSeconds()).toString();
-            //bị fail chỗ này sẽ tạo ra height có time mới là null
-            alltx.find({ height: data[i].height })
-                .then((all) => {
+exports.getFullTime = async () => {
+    const data = await block.find({});
+    let arr = [];
+    for (let i = 0; i < data.length; i++) {
+        console.log(data[i].time);
+        let tmptime = data[i].time;
+        //let times = (tmptime.getHours() * 3600 + tmptime.getMinutes() * 60 + tmptime.getSeconds()).toString();
+        //bị fail chỗ này sẽ tạo ra height có time mới là null
+        arr.push(new Promise(async (resolve) => {
+            await alltx.find({ height: data[i].height })
+                .then(async (all) => {
                     for (let j = 0; j < all.length; j++) {
-                        alltx.findOneAndUpdate({ publicKey: all[j].publicKey, height: all[j].height },
+                        await alltx.findOneAndUpdate({ publicKey: all[j].publicKey, height: all[j].height },
                             {
                                 $set: {
                                     time: tmptime
                                 }
                             })
-                            .then().catch((error) => {
-                                console.log(error);
-                            });
                     }
-                }).catch((error) => {
+                })
+            resolve("");
+        }));
+    }
 
-                    console.log(error);
-                });
-        }
-    })
     console.log("copytime");
+    const result = await Promise.all(arr);
+    console.log(result);
+    return result;
 };
-exports.getEnergy = () => {
-    users.find({}).then((user) => {
-        for (let i = 0; i < user.length; i++) {
-            alltx.find({ publicKey: user[i].publicKey }).sort({ height: 1 }).then((data) => {
+exports.getEnergy = async () => {
+    const user = await users.find({});
+    let arr = [];
+    for (let i = 0; i < user.length; i++) {
+        arr.push(new Promise(async (resolve) => {
+            await alltx.find({ publicKey: user[i].publicKey }).sort({ height: 1 }).then((data) => {
                 let balances = user[i].balance;
                 let energy;
                 let B = 0;
@@ -261,7 +263,7 @@ exports.getEnergy = () => {
                 let time = currentdate.setHours(currentdate.getHours() - 7);
                 let day = (new Date(time)).getDate();
                 for (let j = 1; j < data.length; j++) {
-                    if (day == data[j].time.getDate() && (data[j].address == null || data[j].address != data[j].publicKey)) {
+                    if ( data[j].time && day == data[j].time.getDate() &&  (data[j].address == null || data[j].address != data[j].publicKey)) {
                         //console.log(element.publicKey+' '+element.bytetx + " " + +element.time);
                         //console.log(element.height+'-'+element.time.getDate());
                         let timeafter = (data[j].time.getHours() * 3600 + data[j].time.getMinutes() * 60 + data[j].time.getSeconds());
@@ -271,19 +273,24 @@ exports.getEnergy = () => {
                         }
                         B = Math.ceil(Math.max(0, (86400 - parseFloat(timeafter - timebefore)) / 86400) * B + parseFloat(data[j].bytetx));
                         //console.log(B);}
-                        timebefore=timeafter;
+                        timebefore = timeafter;
                     }
                 }
+                
+                if(isNaN(B)) B=0;
+                console.log(balances + "    " + BLOCK +  "  " + B );
                 energy = parseInt(balances * BLOCK - B);
                 users.findOneAndUpdate({ publicKey: user[i].publicKey }, { $set: { energy: energy } }).then(() => {
                     // console.log("OK");
-                }).catch((error) => {
-                    console.log(error);
-                });
+                })
             });
+            resolve("");
+        }));
+    }
 
-        }
-    })
+    const result = await Promise.all(arr);
+    console.log(result);
+    return result;
 };
 // // router.get("/test1", function (req, res) {
 // //     users.find({}).then((user) => {

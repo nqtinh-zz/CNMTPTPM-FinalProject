@@ -4,15 +4,15 @@ const Schema = mongoose.Schema;
 const AllTxSchema = new Schema({
     publicKey: {
         type: String,
-        primaryKey: true,
+        
     },
     address: {
         type: String,
-        primaryKey: true,
+       
     },
     operation: {
         type: String,
-        primaryKey: true,
+       
     },
     height: {
         type: Number,
@@ -35,11 +35,6 @@ const AllTxSchema = new Schema({
         type: Number,
         allowNull: false,
     },
-    bandwidth: {
-        type: Number,
-        allowNull: false,
-        defaultValue: 0,
-    },
     key: {
         type: String,
         allowNull: false,
@@ -61,6 +56,6 @@ const AllTxSchema = new Schema({
     },
     
 })
-AllTxSchema.index({ publicKey: 1, height: 1 }, { unique: true });
+AllTxSchema.index({  }, { unique: true });
 
 module.exports = AllTx = mongoose.model('alltx', AllTxSchema);
