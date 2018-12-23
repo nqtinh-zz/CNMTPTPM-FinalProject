@@ -2,7 +2,7 @@ var blocks = require('../../models/blocks');
 var users = require('../../models/User');
 var { decode } = require('../../lib/transaction/index');
 exports.createAccount = async () => {
-  //users.dropDatabase();
+  //users.drop();
   //Sửa lại chạy sau khi  for (i; i <= curheight; i++) của bên server kết thúc
   const block = await blocks.find({});
   let arr = [];
@@ -24,6 +24,8 @@ exports.createAccount = async () => {
             post: null,
             following: null,
             transactions: 0,
+            lastpage:1,
+            lastposition:0,
           })
         try {
 

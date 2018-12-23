@@ -19,6 +19,7 @@ const getDataT = (i) => {
   if (i == 6) return infoaccount.getFollowing();
   if (i == 7) return infoaccount.getFullTime();
   if (i == 8) return infoaccount.getEnergy();
+  
 }
 
 function processArray(array) {

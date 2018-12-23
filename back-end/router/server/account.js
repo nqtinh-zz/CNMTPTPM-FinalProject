@@ -45,23 +45,33 @@ exports.getTransactions = async () => {
     }
     console.log("Tạo transactions");
     const result = await Promise.all(arr);
-    console.log(result);
+    //console.log(result);
     return result;
 
 };
 exports.createFullInfo = async () => {
-    //alltx.dropDatabase();
+    //alltx.drop();
     const data = await users.find({});
     let arr = [];
+    
     for (let i = 0; i < data.length; i++) {
+        let posi=0;
         let tmp = data[i].publicKey;
         let count = data[i].transactions;
+        let j =data[i].lastpage;
+        let k =data[i].lastposition;
         let page = parseInt(count / 30) + 1;
-
-        for (let j = 1; j <= page; j++) {
+        //console.log(j+'----'+page);
+        // if(tmp=='GAO4J5RXQHUVVONBDQZSRTBC42E3EIK66WZA5ZSGKMFCS6UNYMZSIDBI')
+        // console.log('page: '+page);
+        for (j; j <= page; j++) {
             let blocks = await getAccount(tmp, j);
             let txs = blocks.data.result.txs;
-            for (let k = 0; k < txs.length; k++) {
+            //console.log('flag1: ');
+            
+            for (k; k < txs.length; k++) {
+                // if(tmp=='GAO4J5RXQHUVVONBDQZSRTBC42E3EIK66WZA5ZSGKMFCS6UNYMZSIDBI')
+                 //console.log('transactions: '+j+'--------'+30*(j-1)+k);
                 var byte = Buffer.from(txs[k].tx, 'base64').length;
                 arr.push(new Promise(async (resolve) => {
                     const alltx = new AllTx(
@@ -82,14 +92,21 @@ exports.createFullInfo = async () => {
                             amount: 0,
                         })
                     await alltx.save();
+                   
                     resolve("");
                 }));
             }
+            if(k==txs.length) k=0;
+            posi=txs.length;
         }
+        await users.findOneAndUpdate({ publicKey: data[i].publicKey },
+            { $set: { lastpage: page, lastposition: posi } });
+
+
     }
     console.log("Tạo fullinfo");
     const result = await Promise.all(arr);
-    console.log(result);
+    //console.log(result);
     return result;
 };
 exports.getAllInfo = async () => {
@@ -159,7 +176,7 @@ exports.getAllInfo = async () => {
         }));
     }
     const result = await Promise.all(arr);
-    console.log(result);
+    //console.log(result);
     return result;
 };
 exports.getFollowing = async () => {
@@ -218,14 +235,14 @@ exports.getFollowing = async () => {
         }));
     }
     const result = await Promise.all(arr);
-    console.log(result);
+    //console.log(result);
     return result;
 };
 exports.getFullTime = async () => {
     const data = await block.find({});
     let arr = [];
     for (let i = 0; i < data.length; i++) {
-        console.log(data[i].time);
+        //console.log(data[i].time);
         let tmptime = data[i].time;
         //let times = (tmptime.getHours() * 3600 + tmptime.getMinutes() * 60 + tmptime.getSeconds()).toString();
         //bị fail chỗ này sẽ tạo ra height có time mới là null
@@ -247,7 +264,7 @@ exports.getFullTime = async () => {
 
     console.log("copytime");
     const result = await Promise.all(arr);
-    console.log(result);
+    //console.log(result);
     return result;
 };
 exports.getEnergy = async () => {
@@ -278,7 +295,7 @@ exports.getEnergy = async () => {
                 }
                 
                 if(isNaN(B)) B=0;
-                console.log(balances + "    " + BLOCK +  "  " + B );
+                //console.log(balances + "    " + BLOCK +  "  " + B );
                 energy = parseInt(balances * BLOCK - B);
                 users.findOneAndUpdate({ publicKey: user[i].publicKey }, { $set: { energy: energy } }).then(() => {
                     // console.log("OK");
@@ -289,7 +306,7 @@ exports.getEnergy = async () => {
     }
 
     const result = await Promise.all(arr);
-    console.log(result);
+    console.log("DONE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     return result;
 };
 // // router.get("/test1", function (req, res) {

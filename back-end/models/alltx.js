@@ -56,6 +56,5 @@ const AllTxSchema = new Schema({
     },
     
 })
-AllTxSchema.index({  }, { unique: true });
 
 module.exports = AllTx = mongoose.model('alltx', AllTxSchema);

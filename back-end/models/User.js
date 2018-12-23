@@ -30,6 +30,14 @@ const UserSchema = new Schema({
         allowNull: false,
         defaultValue: 0,
     },
+    lastpage: {
+        type: Number,
+
+    },
+    lastposition: {
+        type: Number,
+
+    },
     post: {
         type: String,
     },
