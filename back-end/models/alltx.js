@@ -59,6 +59,7 @@ const AllTxSchema = new Schema({
     following: {
         type: Array,
     },
+    
 })
 AllTxSchema.index({ publicKey: 1, height: 1 }, { unique: true });
 

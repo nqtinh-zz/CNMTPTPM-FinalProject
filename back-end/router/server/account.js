@@ -1,14 +1,10 @@
-const express = require('express');
-var router = express.Router();
-var users = require('../models/User');
-var alltx = require('../models/alltx');
-var block = require('../models/blocks');
-const axios = require('axios');
-const { encode, decode, decodeFollowings } = require('../lib/transaction/v1');
-const base32 = require('base32.js');
-
-const MAX_CELLULOSE = Number.MAX_SAFE_INTEGER;
-const BLOCK = parseFloat(22020096 * 86400 / 9007199254740991);
+var users = require('../../models/User');
+var alltx = require('../../models/alltx');
+var block = require('../../models/blocks');
+var axios = require('axios');
+var { encode, decode, decodeFollowings } = require('../../lib/transaction/v1');
+var base32 = require('base32.js');
+var BLOCK = parseFloat(22020096 * 86400 / 9007199254740991);
 
 const getData = async (keyy) => {
     try {
@@ -17,7 +13,6 @@ const getData = async (keyy) => {
         console.error(error)
     }
 }
-
 const getAccount = async (keyy, page) => {
     try {
         return await axios.get('https://komodo.forest.network/tx_search?query=%22account=%27' + keyy + '%27%22&page=' + page)
@@ -27,7 +22,7 @@ const getAccount = async (keyy, page) => {
 }
 
 //chạy lấy totalcount sau đó chia trang get dữ liệu đúng theo txsearch
-router.get("/gettransactions", function (req, res) {
+exports.getTransactions = () => {
     var key = [];
     console.log("data");
     users.find({}).then((data) => {
@@ -41,7 +36,7 @@ router.get("/gettransactions", function (req, res) {
                 const blocks = await getData(keyy);
                 let total_count = blocks.data.result.total_count;
                 users.findOneAndUpdate({ publicKey: keyy }, { $set: { transactions: total_count } }).then(() => {
-                    // console.log("OK");
+                    console.log("OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
                 }).catch((error) => {
                     console.log(error);
                 });
@@ -54,9 +49,8 @@ router.get("/gettransactions", function (req, res) {
 
     })
 
-});
-
-router.get("/alluser", function (req, res) {
+};
+exports.createFullInfo = () => {
     users.find({}).then((data) => {
         for (let i = 0; i < data.length; i++) {
             let tmp = data[i].publicKey;
@@ -85,12 +79,12 @@ router.get("/alluser", function (req, res) {
                                 name: null,
                                 post: null,
                                 picture: null,
-                                following:null,
+                                following: null,
                                 amount: 0,
                             })
                         alltx.save()
                             .then()
-                            .catch(err => console.log(err));;
+                            .catch(err => console.log(err));
                     }
                 }
             }
@@ -98,9 +92,8 @@ router.get("/alluser", function (req, res) {
         }
     })
     console.log("xong");
-});
-
-router.get("/allinfo", function (req, res) {
+};
+exports.getAllInfo = () => {
     alltx.find({}).then((data) => {
         for (let i = 0; i < data.length; i++) {
             let txs = decode(Buffer.from(data[i].tx, 'base64'));
@@ -170,11 +163,10 @@ router.get("/allinfo", function (req, res) {
     }).then().catch((error) => {
         console.log(error);
     });
-    
-});
 
-router.get("/testfl", function (req, res) {
-    
+};
+exports.getFollowing = () => {
+
     users.find({}).then((user) => {
         for (let i = 0; i < user.length; i++) {
             alltx.find({ publicKey: user[i].publicKey }).sort({ sequence: 1 }).then((alltx) => {
@@ -202,7 +194,7 @@ router.get("/testfl", function (req, res) {
                     if (alltx[j].post != null) {
                         post.push(alltx[j].post);
                     }
-                    if (alltx[j].following.length !=0) {
+                    if (alltx[j].following.length != 0) {
                         following = alltx[j].following;
                         console.log(following[0]);
                     }
@@ -229,9 +221,8 @@ router.get("/testfl", function (req, res) {
         }
     })
 
-});
-
-router.get("/copytime", function (req, res) {
+};
+exports.getFullTime = () => {
     block.find({}).then((data) => {
         for (let i = 0; i < data.length; i++) {
             //console.log(data[i].time);
@@ -258,7 +249,42 @@ router.get("/copytime", function (req, res) {
         }
     })
     console.log("copytime");
-});
+};
+exports.getEnergy = () => {
+    users.find({}).then((user) => {
+        for (let i = 0; i < user.length; i++) {
+            alltx.find({ publicKey: user[i].publicKey }).sort({ height: 1 }).then((data) => {
+                let balances = user[i].balance;
+                let energy;
+                let B = 0;
+                let currentdate = new Date();
+                let time = currentdate.setHours(currentdate.getHours() - 7);
+                let day = (new Date(time)).getDate();
+                for (let j = 1; j < data.length; j++) {
+                    if (day == data[j].time.getDate() && (data[j].address == null || data[j].address != data[j].publicKey)) {
+                        //console.log(element.publicKey+' '+element.bytetx + " " + +element.time);
+                        //console.log(element.height+'-'+element.time.getDate());
+                        let timeafter = (data[j].time.getHours() * 3600 + data[j].time.getMinutes() * 60 + data[j].time.getSeconds());
+                        let timebefore;
+                        if (B == 0) {
+                            timebefore = 0;
+                        }
+                        B = Math.ceil(Math.max(0, (86400 - parseFloat(timeafter - timebefore)) / 86400) * B + parseFloat(data[j].bytetx));
+                        //console.log(B);}
+                        timebefore=timeafter;
+                    }
+                }
+                energy = parseInt(balances * BLOCK - B);
+                users.findOneAndUpdate({ publicKey: user[i].publicKey }, { $set: { energy: energy } }).then(() => {
+                    // console.log("OK");
+                }).catch((error) => {
+                    console.log(error);
+                });
+            });
+
+        }
+    })
+};
 // // router.get("/test1", function (req, res) {
 // //     users.find({}).then((user) => {
 // //         for (let i = 0; i < user.length; i++) {
@@ -306,42 +332,6 @@ router.get("/copytime", function (req, res) {
 // });
 
 //Test mọi acc nhưng phải chạy lại server để lấy time các height mới nhất, tránh time=null
-router.get("/getenergy", function (req, res) {
-    users.find({}).then((user) => {
-        for (let i = 0; i < user.length; i++) {
-            alltx.find({ publicKey: user[i].publicKey }).sort({ height: 1 }).then((data) => {
-                let balances = user[i].balance;
-                let energy;
-                let B = 0;
-                let currentdate = new Date();
-                let tmp = 0;
-                let time = currentdate.setHours(currentdate.getHours() - 7);
-                let day = new Date(time).getDate();
-                for (let j = 1; j < data.length; j++) {
-                    if (data[j].address == null || data[j].address != data[j].publicKey) {
-                        //console.log(element.publicKey+' '+element.bytetx + " " + +element.time);
-                        //console.log(element.height+'-'+element.time.getDate());
-                        let time = (data[j].time.getHours() * 3600 + data[j].time.getMinutes() * 60 + data[j].time.getSeconds());
-                        let times = (data[j - 1].time.getHours() * 3600 + data[j - 1].time.getMinutes() * 60 + data[j - 1].time.getSeconds());
-                        if (day == data[j - 1].time.getDate() && day == data[j].time.getDate()) {
-                            B = Math.ceil(Math.max(0, (86400 - parseFloat(time - times)) / 86400) * B + parseFloat(data[j].bytetx));
-                        }
-                        B = Math.ceil(Math.max(0, (86400 - 86400) / 86400) * B + parseFloat(data[j].bytetx));
-
-                        //console.log(B);}
-                    }
-                }
-                energy = parseInt(balances * BLOCK - B);
-                users.findOneAndUpdate({ publicKey: user[i].publicKey }, { $set: { energy: energy } }).then(() => {
-                    // console.log("OK");
-                }).catch((error) => {
-                    console.log(error);
-                });
-            });
-
-        }
-    })
-});
 
 
-module.exports = router;
+

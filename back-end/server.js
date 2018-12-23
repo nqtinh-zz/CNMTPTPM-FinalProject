@@ -1,95 +1,97 @@
-const express = require('express');
-const block = require('./models/blocks');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const app = express();
-const axios = require('axios');
-var users = require('./router/users');
-var account = require('./router/account');
-//DB config
-// đang test chưa xài đc
-const getData1 = async (i) => {
-  try {
-    return await axios.get('https://komodo.forest.network/block?height=' + i)
-  } catch (error) {
-    console.log("loi roi")
-  }
-}
-const saveBlock = async () => {
-  await axios.get('https://fox.forest.network/abci_info')
-    .then(function (response) {
-      let curheight = response.data.result.response.last_block_height;
-      console.log(curheight);
-      block.find({}).sort({ height: -1 }).then((data) => {
-        //console.log(data[0].height);
-        let i = data[0].height;
-        for (i; i <= curheight; i++) {
-          const save = async () => {
-            const blocks = await getData1(i);
-            const blockData = blocks.data.result;
-            const block = new Block({
-              height: blockData.block.header.height,
-              
-              time: blockData.block.header.time,
-              txs: blockData.block.data.txs,
-              hash: blockData.block_meta.block_id.hash,
-              appHash: blockData.block.header.app_hash,
-            })
-            if (blockData.block.data.txs != null) {
-              block.save()
-                .then(block => console.log(block.height))
-                .catch(err => console.log(err));
-            }
-          }
-          save().then(() => console.log("Đang lưu"));
-        }
-      });
-
-    })
-    .catch(function (error) {
-      console.log(error);
-    })
-
-  //chạy cái này trước để có dữ liệu trong block đã
-  // for (i = 1; i < 18000; i++) {
-  //   const blocks = await getData1(i);
-  //   const blockData = blocks.data.result;
-  //   const block = new Block({
-  //     height: blockData.block.header.height,
-  //     time: blockData.block.header.time,
-  //     txs: blockData.block.data.txs,
-  //     hash: blockData.block_meta.block_id.hash,
-  //     appHash: blockData.block.header.app_hash,
-  //   })
-  //   if (blockData.block.data.txs != null) {
-  //     block.save()
-  //       .then(block => console.log(block.height))
-  //       .catch(err => console.log(err));
-  //   }
-  // }
-}
-
+var express = require('express');
+var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
+var block = require('./router/server/block');
+var user = require('./router/server/users');
+var infoaccount = require('./router/server/account');
+var app = express();
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/save-block', (req, res) => {
-  saveBlock();
-  res.send("Loading node");
+infoaccount.getEnergy();
+
+initDatebase = () => {
+  setInterval(() => block.saveBlock(), 3*1000)
+
+  // user.createAccount();
+  // infoaccount.getTransactions();
+  // infoaccount.createFullInfo();
+  // infoaccount.getAllInfo();
+  // infoaccount.getFollowing();
+  // infoaccount.getFullTime();
+  // infoaccount.getEnergy();
+}
+app.get('/database', (req, res) => {
+  initDatebase();
+
+  // var p1 = block.saveBlock();
+  // var p2 = user.createAccount();
+  // var p3 = infoaccount.getTransactions();
+  // var p4 = infoaccount.createFullInfo();
+  // var p5 = infoaccount.getAllInfo();
+  // var p6 = infoaccount.getFollowing();
+  // var p7 = infoaccount.getFullTime();
+  // var p8 = infoaccount.getEnergy();
+
+  // Promise.all([p1, p2, p3, p4, p5, p6, p7, p8])
+  //   .then(() => {
+  //     console.log('Done!!');
+  //   })
+  //   .catch(err => console.log(err));
+  res.send("Đang xử lý dữ liệu");
 });
 
 
-app.use('/', users);
-app.use('/', account);
-
-
 //connect to mongoosedb
-const db = require('./config/keys').MONGO_OFFLINE;
+var db = require('./config/keys').MONGO_OFFLINE;
 mongoose
   .connect(db)
   .then(() => console.log('Mongoosedb connected'))
   .catch((err) => console.log(err));
-const port = process.env.PORT || 5000;
+var port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
+
+// getDataT = (i) => {
+//     return axios.get("https://komodo.forest.network/block", {
+//             params: {
+//                 height: i
+//             }
+//         })
+//         .then(res => {
+//             const data = res.data;
+//             const txs = data["result"]["block"]["data"]["txs"];
+//             const height = data["result"]["block"]["header"]["height"];
+//             const time = data["result"]["block"]["header"]["time"];
+//             console.log(txs);
+//             return txs;
+//         });
+// }
+
+function processArray(array) {
+  return array.reduce(function (p,i) {
+    return p.then(function () {   
+      return getDataT(i);
+    });
+  }, Promise.resolve());
+}
+
+const promises = [];
+const array = [];
+for (let t = 1; t < 5; t++) {
+    array.push(t);
+}
+
+const demo =() => {
+    processArray(array).then(function (result) {
+
+    }, function (reason) {
+      console.log("fail");
+    });
+}
+demo();
+
+
+

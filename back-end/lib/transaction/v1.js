@@ -50,13 +50,6 @@ function decodeFollowings(tx){
   return Followings.decode(tx);
 }
 
-
-const Followings = vstruct([
-  { name: 'addresses', type: vstruct.VarArray(vstruct.UInt16BE, vstruct.Buffer(35)) },
-]);
-
-
-
 function encode(tx) {
   let params, operation;
   if (tx.version !== 1) {
