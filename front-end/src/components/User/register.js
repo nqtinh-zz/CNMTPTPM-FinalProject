@@ -13,15 +13,19 @@ class Register extends Component {
             click: false,
             privateKey: '',
             publicKey:'',
-            priKeySign:'SBS67SFDK6XTWIVB57EUZCNQO4XZXNMSFHHUJCPLVXRCEG44UGPHSE6P',
+            priKey:'',
         }
         this.onClick = this.onClick.bind(this);
+    }
+    handleChange(event) {
+        const priKey = event.target.value;
+        this.setState({ priKey });
     }
     onClick(e) {
         e.preventDefault();
         this.setState({ click: true });
         this.props.signNewAccount(
-            {priKeySign: this.state.priKeySign}
+            {priKey: this.state.priKey}
          ); 
         this.setState({
             privateKey: this.props.privateKey,
@@ -48,6 +52,7 @@ class Register extends Component {
                             <div className="form-group-log">
                                 <label className="labelForm" className="label-agree-term"><span><span></span></span>After click Register , we will send you your Public and PrivateKey.</label>
                                 <label className="labelForm" className="label-agree-term"><span><span></span></span>You must save your private key and never public it.</label>
+                                <input className="inputForm" onChange={this.handleChange} value={this.state.priKey} type="password"  placeholder="Import your Private key" />
                             </div>
                             <div className="form-group-log form-button">
                                 <input className="inputForm" type="submit" name="signup" id="signup" className="form-submit" value="Register" />

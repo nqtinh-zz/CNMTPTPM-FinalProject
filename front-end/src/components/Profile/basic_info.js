@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { updateAccount } from '../../actions/User/updateAccountAction';
-
+import SimpleCrypto from "simple-crypto-js"; 
 
 
 
@@ -19,10 +19,12 @@ class BasicInfo extends Component {
 	}
 	onSubmitAvatar(e){
 		e.preventDefault();
+		const simpleCrypto = new SimpleCrypto(sessionStorage.keyEncrypt);
+		const privateKey = simpleCrypto.decrypt(sessionStorage.privateKeyEncrypt);
 		this.props.updateAccount({
 			key: "picture",
 			value: this.state.imagePreviewUrl.replace(/^data:image\/(png|jpeg|jpg);base64,/, ""),
-			privatekey: sessionStorage.privateKey
+			privatekey: privateKey
 		})
 	
 	}
@@ -31,11 +33,13 @@ class BasicInfo extends Component {
 	}
 	onSubmit(e) {
 		e.preventDefault();
+		const simpleCrypto = new SimpleCrypto(sessionStorage.keyEncrypt);
+		const privateKey = simpleCrypto.decrypt(sessionStorage.privateKeyEncrypt);
 		const name = this.state.firstname + " " + this.state.lastname;
 		this.props.updateAccount({
 			key: "name",
 			value: name,
-			privatekey: sessionStorage.privateKey
+			privatekey: privateKey
 		})
 		//console.log(name);
 	}
@@ -85,11 +89,11 @@ class BasicInfo extends Component {
 						<form name="basic-info" id="basic-info" className="form-inline" onSubmit={this.onSubmit}>
 							<div className="row">
 								<div className="form-group col-xs-6">
-									<label for="firstname">First name</label>
+									<label htmlFor="firstname">First name</label>
 									<input onChange={this.onChange} id="firstname" className="form-control input-group-lg" type="text" name="firstname" title="Enter first name" placeholder={this.props.info.firstName} value={this.state.firstname} />
 								</div>
 								<div className="form-group col-xs-6">
-									<label for="lastname" className="">Last name</label>
+									<label htmlFor="lastname" className="">Last name</label>
 									<input onChange={this.onChange} id="lastname" className="form-control input-group-lg" type="text" name="lastname" title="Enter last name" placeholder={this.props.info.lastName} value={this.state.lastName} />
 								</div>
 							</div>

@@ -35,19 +35,19 @@ router.post('/getUserPost', passport.authenticate('jwt', { session: false }), (r
   AllTxSchema.find({ operation: 'post', publicKey: req.body.publicKey })
     .then(data => {
       const postValid = [];
-      console.log(data[0].value)
       for (i = 0; i < data.length; i++) {
         const subString1 = '{';
         const subString2 = '}';
         const subString3 = '\"type\"';
         const subString4 = '\"text\"';
-        const string = data[i].value;
+        const string = data[i].post;
         if (string.includes(subString1) && string.includes(subString2) && string.includes(subString3) && string.includes(subString4)) {
-          const convertToJson = JSON.parse(string);
+         
           postValid.push(data[i]);
         }
       }
       res.send(postValid);
+      console.log(postValid)
     })
 })
 

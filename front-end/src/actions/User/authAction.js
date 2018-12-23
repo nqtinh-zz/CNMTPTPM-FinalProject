@@ -1,7 +1,9 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import { Keypair } from 'stellar-base';
 import setAuthToken from '../../config/setAuthToken';
 import {SET_CURRENT_USER} from '../../config/config';
+import SimpleCrypto from "simple-crypto-js"; 
 export const signNewAccount = (key)=>dispatch=>{
     axios.post('/api/register',key)
     .then(res=>dispatch({
@@ -21,24 +23,25 @@ export const registerAccount = ()=>dispatch=>{
         }))
         .catch(err=>console.log(err));
 };
-export const loginAction = (priKey)=>{
-    return {
-        type: "LOGIN_ACTION",
-        priKey,
-    }
-
-}
 
 //login getuser token
 export const loginUser = ( privateKey ) =>dispatch=>{
-    axios.post('/api/user/login',privateKey)
+    try{
+        const publicKey = Keypair.fromSecret(privateKey.privateKey).publicKey();
+        console.log(publicKey)
+        localStorage.setItem('publicKey',publicKey);
+        axios.post('/api/user/login',{publicKey: publicKey})
         .then(res => {
             //save to localstorage
             const { token } = res.data;
             const secretKey = privateKey.privateKey;
             // set token to localstorage
             localStorage.setItem('jwtToken',token);
-            sessionStorage.setItem('privateKey',secretKey)
+            const keyEncrypt = 'some-unique-key';
+            const simpleCrypto = new SimpleCrypto(keyEncrypt);
+            const privateKeyEncrypt = simpleCrypto.encrypt(secretKey);
+            sessionStorage.setItem('keyDecrypt',keyEncrypt);
+            sessionStorage.setItem('privateKeyEncrypt',privateKeyEncrypt)
             //Set token to auth header
             setAuthToken(token);
             //Decode token to get user data
@@ -52,6 +55,11 @@ export const loginUser = ( privateKey ) =>dispatch=>{
             //     payload : err.response.data
             // }));
             console.log(err))
+    }catch{
+        console.log("err missing key");
+    }
+    
+   
 };
 
 // set logged user
@@ -69,7 +77,8 @@ export const setCurrentUser = (decoded)=>{
 export const logoutUser = ()=> dispatch => {
     //remove token from localStorage
     localStorage.removeItem('jwtToken');
-    sessionStorage.removeItem('privateKey');
+    localStorage.removeItem('publicKey');
+    sessionStorage.removeItem('privateKeyEncrypt');
     //remove auth header for future request
     setAuthToken(false);
     //set current user to empty object with isAuthenticated is false

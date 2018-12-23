@@ -1,5 +1,4 @@
 const express = require('express');
-const { Keypair } = require('stellar-base');
 const router = express.Router();
 const User = require('../../../models/users');
 const jwt = require('jsonwebtoken');
@@ -7,12 +6,12 @@ const keys = require('../../../config/keys');
 
 router.post('/', (req,res)=>{
     //req.body.secretKey <- from login react
-    const{privateKey} = req.body;
-    const publicKey = Keypair.fromSecret(privateKey).publicKey();
-    User.findOne({publicKey})
+    const{publicKey} = req.body;
+    console.log(publicKey);
+    User.findOne({publicKey: publicKey.publicKey})
         .then(user=>{
             if(!user){
-                return res.status(404).json({email: 'User not found'});
+                return res.status(404).json({user: 'User not found'});
             }
             const payload = {
                 id: user.id,

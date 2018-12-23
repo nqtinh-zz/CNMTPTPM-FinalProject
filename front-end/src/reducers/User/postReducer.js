@@ -16,13 +16,13 @@ export default function(state = initialState, action){
         case GET_POST:
             return{
                 ...state,
-                profile: action.payload,
+                post: action.payload,
                 loading: false
             };
         case CLEAR_CURRENT_POST:
             return{
                 ...state,
-                profile: null,
+                post: null,
             }
         default:
             return state;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {sendPayment} from '../../actions/Payment/sendPaymentAction';
+import SimpleCrypto from "simple-crypto-js"; 
 class Payment extends Component {
 
 	constructor(props) {
@@ -8,7 +9,6 @@ class Payment extends Component {
         this.state = {
 			publickey:'',
 			amount:0,
-			privatekey:'',
         }
 	}
 	
@@ -22,9 +22,11 @@ class Payment extends Component {
     }
 
     onHandleSubmit=(event)=>{
-        event.preventDefault();
+		event.preventDefault();
+		const simpleCrypto = new SimpleCrypto(sessionStorage.keyEncrypt);
+		const privatekey = simpleCrypto.decrypt(sessionStorage.privateKeyEncrypt);
 		console.log(this.state);
-		this.props.sendPayment(this.state);
+		this.props.sendPayment({...this.state,privatekey});
 	}
 	
   render() {
@@ -44,7 +46,7 @@ class Payment extends Component {
 	                    <form onSubmit={this.onHandleSubmit}  id="basic-info" className="form-inline">
 	                        <div className="row">
 	                            <div className="form-group col-xs-10">
-	                                <label for="publickey">Public Key</label>
+	                                <label htmlFor="publickey">Public Key</label>
 	                                <input onChange={this.onHandleChange} id="publickey" className="form-control input-group-lg" type="text" name="publickey" title="Enter public key" placeholder='Gxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'  />
 	                            </div>
 	                            
@@ -52,14 +54,14 @@ class Payment extends Component {
 							<br></br>
 	                        <div className="row">
 	                            <div className="form-group col-xs-10">
-	                                <label for="email">Amount</label>
+	                                <label htmlFor="email">Amount</label>
 	                                <input onChange={this.onHandleChange} id="amount" className="form-control input-group-lg" type="number" name="amount" title="Enter amount" placeholder="1000"  />
 	                            </div>
 	                        </div>
 	                        <br></br>
 							<div className="row">
 	                            <div className="form-group col-xs-10">
-	                                <label for="email">Private Key</label>
+	                                <label htmlFor="email">Private Key</label>
 	                                <input onChange={this.onHandleChange} id="privatekey" className="form-control input-group-lg" type="password" name="privatekey" title="Enter private key" placeholder="Sxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"  />
 	                            </div>
 	                        </div>
