@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { updateAccount } from '../../actions/User/updateAccountAction';
 import SimpleCrypto from "simple-crypto-js"; 
-
+import { getCurrentUser } from '../../actions/User/authAction';
+import { withRouter } from 'react-router-dom';
 
 
 class BasicInfo extends Component {
@@ -17,15 +18,19 @@ class BasicInfo extends Component {
 		this.onChange = this.onChange.bind(this);
 		this.onSubmitAvatar = this.onSubmitAvatar.bind(this);
 	}
+	componentDidMount(){
+		this.props.getCurrentUser();
+	}
 	onSubmitAvatar(e){
 		e.preventDefault();
-		const simpleCrypto = new SimpleCrypto(sessionStorage.keyEncrypt);
-		const privateKey = simpleCrypto.decrypt(sessionStorage.privateKeyEncrypt);
+		const simpleCrypto = new SimpleCrypto(sessionStorage.getItem('keyDecrypt'));
+		const privateKey = simpleCrypto.decrypt(sessionStorage.getItem('privateKeyEncrypt'));
 		this.props.updateAccount({
 			key: "picture",
 			value: this.state.imagePreviewUrl.replace(/^data:image\/(png|jpeg|jpg);base64,/, ""),
 			privatekey: privateKey
 		})
+		this.setState({imagePreviewUrl:''})
 	
 	}
 	onChange(e) {
@@ -33,15 +38,16 @@ class BasicInfo extends Component {
 	}
 	onSubmit(e) {
 		e.preventDefault();
-		const simpleCrypto = new SimpleCrypto(sessionStorage.keyDecrypt);
-		const privateKey = simpleCrypto.decrypt(sessionStorage.privateKeyEncrypt);
+		const simpleCrypto = new SimpleCrypto(sessionStorage.getItem('keyDecrypt'));
+		const privateKey = simpleCrypto.decrypt(sessionStorage.getItem('privateKeyEncrypt'));
 		const name = this.state.firstname + " " + this.state.lastname;
 		this.props.updateAccount({
 			key: "name",
 			value: name,
 			privatekey: privateKey,
-			sequence: localStorage.getItem('sequence')
+			sequence: this.props.auth.user.sequence
 		})
+		this.setState({firstname:'',lastName:''})
 		//console.log(name);
 	}
 	fileChangedHandler = (e) => {
@@ -91,11 +97,11 @@ class BasicInfo extends Component {
 							<div className="row">
 								<div className="form-group col-xs-6">
 									<label htmlFor="firstname">First name</label>
-									<input onChange={this.onChange} id="firstname" className="form-control input-group-lg" type="text" name="firstname" title="Enter first name" placeholder={this.props.info.firstName} value={this.state.firstname} />
+									<input onChange={this.onChange} id="firstname" className="form-control input-group-lg" type="text" name="firstname" title="Enter first name"  value={this.state.firstname} />
 								</div>
 								<div className="form-group col-xs-6">
 									<label htmlFor="lastname" className="">Last name</label>
-									<input onChange={this.onChange} id="lastname" className="form-control input-group-lg" type="text" name="lastname" title="Enter last name" placeholder={this.props.info.lastName} value={this.state.lastName} />
+									<input onChange={this.onChange} id="lastname" className="form-control input-group-lg" type="text" name="lastname" title="Enter last name"  value={this.state.lastName} />
 								</div>
 							</div>
 							<br/>
@@ -163,8 +169,8 @@ class BasicInfo extends Component {
 
 function mapStateToProps(state) {
 	return {
-		info: state.personInfoReducer,
+		auth: state.authReducer
 	}
 }
 
-export default connect(mapStateToProps, { updateAccount })(BasicInfo);
+export default connect(mapStateToProps, { updateAccount,getCurrentUser })(withRouter(BasicInfo));

@@ -172,5 +172,6 @@ module.exports = {
   CreateAccountParams,
   UpdateAccountParams,
   ReactContent,
-  PlainTextContent
+  PlainTextContent,
+  InteractParams
 };

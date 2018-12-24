@@ -15,6 +15,8 @@ export const signNewAccount = (key)=>dispatch=>{
     .catch(err=>console.log(err));
 }
 
+
+
 export const registerAccount = ()=>dispatch=>{
         axios.get('/api/register')
         .then(res=>dispatch({
@@ -66,9 +68,15 @@ export const loginUser = ( privateKey ) =>dispatch=>{
 
 // set logged user
 
+export const getCurrentUser = ()=>dispatch=>{
+    axios.get('/api/user/current') 
+        .then(user=> dispatch(setCurrentUser(user.data)));
+}
+
 export const setCurrentUser = (decoded)=>{
     // console.log(localStorage.getItem('jwtToken'))
     // console.log(localStorage.getItem('privateKey'));
+    console.log('abc');
     return{
         type: SET_CURRENT_USER,
         payload: decoded,

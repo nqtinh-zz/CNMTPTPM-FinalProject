@@ -9,12 +9,10 @@ const privatekey = key.secret();
 const publickey = key.publicKey();
 router.post('/',(req,res)=>{
     const{priKey} = req.body;
-    console.log(priKey);
     const publicKey = Keypair.fromSecret(priKey).publicKey();
-    console.log(publicKey)
     const tx= {
         version: 1,
-        sequence :sequence+1,
+        sequence :Number(sequence)+1,
         memo: Buffer.alloc(0),
         operation:'create_account',
         params:{

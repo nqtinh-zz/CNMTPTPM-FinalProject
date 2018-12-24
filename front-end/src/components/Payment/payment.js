@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {sendPayment} from '../../actions/Payment/sendPaymentAction';
 import SimpleCrypto from "simple-crypto-js"; 
+import { getCurrentUser } from '../../actions/User/authAction';
 class Payment extends Component {
 
 	constructor(props) {
@@ -11,7 +12,9 @@ class Payment extends Component {
 			amount:0,
         }
 	}
-	
+	componentDidMount(){
+		this.props.getCurrentUser();
+	}
 	onHandleChange=(event)=> {
 		var target=event.target;
 		var name = target.name;
@@ -27,6 +30,7 @@ class Payment extends Component {
 		const privatekey = simpleCrypto.decrypt(sessionStorage.privateKeyEncrypt);
 		console.log(this.state);
 		this.props.sendPayment({...this.state,privatekey});
+		this.setState({publickey:'', amount:0})
 	}
 	
   render() {
@@ -86,4 +90,4 @@ function mapStateToProps(state){
 	}
 }
 
-export default connect(mapStateToProps,{sendPayment})(Payment);
+export default connect(mapStateToProps,{sendPayment,getCurrentUser})(Payment);

@@ -5,11 +5,11 @@ import { getPost, getOwnerPost } from '../../actions/User/getPost';
 import SimpleCrypto from "simple-crypto-js";
 import Spinner from '../common/Spinner';
 import {postAction} from '../../actions/User/postAction';
+import { getCurrentUser } from '../../actions/User/authAction';
 class News extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: this.props.news.name,
             content: {
                 type: '1',
                 text: ''
@@ -17,8 +17,9 @@ class News extends Component {
         }
     }
     componentDidMount() {
-        this.props.getPost(localStorage.getItem('publicKey'));
+          this.props.getPost(localStorage.getItem('publicKey'));
         this.props.getOwnerPost(localStorage.getItem('publicKey'));
+        this.props.getCurrentUser();
     }
     onHandleChange = (event) => {
         this.setState({
@@ -35,7 +36,7 @@ class News extends Component {
             text: this.state.content.text,
             keys: [],
             privatekey: privatekey,
-            sequence: localStorage.getItem('sequence')
+            sequence: this.props.auth.user.sequence
         },this.props.history);
     }
 
@@ -49,67 +50,83 @@ class News extends Component {
              if (post.length > 0 && profile !== null) {
                 
                  postItems = (post.map((item, index) => {
-                    if(item.operation ==='create_account'){
+                   return(
+                    <div className="post-content" key={index}>
+                    <div data-toggle="modal" data-target={"#" + item._id}>
+                        {/* <img src={item.cover} alt="post-image" className="img-responsive post-image" /> */}
+                        <div className="post-container " >
+                            <img src={"data:image/jpeg;base64,"+profile.user.avatar} alt="user" className="profile-photo-md pull-left" />
+                            <div className="post-detail">
+                                <div className="user-info">
+                                    <h5><a href="timeline.html" className="profile-link">{profile.user.name + " "}</a> </h5>
+                                    <p className="text-muted">{item.time}</p>
+                                </div>
+                                {/* <div className="reaction">
+                                    <p className="btn text-green"><i className="icon ion-thumbsup"></i> {item.like}</p>
+                                    <p className="btn text-red"><i className="fa fa-thumbs-down"></i>{item.dislike}</p>
+                                </div> */}
+                                <div className="line-divider"></div>
+                                <div className="post-text">
+                                    <p>{item.text} <i className="em em-anguished"></i> <i className="em em-anguished"></i> <i className="em em-anguished"></i></p>
+                                </div>
+                                <div className="line-divider"></div>
+                                {/* {item.comments.map((comment, index) => {
+                                return (
+                                    <div className="post-comment" key={index}>
+                                        <img src={comment.avatar} alt="" className="profile-photo-sm" />
+                                        <p><a href="timeline.html" className="profile-link">{comment.name} </a><i className="em em-laughing"></i> {comment.content} </p>
+                                    </div>)
+                            })} */}
 
-                    }
-                    switch(item.operation){
-                        case 'create_account':{
-
-                        }
-                            break;
-                        case 'update_account':{
-
-                        }
-                            break;
-                        case 'post':{
-
-                        }
-                            break;
-                        case 'payment':{
-                            
-                        }
-                            break;
-                    }
+                                {/* <div className="post-comment">
+                                <img src={this.props.avatarCurr} alt="" className="profile-photo-sm" />
+                                <input type="text" className="form-control" placeholder="Post a comment"></input>
+                            </div> */}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                   )
 
                  }))
                 }
             }
         //             return (
-        //                 <div className="post-content" key={index}>
-        //                     <div data-toggle="modal" data-target={"#" + item._id}>
-        //                         {/* <img src={item.cover} alt="post-image" className="img-responsive post-image" /> */}
-        //                         <div className="post-container " >
-        //                             <img src={"data:image/jpeg;base64,"+profile.avatar} alt="user" className="profile-photo-md pull-left" />
-        //                             <div className="post-detail">
-        //                                 <div className="user-info">
-        //                                     <h5><a href="timeline.html" className="profile-link">{profile.name + " "}</a> </h5>
-        //                                     <p className="text-muted">{item.time}</p>
-        //                                 </div>
-        //                                 {/* <div className="reaction">
-        //                                     <p className="btn text-green"><i className="icon ion-thumbsup"></i> {item.like}</p>
-        //                                     <p className="btn text-red"><i className="fa fa-thumbs-down"></i>{item.dislike}</p>
-        //                                 </div> */}
-        //                                 <div className="line-divider"></div>
-        //                                 <div className="post-text">
-        //                                     <p>{JSON.parse(item.post).text} <i className="em em-anguished"></i> <i className="em em-anguished"></i> <i className="em em-anguished"></i></p>
-        //                                 </div>
-        //                                 <div className="line-divider"></div>
-        //                                 {/* {item.comments.map((comment, index) => {
-        //                                 return (
-        //                                     <div className="post-comment" key={index}>
-        //                                         <img src={comment.avatar} alt="" className="profile-photo-sm" />
-        //                                         <p><a href="timeline.html" className="profile-link">{comment.name} </a><i className="em em-laughing"></i> {comment.content} </p>
-        //                                     </div>)
-        //                             })} */}
+                        // <div className="post-content" key={index}>
+                        //     <div data-toggle="modal" data-target={"#" + item._id}>
+                        //         {/* <img src={item.cover} alt="post-image" className="img-responsive post-image" /> */}
+                        //         <div className="post-container " >
+                        //             <img src={"data:image/jpeg;base64,"+profile.avatar} alt="user" className="profile-photo-md pull-left" />
+                        //             <div className="post-detail">
+                        //                 <div className="user-info">
+                        //                     <h5><a href="timeline.html" className="profile-link">{profile.name + " "}</a> </h5>
+                        //                     <p className="text-muted">{item.time}</p>
+                        //                 </div>
+                        //                 {/* <div className="reaction">
+                        //                     <p className="btn text-green"><i className="icon ion-thumbsup"></i> {item.like}</p>
+                        //                     <p className="btn text-red"><i className="fa fa-thumbs-down"></i>{item.dislike}</p>
+                        //                 </div> */}
+                        //                 <div className="line-divider"></div>
+                        //                 <div className="post-text">
+                        //                     <p>{JSON.parse(item.post).text} <i className="em em-anguished"></i> <i className="em em-anguished"></i> <i className="em em-anguished"></i></p>
+                        //                 </div>
+                        //                 <div className="line-divider"></div>
+                        //                 {/* {item.comments.map((comment, index) => {
+                        //                 return (
+                        //                     <div className="post-comment" key={index}>
+                        //                         <img src={comment.avatar} alt="" className="profile-photo-sm" />
+                        //                         <p><a href="timeline.html" className="profile-link">{comment.name} </a><i className="em em-laughing"></i> {comment.content} </p>
+                        //                     </div>)
+                        //             })} */}
 
-        //                                 {/* <div className="post-comment">
-        //                                 <img src={this.props.avatarCurr} alt="" className="profile-photo-sm" />
-        //                                 <input type="text" className="form-control" placeholder="Post a comment"></input>
-        //                             </div> */}
-        //                             </div>
-        //                         </div>
-        //                     </div>
-        //                 </div>
+                        //                 {/* <div className="post-comment">
+                        //                 <img src={this.props.avatarCurr} alt="" className="profile-photo-sm" />
+                        //                 <input type="text" className="form-control" placeholder="Post a comment"></input>
+                        //             </div> */}
+                        //             </div>
+                        //         </div>
+                        //     </div>
+                        // </div>
         //             )
         //         }))
         //     } else {
@@ -145,7 +162,7 @@ class News extends Component {
                             </form>
                         </div>
                     </div>
-                   {/* {postItems} */}
+                   {postItems}
                 </div>
             </div>
         );
@@ -154,13 +171,12 @@ class News extends Component {
 
 function mapStateToProps(state) {
     return {
-        news: state.personalReducer,
         auth: state.authReducer,
         post: state.postReducer,
     }
 }
 
-export default connect(mapStateToProps, { getPost , getOwnerPost,postAction})(withRouter(News));
+export default connect(mapStateToProps, { getPost , getOwnerPost,postAction,getCurrentUser})(withRouter(News));
 
 
 
