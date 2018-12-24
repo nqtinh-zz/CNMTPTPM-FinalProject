@@ -3,16 +3,16 @@ const Schema = mongoose.Schema;
 // Create Schema
 const AllTxSchema = new Schema({
     publicKey: {
-        type: String,
-        
+        type: String,  
+    },
+    hash: {
+        type: String,  
     },
     address: {
-        type: String,
-       
+        type: String,  
     },
     operation: {
-        type: String,
-       
+        type: String, 
     },
     height: {
         type: Number,
@@ -22,34 +22,33 @@ const AllTxSchema = new Schema({
     },
     tx: {
         type: String,
-        allowNull: false,
     },
     bytetx: {
         type: Number,
     },
     time: {
         type: Date,
-        allowNull: false,
     },
     sequence: {
         type: Number,
-        allowNull: false,
+    },
+    reaction: {
+        type: Number,
     },
     key: {
         type: String,
-        allowNull: false,
     },
     picture: {
         type: String,
-        allowNull: false,
     },
     name: {
         type: String,
-        allowNull: false,
     },
     post: {
         type: String,
-        allowNull: false,
+    },
+    comment: {
+        type: String,
     },
     following: {
         type: Array,
