@@ -11,6 +11,9 @@ const AllTxSchema = new Schema({
     address: {
         type: String,  
     },
+    addressinteract: {
+        type: String,  
+    },
     operation: {
         type: String, 
     },

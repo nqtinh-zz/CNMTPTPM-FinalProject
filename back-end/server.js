@@ -19,7 +19,7 @@ const getDataT = (i) => {
   if (i == 6) return infoaccount.getFollowing();
   if (i == 7) return infoaccount.getFullTime();
   if (i == 8) return infoaccount.getEnergy();
-  
+  if (i == 9) setTimeout(demo,50000); return ;
 }
 
 function processArray(array) {
@@ -32,17 +32,17 @@ function processArray(array) {
 }
 
 const array = [];
-for (let i = 1; i <= 8; i++) {
+for (let i = 1; i <= 9; i++) {
   array.push(i);
 }
 
 const demo = () => {
+  console.log("Start: "+(new Date()).toLocaleDateString()+" "+(new Date()).toLocaleTimeString());
   processArray(array).then(function (result) {
   }, function (reason) {
       console.log(reason);
   });
 }
-
 //demo();
 
 app.get('/database', (req, res) => {

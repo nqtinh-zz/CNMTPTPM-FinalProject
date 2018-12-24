@@ -80,6 +80,7 @@ exports.createFullInfo = async () => {
                             sequence: 0,
                             operation: null,
                             address: null,
+                            addressinteract: null,
                             key: null,
                             name: null,
                             post: null,
@@ -113,7 +114,7 @@ exports.getAllInfo = async () => {
     let arr = [];
     for (let i = 0; i < data.length; i++) {
         let txs = decode(Buffer.from(data[i].tx, 'base64'));
-        let tmp, name, post, picture, amount, key, comment, reaction;
+        let tmp, name, post, picture, amount, key, comment, reaction, addressinteracttt;
         let tmpfollowing = [];
         if (txs.operation == 'update_account') {
             if (txs.params.key == 'picture') {
@@ -164,7 +165,10 @@ exports.getAllInfo = async () => {
         if (txs.operation == 'interact') {
             tmp = txs.params.content;
 
+            addressinteracttt = txs.account;
+            //console.log('address interact: '+addressinteracttt);
             try {
+
                 if (ReactContent.decode(tmp).type == 1) {
                     comment = PlainTextContent.decode(tmp).text;
                     key = ReactContent.decode(tmp).type;
@@ -179,10 +183,6 @@ exports.getAllInfo = async () => {
             }
 
         }
-        // for (let j = 0; j < tmpfollowing.length; j++) {
-
-        //     console.log(i+'--'+data[i].publicKey+'--'+tmpfollowing[j]);
-        // }
 
         arr.push(new Promise(async (resolve) => {
             await alltx.findOneAndUpdate({ height: data[i].height, publicKey: data[i].publicKey },
@@ -199,6 +199,7 @@ exports.getAllInfo = async () => {
                         amount: amount,
                         comment: comment,
                         reaction: reaction,
+                        addressinteract:addressinteracttt,
                     }
                 })
             resolve("");
@@ -311,7 +312,7 @@ exports.getEnergy = async () => {
                 let currentdate = new Date();
                 let time = currentdate.setHours(currentdate.getHours() - 7);
                 let day = (new Date(time)).getDate();
-                for (let j = 1; j < data.length; j++) {
+                for (let j = 0; j < data.length; j++) {
                     if (data[j].time && day == data[j].time.getDate() && (data[j].address == null || data[j].address != data[j].publicKey)) {
                         //console.log(element.publicKey+' '+element.bytetx + " " + +element.time);
                         //console.log(element.height+'-'+element.time.getDate());
@@ -320,7 +321,7 @@ exports.getEnergy = async () => {
                         if (B == 0) {
                             timebefore = 0;
                         }
-                        B = Math.ceil(Math.max(0, (86400 - parseFloat(timeafter - timebefore)) / 86400) * B + parseFloat(data[j].bytetx));
+                        B = Math.ceil(Math.max(0, (86400 - parseFloat(timebefore)) / 86400) * B + parseFloat(data[j].bytetx));
                         //console.log(B);}
                         timebefore = timeafter;
                     }
@@ -338,6 +339,7 @@ exports.getEnergy = async () => {
     }
 
     const result = await Promise.all(arr);
+    console.log("END: "+(new Date()).toLocaleDateString()+" "+(new Date()).toLocaleTimeString());
     console.log("DONE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     return result;
 };

@@ -20,6 +20,14 @@ const UserSchema = new Schema({
         allowNull: false,
         defaultValue: 0,
     },
+    interaction: [{
+        hash: String,
+        mention: [{
+            address: String,
+            comment: String,
+            reactions: Number,
+        }],
+    }],
     sequence: {
         type: Number,
         allowNull: false,
