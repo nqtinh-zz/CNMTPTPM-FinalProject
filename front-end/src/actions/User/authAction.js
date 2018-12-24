@@ -5,6 +5,7 @@ import setAuthToken from '../../config/setAuthToken';
 import {SET_CURRENT_USER} from '../../config/config';
 import SimpleCrypto from "simple-crypto-js"; 
 export const signNewAccount = (key)=>dispatch=>{
+    console.log(key);
     axios.post('/api/register',key)
     .then(res=>dispatch({
         type:"REGISTER_ACTION",
@@ -46,6 +47,7 @@ export const loginUser = ( privateKey ) =>dispatch=>{
             setAuthToken(token);
             //Decode token to get user data
             const decoded = jwt_decode(token);
+            localStorage.setItem('sequence',decoded.sequence);
             //set current user
             dispatch(setCurrentUser(decoded));
         })

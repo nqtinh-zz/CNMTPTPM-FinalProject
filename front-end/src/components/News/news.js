@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getPost } from '../../actions/User/getPost';
+import { withRouter } from 'react-router-dom';
+import { getPost, getOwnerPost } from '../../actions/User/getPost';
 import SimpleCrypto from "simple-crypto-js";
 import Spinner from '../common/Spinner';
-
+import {postAction} from '../../actions/User/postAction';
 class News extends Component {
     constructor(props) {
         super(props);
@@ -17,6 +18,7 @@ class News extends Component {
     }
     componentDidMount() {
         this.props.getPost(localStorage.getItem('publicKey'));
+        this.props.getOwnerPost(localStorage.getItem('publicKey'));
     }
     onHandleChange = (event) => {
         this.setState({
@@ -26,67 +28,94 @@ class News extends Component {
 
     onHandleSubmit = (event) => {
         event.preventDefault();
-        const simpleCrypto = new SimpleCrypto(sessionStorage.keyEncrypt);
-        const privatekey = simpleCrypto.decrypt(sessionStorage.privateKeyEncrypt);
+        const simpleCrypto = new SimpleCrypto(sessionStorage.getItem('keyDecrypt'));
+        const privatekey = simpleCrypto.decrypt(sessionStorage.getItem('privateKeyEncrypt'));
         this.props.postAction({
             type: 1,
             text: this.state.content.text,
             keys: [],
-            privatekey: privatekey
-        });
+            privatekey: privatekey,
+            sequence: localStorage.getItem('sequence')
+        },this.props.history);
     }
 
     render() {
-        const { post, loading } = this.props.post;
-        let postItems;
-        if (post === null || loading) {
-            postItems = <Spinner />
-        } else {
-            if (post.length > 0) {
+         const { post, loading, profile } = this.props.post;
+        // console.log(profile);
+         let postItems;
+         if (post === null || loading) {
+             postItems = <Spinner />
+         } else {
+             if (post.length > 0 && profile !== null) {
                 
-                postItems = (post.map((item, index) => {
-                    return (
-                        <div className="post-content" key={index}>
-                            <div data-toggle="modal" data-target={"#" + item._id}>
-                                {/* <img src={item.cover} alt="post-image" className="img-responsive post-image" /> */}
-                                <div className="post-container " >
-                                    <img src={item.picture} alt="user" className="profile-photo-md pull-left" />
-                                    <div className="post-detail">
-                                        <div className="user-info">
-                                            <h5><a href="timeline.html" className="profile-link">{item.name + " "}</a> </h5>
-                                            <p className="text-muted">{item.time}</p>
-                                        </div>
-                                        {/* <div className="reaction">
-                                            <p className="btn text-green"><i className="icon ion-thumbsup"></i> {item.like}</p>
-                                            <p className="btn text-red"><i className="fa fa-thumbs-down"></i>{item.dislike}</p>
-                                        </div> */}
-                                        <div className="line-divider"></div>
-                                        <div className="post-text">
-                                            <p>{JSON.parse(item.post).text} <i className="em em-anguished"></i> <i className="em em-anguished"></i> <i className="em em-anguished"></i></p>
-                                        </div>
-                                        <div className="line-divider"></div>
-                                        {/* {item.comments.map((comment, index) => {
-                                        return (
-                                            <div className="post-comment" key={index}>
-                                                <img src={comment.avatar} alt="" className="profile-photo-sm" />
-                                                <p><a href="timeline.html" className="profile-link">{comment.name} </a><i className="em em-laughing"></i> {comment.content} </p>
-                                            </div>)
-                                    })} */}
+                 postItems = (post.map((item, index) => {
+                    if(item.operation ==='create_account'){
 
-                                        {/* <div className="post-comment">
-                                        <img src={this.props.avatarCurr} alt="" className="profile-photo-sm" />
-                                        <input type="text" className="form-control" placeholder="Post a comment"></input>
-                                    </div> */}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                }))
-            } else {
-                postItems = <h4>No Post Found...</h4>
+                    }
+                    switch(item.operation){
+                        case 'create_account':{
+
+                        }
+                            break;
+                        case 'update_account':{
+
+                        }
+                            break;
+                        case 'post':{
+
+                        }
+                            break;
+                        case 'payment':{
+                            
+                        }
+                            break;
+                    }
+
+                 }))
+                }
             }
-        }
+        //             return (
+        //                 <div className="post-content" key={index}>
+        //                     <div data-toggle="modal" data-target={"#" + item._id}>
+        //                         {/* <img src={item.cover} alt="post-image" className="img-responsive post-image" /> */}
+        //                         <div className="post-container " >
+        //                             <img src={"data:image/jpeg;base64,"+profile.avatar} alt="user" className="profile-photo-md pull-left" />
+        //                             <div className="post-detail">
+        //                                 <div className="user-info">
+        //                                     <h5><a href="timeline.html" className="profile-link">{profile.name + " "}</a> </h5>
+        //                                     <p className="text-muted">{item.time}</p>
+        //                                 </div>
+        //                                 {/* <div className="reaction">
+        //                                     <p className="btn text-green"><i className="icon ion-thumbsup"></i> {item.like}</p>
+        //                                     <p className="btn text-red"><i className="fa fa-thumbs-down"></i>{item.dislike}</p>
+        //                                 </div> */}
+        //                                 <div className="line-divider"></div>
+        //                                 <div className="post-text">
+        //                                     <p>{JSON.parse(item.post).text} <i className="em em-anguished"></i> <i className="em em-anguished"></i> <i className="em em-anguished"></i></p>
+        //                                 </div>
+        //                                 <div className="line-divider"></div>
+        //                                 {/* {item.comments.map((comment, index) => {
+        //                                 return (
+        //                                     <div className="post-comment" key={index}>
+        //                                         <img src={comment.avatar} alt="" className="profile-photo-sm" />
+        //                                         <p><a href="timeline.html" className="profile-link">{comment.name} </a><i className="em em-laughing"></i> {comment.content} </p>
+        //                                     </div>)
+        //                             })} */}
+
+        //                                 {/* <div className="post-comment">
+        //                                 <img src={this.props.avatarCurr} alt="" className="profile-photo-sm" />
+        //                                 <input type="text" className="form-control" placeholder="Post a comment"></input>
+        //                             </div> */}
+        //                             </div>
+        //                         </div>
+        //                     </div>
+        //                 </div>
+        //             )
+        //         }))
+        //     } else {
+        //         postItems = <h4>No Post Found...</h4>
+        //     }
+        // }
         return (
             <div>
                 {/* <div className="col-md-3"></div> */}
@@ -116,7 +145,7 @@ class News extends Component {
                             </form>
                         </div>
                     </div>
-                   {postItems}
+                   {/* {postItems} */}
                 </div>
             </div>
         );
@@ -131,7 +160,7 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { getPost })(News);
+export default connect(mapStateToProps, { getPost , getOwnerPost,postAction})(withRouter(News));
 
 
 

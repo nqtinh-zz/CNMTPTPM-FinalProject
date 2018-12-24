@@ -16,6 +16,7 @@ class Register extends Component {
             priKey:'',
         }
         this.onClick = this.onClick.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
     handleChange(event) {
         const priKey = event.target.value;
@@ -48,11 +49,11 @@ class Register extends Component {
                 <div className="container-log"><div className="signup-content">
                     <div className="signup-form">
                         <h2 className="form-title">Sign up</h2>
-                        <form onClick={this.onClick} className="register-form" id="register-form">
+                        <form onSubmit={this.onClick} className="register-form" id="register-form">
                             <div className="form-group-log">
                                 <label className="labelForm" className="label-agree-term"><span><span></span></span>After click Register , we will send you your Public and PrivateKey.</label>
                                 <label className="labelForm" className="label-agree-term"><span><span></span></span>You must save your private key and never public it.</label>
-                                <input className="inputForm" onChange={this.handleChange} value={this.state.priKey} type="password"  placeholder="Import your Private key" />
+                                <input className="inputForm" onChange={this.handleChange} value={this.state.priKey} type="text" /*name="your_name" id="your_name"*/ placeholder="Import your Private key" />
                             </div>
                             <div className="form-group-log form-button">
                                 <input className="inputForm" type="submit" name="signup" id="signup" className="form-submit" value="Register" />

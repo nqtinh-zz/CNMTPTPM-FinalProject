@@ -7,7 +7,6 @@ const keys = require('../../../config/keys');
 router.post('/', (req,res)=>{
     //req.body.secretKey <- from login react
     const{publicKey} = req.body;
-    console.log(publicKey);
     User.findOne({publicKey: publicKey.publicKey})
         .then(user=>{
             if(!user){

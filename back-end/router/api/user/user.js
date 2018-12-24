@@ -1,10 +1,13 @@
 const express = require('express');
 const passport = require('passport');
+const AllTx = require('../../../models/alltx.js');
 const router = express.Router();
 const { Keypair } = require('stellar-base');
 const User = require('../../../models/users');
 const jwt = require('jsonwebtoken');
 const keys = require('../../../config/keys');
+const {
+    decode } = require('../../../lib/transaction/v1');
 
 router.post('/login', (req,res)=>{
     const {publicKey} = req.body;
@@ -37,18 +40,23 @@ router.post('/login', (req,res)=>{
 })
 
 
-router.get('/current', passport.authenticate('jwt',{session:false}),(req,res)=>{
-    console.log(req.user);
-    res.json({
-        id: req.user.id,
-        name: req.user.name,
-        avatar: req.user.avatar,
-        publicKey: req.user.publicKey,
-        sequence: req.user.sequence,
-        balance: req.user.balance,
-        energy: req.user.energy,
-        transactions: req.user.transactions,
-    });
+router.get('/:publicKey', (req,res)=>{
+    AllTx.find({publicKey:req.params.publicKey}).sort({height:-1})
+        .then(transactions=>{
+           // console.log(transactions.length)
+           let arrResult = [];
+            for(let i = 0 ; i < transactions.length; i++){
+                const def = decode(Buffer.from(transactions[i].tx, 'base64'));
+                if(def.account === req.params.publicKey){
+                    arrResult.push(def);
+                }
+            }
+            res.json({
+                arrResult
+            });
+        })
+        .catch(err=>res.status(404).json({msg:"No user found with that publickey"}));
+    
 })
 
 
