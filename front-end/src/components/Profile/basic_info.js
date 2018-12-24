@@ -33,13 +33,14 @@ class BasicInfo extends Component {
 	}
 	onSubmit(e) {
 		e.preventDefault();
-		const simpleCrypto = new SimpleCrypto(sessionStorage.keyEncrypt);
+		const simpleCrypto = new SimpleCrypto(sessionStorage.keyDecrypt);
 		const privateKey = simpleCrypto.decrypt(sessionStorage.privateKeyEncrypt);
 		const name = this.state.firstname + " " + this.state.lastname;
 		this.props.updateAccount({
 			key: "name",
 			value: name,
-			privatekey: privateKey
+			privatekey: privateKey,
+			sequence: localStorage.getItem('sequence')
 		})
 		//console.log(name);
 	}

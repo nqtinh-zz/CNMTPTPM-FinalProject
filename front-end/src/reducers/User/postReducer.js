@@ -1,26 +1,31 @@
-import { GET_POST, POST_LOADING , CLEAR_CURRENT_POST} from '../../config/config';
+import { GET_POST, POST_LOADING, GET_OWNER_POST, CLEAR_CURRENT_POST } from '../../config/config';
 
 
 const initialState = {
     post: null,
-    // profiles: null,
+    profile: null,
     loading: false,
 }
-export default function(state = initialState, action){
-    switch(action.type){
+export default function (state = initialState, action) {
+    switch (action.type) {
         case POST_LOADING:
             return {
                 ...state,
-                loading:true
+                loading: true
             };
         case GET_POST:
-            return{
+            return {
                 ...state,
                 post: action.payload,
                 loading: false
             };
+        case GET_OWNER_POST:
+            return {
+                ...state,
+                profile: action.payload,
+            };
         case CLEAR_CURRENT_POST:
-            return{
+            return {
                 ...state,
                 post: null,
             }
