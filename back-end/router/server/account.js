@@ -61,7 +61,7 @@ exports.createFullInfo = async () => {
         let j = data[i].lastpage;
         let k = data[i].lastposition;
         let page;
-        if((count%30)==0) page = parseInt(count / 30);
+        if ((count % 30) == 0) page = parseInt(count / 30);
         else page = parseInt(count / 30) + 1;
         for (j; j <= page; j++) {
             let blocks = await getAccount(tmp, j);
@@ -98,7 +98,7 @@ exports.createFullInfo = async () => {
             posi = txs.length;
         }
         if (posi == 30) posi = 0;
-        if((count%30)==0) page = parseInt(count / 30)+1;
+        if ((count % 30) == 0) page = parseInt(count / 30) + 1;
         await users.findOneAndUpdate({ publicKey: data[i].publicKey },
             { $set: { lastpage: page, lastposition: posi } });
 
@@ -144,11 +144,16 @@ exports.getAllInfo = async () => {
                     }
                 }
             }
-
         }
-        if (txs.operation == 'post' && txs.params.value == null) {
+        if (txs.operation == 'post') {
             tmp = txs.params.content;
-            post = tmp.toString();
+            try {
+                post = PlainTextContent.decode(tmp).text;
+                key = PlainTextContent.decode(tmp).type;
+            } catch (err) {
+                console.log("Fail");
+
+            }
         }
         if (txs.operation == 'payment') {
             amount = txs.params.amount;
@@ -158,7 +163,7 @@ exports.getAllInfo = async () => {
         }
         if (txs.operation == 'interact') {
             tmp = txs.params.content;
-            
+
             try {
                 if (ReactContent.decode(tmp).type == 1) {
                     comment = PlainTextContent.decode(tmp).text;
