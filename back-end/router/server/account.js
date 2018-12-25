@@ -8,38 +8,42 @@ var BLOCK = parseFloat(22020096 * 86400 / 9007199254740991);
 
 const getData = async (keyy) => {
     try {
-        return await axios.get('https://komodo.forest.network/tx_search?query=%22account=%27' + keyy + '%27%22')
+        return await axios.get('https://gorilla.forest.network//tx_search?query="account=%27' + keyy + '%27"')
     } catch (error) {
-        console.error(error)
+        //console.error(error)
     }
 }
 const getAccount = async (keyy, page) => {
     try {
-        return await axios.get('https://komodo.forest.network/tx_search?query=%22account=%27' + keyy + '%27%22&page=' + page)
+        return await axios.get('https://gorilla.forest.network//tx_search?query="account=%27' + keyy + '%27"&&page=' + page)
     } catch (error) {
-        console.error(error)
+        //console.error(error)
     }
 }
 
 //chạy lấy totalcount sau đó chia trang get dữ liệu đúng theo txsearch
 exports.getTransactions = async () => {
     var key = [];
-    const data = await users.find({});
-    for (let i = 0; i < data.length; i++) {
-        let tmp = data[i].publicKey;
+    const user = await users.find({});
+    for (let i = 0; i < user.length; i++) {
+        let tmp = user[i].publicKey;
         key.push(tmp);
     }
     let arr = [];
     for (let i = 0; i < key.length; i++) {
-        let keyy = key[i];
+        let total_count;
         arr.push(new Promise(async (resolve, reject) => {
-            const blocks = await getData(keyy);
-            let total_count = blocks.data.result.total_count;
-            try {
-                await users.findOneAndUpdate({ publicKey: keyy }, { $set: { transactions: total_count } });
-            } catch (error) {
+            const blocks = await getData(key[i]);
+            if (blocks != undefined) {
+                total_count = blocks.data.result.total_count;
+                try {
+                    await users.findOneAndUpdate({ publicKey: key[i] }, { $set: { transactions: total_count } });
+                } catch (error) {
 
+                }
             }
+            else { i = i - 1 }
+
             resolve("");
         }));
     }
@@ -199,7 +203,7 @@ exports.getAllInfo = async () => {
                         amount: amount,
                         comment: comment,
                         reaction: reaction,
-                        addressinteract:addressinteracttt,
+                        addressinteract: addressinteracttt,
                     }
                 })
             resolve("");
@@ -339,7 +343,7 @@ exports.getEnergy = async () => {
     }
 
     const result = await Promise.all(arr);
-    console.log("END: "+(new Date()).toLocaleDateString()+" "+(new Date()).toLocaleTimeString());
+    console.log("END: " + (new Date()).toLocaleDateString() + " " + (new Date()).toLocaleTimeString());
     console.log("DONE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     return result;
 };
