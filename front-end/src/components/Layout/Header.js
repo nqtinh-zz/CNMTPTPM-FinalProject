@@ -3,7 +3,33 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/User/authAction';
+import {sendSearch} from '../../actions/Search/Search';
+
 class Header extends Component {
+
+           constructor(props) {
+        super(props);
+        this.state = {
+            dataSearch:''
+            
+        }
+        }
+
+
+    onHandleChange=(event)=> {
+        var target=event.target;
+        var name = target.name;
+        var value = target.value;
+        this.setState({
+            [name]:value
+        });
+    }
+
+    onHandleSubmit=(event)=>{
+        event.preventDefault();
+        this.props.sendSearch({...this.state});
+    }   
+
     onLogoutClick(e) {
         e.preventDefault();
         this.props.logoutUser();
@@ -50,12 +76,15 @@ class Header extends Component {
                                         </a>
                                     </li>
                                 </ul>
-                                {/* <form className="navbar-form navbar-right hidden-sm">
+                                
+                                <form onSubmit={this.onHandleSubmit} className="navbar-form navbar-right hidden-sm">
                                     <div className="form-group">
-                                        <input type="text" className="form-control" placeholder="Search "></input>
-                                        <i className="icon ion-android-search" ></i>
+                                        <input onChange={this.onHandleChange} id="dataSearch" name="dataSearch" className="form-control" placeholder="Search "></input>
+                                        <button type="submit" className="btn btn-primary">tìm kiếm</button>
                                     </div>
-                                </form> */}
+                                </form>
+
+
                             </div>
                         </div>
                     </nav>
@@ -106,4 +135,4 @@ Header.propTypes = {
 const mapStateToProps = (state) => ({
     auth: state.authReducer,
 })
-export default connect(mapStateToProps, { logoutUser /*,clearCurrentProfile*/ })(Header);
+export default connect(mapStateToProps, { logoutUser /*,clearCurrentProfile*/,sendSearch })(Header);
