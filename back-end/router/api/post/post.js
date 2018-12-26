@@ -34,7 +34,6 @@ router.post('/getUserPost', passport.authenticate('jwt', { session: false }), (r
   AllTxSchema.find({ publicKey: req.body.publicKey }).sort({ height: -1 })
     .then(data => {
       let dataRes = [];
-      console.log(data.length)
       for (let i = 0; i < data.length; i++) {
         let content = {};
         switch (data[i].operation) {
@@ -42,6 +41,7 @@ router.post('/getUserPost', passport.authenticate('jwt', { session: false }), (r
             content={
               text:"Created account with key : "+data[i].address,
               time: data[i].time,
+              hash: data[i].hash
             }
             dataRes.push(content);
             break;
@@ -49,7 +49,8 @@ router.post('/getUserPost', passport.authenticate('jwt', { session: false }), (r
           const tx = decode(Buffer.from(data[i].tx, 'base64'));
           content={
             text:"Sent "+ tx.params.amount/100000000+" to "+tx.params.address,
-            time: data[i].time
+            time: data[i].time,
+            hash: data[i].hash
           }
             break;
           case "update_account": {
@@ -59,14 +60,16 @@ router.post('/getUserPost', passport.authenticate('jwt', { session: false }), (r
               case "name":
                 content = {
                   text: "Updated name to " + tx.params.value.toString(),
-                  time: data[i].time
+                  time: data[i].time,
+                  hash: data[i].hash
                 }
                 dataRes.push(content);
                 break;
               case "picture":
                 content = {
                   text: "Updated picture",
-                  time: data[i].time
+                  time: data[i].time,
+                  hash: data[i].hash
                 }
                 dataRes.push(content);
                 break;
@@ -78,11 +81,12 @@ router.post('/getUserPost', passport.authenticate('jwt', { session: false }), (r
                     const address = base32.encode(addresses[j]);
                    text+= address+", "
                   }
-                  dataRes.push({text, time: data[i].time});
+                  dataRes.push({text, time: data[i].time, hash: data[i].hash});
                 }else{
                   dataRes.push({
                     text:"Follow bay ba",
-                    time: data[i].time
+                    time: data[i].time,
+                    hash: data[i].hash
                   })
                 }
                 
@@ -93,14 +97,14 @@ router.post('/getUserPost', passport.authenticate('jwt', { session: false }), (r
           case "post": 
             content={
               text: "Posted "+ data[i].post,
-              time: data[i].time
+              time: data[i].time,
+              hash: data[i].hash
             }
             dataRes.push(content);
             break;
         }
       }
-      console.log(dataRes.length)
-      res.send(data);
+      res.send(dataRes);
     })
 })
 

@@ -19,13 +19,13 @@ class ListFollowing extends Component {
                                 return (
                                     <div className="col-md-6 col-sm-6">
                                         <div className="friend-card">
-                                            <img src={item.cover} alt="profile-cover" className="img-responsive cover" />
+                                            {/* <img src={item.cover} alt="profile-cover" className="img-responsive cover" /> */}
+                                            <br /> <br/> <br />
                                             <div className="card-info">
                                                 <img src={item.avatar} alt="user" className="profile-photo-lg" />
                                                 <div className="friend-info">
-                                                    <a href="/" className="pull-right text-green">{item.friendOrNot ? 'My Friend' : 'Add Friend'}</a>
+                                                    <a href="/" className="pull-right text-red">Unfollow</a>
                                                     <h5><a href="timeline.html" className="profile-link">{item.name}</a></h5>
-                                                    <p>{item.carrer}</p>
                                                 </div>
                                             </div>
                                         </div>
