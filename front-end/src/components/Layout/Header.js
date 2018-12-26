@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/User/authAction';
-import {sendSearch} from '../../actions/Search/Search';
+import {sendSearch, linkSearch} from '../../actions/Search/Search';
 
 class Header extends Component {
 
@@ -28,6 +28,7 @@ class Header extends Component {
     onHandleSubmit=(event)=>{
         event.preventDefault();
         this.props.sendSearch({...this.state});
+        this.props.linkSearch(this.props.history)
     }   
 
     onLogoutClick(e) {
@@ -80,7 +81,9 @@ class Header extends Component {
                                 <form onSubmit={this.onHandleSubmit} className="navbar-form navbar-right hidden-sm">
                                     <div className="form-group">
                                         <input onChange={this.onHandleChange} id="dataSearch" name="dataSearch" className="form-control" placeholder="Search "></input>
+                                        
                                         <button type="submit" className="btn btn-primary">tìm kiếm</button>
+                                       
                                     </div>
                                 </form>
 
@@ -135,4 +138,4 @@ Header.propTypes = {
 const mapStateToProps = (state) => ({
     auth: state.authReducer,
 })
-export default connect(mapStateToProps, { logoutUser /*,clearCurrentProfile*/,sendSearch })(Header);
+export default connect(mapStateToProps, { logoutUser /*,clearCurrentProfile*/,sendSearch,linkSearch })(withRouter(Header));

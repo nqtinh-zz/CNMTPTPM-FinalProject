@@ -17,6 +17,8 @@ import Payment from './views/Payment';
 import Newfeed from './components/Newfeed/Newfeed';
 import Account from './views/Account';
 import Following from './views/Following';
+import Search from './components/Search/search';
+
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
   const decoded = jwt_decode(localStorage.jwtToken);
@@ -59,6 +61,9 @@ class App extends Component {
         </Switch>
         <Switch>
           <PrivateRoute exact path="/newfeed" name="Newfeed" component={Newfeed} />
+        </Switch>
+        <Switch>
+          <PrivateRoute exact path="/search" name="Newfeed" component={Search} />
         </Switch>
         </div>
       </Router>
