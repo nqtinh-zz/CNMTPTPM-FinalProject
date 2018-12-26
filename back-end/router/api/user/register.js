@@ -26,7 +26,6 @@ router.post('/',(req,res)=>{
         .then(data=>console.log("good"));
     res.send({privatekey,publickey});
     })
-
 router.get('/',(req,res)=>{
     res.send({privatekey,publickey});
 })

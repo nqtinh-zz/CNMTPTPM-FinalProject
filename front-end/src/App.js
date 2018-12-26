@@ -14,6 +14,7 @@ import Personal from './components/PersonalPage/Personal';
 import Tweets from './views/Tweets'
 import EditProfile from './views/EditProfile';
 import Payment from './views/Payment';
+import HistoryPayment from './views/HistoryPayment';
 import Newfeed from './components/Newfeed/Newfeed';
 import Account from './views/Account';
 import Following from './views/Following';
@@ -64,6 +65,9 @@ class App extends Component {
         </Switch>
         <Switch>
           <PrivateRoute exact path="/search" name="Newfeed" component={Search} />
+        </Switch>
+        <Switch>
+          <PrivateRoute exact path="/historyPayment" name="Newfeed" component={HistoryPayment} />
         </Switch>
         </div>
       </Router>

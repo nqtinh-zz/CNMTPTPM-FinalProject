@@ -42,7 +42,7 @@ class Account extends Component {
 	                        <br></br>
 							<div className="row">
 	                            <div className="form-group col-xs-12">
-	                                <p>Bandwidth :  {this.props.auth.user.bandwidth}</p>
+	                                <p>Bandwidth :  {this.props.auth.user.energy}</p>
 	                            </div>
 	                        </div>
 							<br></br>

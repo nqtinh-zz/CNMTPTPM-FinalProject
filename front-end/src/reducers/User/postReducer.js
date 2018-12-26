@@ -1,4 +1,4 @@
-import { GET_POST, POST_LOADING, GET_OWNER_POST, CLEAR_CURRENT_POST } from '../../config/config';
+import { GET_POST, POST_LOADING, GET_OWNER_POST, CLEAR_CURRENT_POST,GET_PAYMENT_HISTORY } from '../../config/config';
 
 
 const initialState = {
@@ -14,6 +14,12 @@ export default function (state = initialState, action) {
                 loading: true
             };
         case GET_POST:
+            return {
+                ...state,
+                post: action.payload,
+                loading: false
+            };
+            case GET_PAYMENT_HISTORY:
             return {
                 ...state,
                 post: action.payload,

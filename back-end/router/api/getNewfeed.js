@@ -33,6 +33,7 @@ router.post('/getNewfeed', passport.authenticate('jwt', { session: false }), (re
               hash: data[i].hash,
               publicKey: data[i].publicKey
             }
+            dataRes.push(content)
               break;
             case "update_account": {
               const tx = decode(Buffer.from(data[i].tx, 'base64'));

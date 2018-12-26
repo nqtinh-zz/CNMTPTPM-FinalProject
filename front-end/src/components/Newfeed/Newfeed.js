@@ -5,6 +5,9 @@ import { getNewfeed, getNewfeedUser } from '../../actions/Newfeed/getNewfeed';
 import { getCurrentUser } from '../../actions/User/authAction';
 import PostCard from './PostCard';
 import InfiniteScroll from 'react-infinite-scroller';
+import SimpleCrypto from "simple-crypto-js";
+import {sendComment} from '../../actions/Comment/sendComment';
+import { withRouter } from 'react-router-dom'
 
 class Newfeed extends Component {
   constructor(props) {
@@ -15,11 +18,11 @@ class Newfeed extends Component {
       curPage: 1,
       firstVar: 0,
       lastVar: 10,
+      comment:'',
     }
     this.loadItems = this.loadItems.bind(this);
   }
   loadItems() {
-    console.log("abc")
     if (this.props.newfeed.post) {
       let res = [];
       for (let i = this.state.firstVar; i < this.state.lastVar; i++) {
@@ -37,6 +40,28 @@ class Newfeed extends Component {
       }
     }
   }
+  onSubmitComment= (hash,event)=>{
+    console.log(sessionStorage.getItem('privateKeyEncrypt')+"abc")
+    event.preventDefault();
+    this.props.sendComment({
+        type: 1,
+        text: this.state.comment,
+        hash,
+        privatekeyHash: sessionStorage.getItem('privateKeyEncrypt'),
+        sequence: this.props.auth.user.sequence
+    });
+    this.setState({comment:''})
+    
+
+}
+onCommentChange= (event,test)=>{
+       
+  this.setState({
+      comment: event,
+    
+      
+  })
+}
   componentDidMount() {
     this.props.getNewfeed(this.props.auth.user.following);
     this.props.getNewfeedUser(this.props.auth.user.following);
@@ -53,9 +78,16 @@ class Newfeed extends Component {
      newfeedItem= this.state.postList.map((item, i) => {
         for(let i = 0; i < this.props.newfeed.profile.length;i++){
           if(item.publicKey === this.props.newfeed.profile[i].publicKey){
-            return (<PostCard key={i} text={item.text} time={item.time} 
+            return (<div><PostCard key={i} text={item.text} time={item.time} 
               name={this.props.newfeed.profile[i].name} 
-              avatar={this.props.newfeed.profile[i].avatar} />)
+              avatar={this.props.newfeed.profile[i].avatar} />
+              <form onSubmit={this.onSubmitComment.bind(this,item.hash)}>
+              <div className="post-comment">
+                  <img src={"data:image/jpeg;base64," + this.props.auth.user.avatar} alt="" className="profile-photo-sm" />
+                  <input type="text"   className="form-control" placeholder="Post a comment" id={item.publicKey} name={item.publicKey} onChange={e => this.onCommentChange(e.target.value,e.target.name)}  ></input>
+              </div>
+              <button type="submit"  className="btn btn-primary pull-right">Comment</button>
+          </form> </div>)
           } 
         }
       })
@@ -86,4 +118,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { getNewfeed, getCurrentUser, getNewfeedUser })(Newfeed);
+export default connect(mapStateToProps, { getNewfeed, getCurrentUser, getNewfeedUser,sendComment })(Newfeed);

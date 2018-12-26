@@ -40,9 +40,6 @@ class News extends Component {
     }
     onSubmitComment= (hash,event)=>{
         event.preventDefault();
-        const simpleCrypto = new SimpleCrypto(sessionStorage.getItem('keyDecrypt'));
-        const privatekey = simpleCrypto.decrypt(sessionStorage.getItem('privateKeyEncrypt'));
-       
         this.props.sendComment({
             type: 1,
             text: this.state.comment,

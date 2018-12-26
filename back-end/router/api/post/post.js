@@ -53,6 +53,7 @@ router.post('/getUserPost', passport.authenticate('jwt', { session: false }), (r
             time: data[i].time,
             hash: data[i].hash
           }
+          dataRes.push(content);
             break;
           case "update_account": {
             const tx = decode(Buffer.from(data[i].tx, 'base64'));
@@ -109,4 +110,34 @@ router.post('/getUserPost', passport.authenticate('jwt', { session: false }), (r
     })
 })
 
+router.post('/getPaymentHistory', passport.authenticate('jwt', { session: false }), (req, res) => {
+  AllTxSchema.find({ publicKey: req.body.publicKey }).sort({ height: -1 })
+    .then(data => {
+      let dataRes = [];
+      for (let i = 0; i < data.length; i++) {
+        let content = {};
+        switch (data[i].operation) {
+          case "payment":
+          const tx = decode(Buffer.from(data[i].tx, 'base64'));
+          if(data[i].address ===data[i].publicKey){
+            content={
+              text:"GAO4J5RXQHUVVONBDQZSRTBC42E3EIK66WZA5ZSGKMFCS6UNYMZSIDBI sent "+ tx.params.amount/100000000+" TRE to you",
+              time: data[i].time,
+              hash: data[i].hash
+            }
+          }else{
+            content={
+              text:"Sent "+ tx.params.amount/100000000+" TRE to "+tx.params.address,
+              time: data[i].time,
+              hash: data[i].hash
+            }
+          }
+          
+          dataRes.push(content);
+            break;
+        }
+      }
+      res.send(dataRes);
+    })
+})
 module.exports = router;
