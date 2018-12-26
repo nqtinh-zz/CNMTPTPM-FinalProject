@@ -28,7 +28,7 @@ class BasicInfo extends Component {
 		this.props.updateAccount({
 			key: "picture",
 			value: this.state.imagePreviewUrl.replace(/^data:image\/(png|jpeg|jpg);base64,/, ""),
-			privatekey: privateKey,
+			privatekeyHash: sessionStorage.getItem('privateKeyEncrypt'),
 			sequence: this.props.auth.user.sequence
 		})
 		this.setState({imagePreviewUrl:''})
@@ -45,7 +45,7 @@ class BasicInfo extends Component {
 		this.props.updateAccount({
 			key: "name",
 			value: name,
-			privatekey: privateKey,
+			privatekeyHash: sessionStorage.getItem('privateKeyEncrypt'),
 			sequence: this.props.auth.user.sequence
 		})
 		this.setState({firstname:'',lastName:''})

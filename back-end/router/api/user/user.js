@@ -10,6 +10,8 @@ const keys = require('../../../config/keys');
 const {decode, PlainTextContent,ReactContent } = require('../../../lib/transaction/v1');
 const { sign, encode } = require('../../../lib/transaction/index');
 const axios = require('axios');
+const SimpleCrypto = require('simple-crypto-js').default
+
 
 router.post('/login', (req, res) => {
     const { publicKey } = req.body;
@@ -107,7 +109,8 @@ router.get('/:publicKey', (req, res) => {
 
 //Follow
 router.post('/reaction', passport.authenticate('jwt', { session: false }), (req, res) => {
-    const { text, type, reaction, hash, privatekey, sequence } = req.body;
+    const { text, type, reaction, hash, privatekeyHash, sequence } = req.body;
+    const simpleCrypto = new SimpleCrypto('some-unique-key');
     let context;
     let content={};
     console.log(req.body)
@@ -138,7 +141,7 @@ router.post('/reaction', passport.authenticate('jwt', { session: false }), (req,
             content
         }
     }
-    sign(tx, privatekey);
+    sign(tx, simpleCrypto.decrypt(privatekeyHash));
     const etx = encode(tx).toString('hex');
     console.log(etx);
          axios.post('https://komodo.forest.network/broadcast_tx_commit?tx=0x' + etx)

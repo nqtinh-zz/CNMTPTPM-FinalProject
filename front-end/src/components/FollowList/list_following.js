@@ -31,8 +31,11 @@ class ListFollowing extends Component {
         }
         console.log(data);
         this.props.updateAccount({
-			data
-		})
+            key: "followings",
+            value: arrFollowing,
+            privatekey: privateKey,
+            sequence: this.props.auth.user.sequence
+        })
     }
     render() {
         const loader = <div className="loader">Loading ...</div>;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const sendPayment = (paymentData)=>dispatch=>{
+export const sendPayment = (paymentData,history)=>dispatch=>{
     axios.post('/api/payment/send',paymentData)
-        .then(res=>console.log("Send done"))
+        .then(res=>history.push('/tweets'))
         .catch(err=>console.log(err));
 };

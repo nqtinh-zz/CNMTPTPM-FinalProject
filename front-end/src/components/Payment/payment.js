@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {sendPayment} from '../../actions/Payment/sendPaymentAction';
 import SimpleCrypto from "simple-crypto-js"; 
 import { getCurrentUser } from '../../actions/User/authAction';
+import {withRouter} from 'react-router-dom';
 class Payment extends Component {
 
 	constructor(props) {
@@ -26,10 +27,12 @@ class Payment extends Component {
 
     onHandleSubmit=(event)=>{
 		event.preventDefault();
-		const simpleCrypto = new SimpleCrypto(sessionStorage.keyEncrypt);
-		const privatekey = simpleCrypto.decrypt(sessionStorage.privateKeyEncrypt);
+		const simpleCrypto = new SimpleCrypto(sessionStorage.getItem('keyEncrypt'));
 		console.log(this.state);
-		this.props.sendPayment({...this.state,privatekey});
+		this.props.sendPayment({...this.state,
+			privatekeyHash: sessionStorage.getItem('privateKeyEncrypt'),
+			sequence: this.props.auth.user.sequence
+		}, this.props.history);
 		this.setState({publickey:'', amount:0})
 	}
 	
@@ -86,8 +89,8 @@ class Payment extends Component {
 
 function mapStateToProps(state){
 	return{
-		info: state.personInfoReducer,
+		auth: state.authReducer,
 	}
 }
 
-export default connect(mapStateToProps,{sendPayment,getCurrentUser})(Payment);
+export default connect(mapStateToProps,{sendPayment,getCurrentUser})(withRouter(Payment));

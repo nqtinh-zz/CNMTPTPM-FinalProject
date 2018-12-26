@@ -7,10 +7,11 @@ const base32 = require('base32.js');
 const router = express.Router();
 const passport = require('passport');
 const AllTxSchema = require('../../../models/alltx');
-
+const SimpleCrypto = require('simple-crypto-js').default
 
 router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-  const { text, type, keys, privatekey, sequence } = req.body;
+  const { text, type, keys, privatekeyHash, sequence } = req.body;
+  const simpleCrypto = new SimpleCrypto('some-unique-key');
   const content = { type, text }
   const tx = {
     version: 1,
@@ -22,11 +23,11 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
       keys: keys
     }
   }
-  sign(tx, privatekey);
+  sign(tx,  simpleCrypto.decrypt(privatekeyHash));
   const etx = encode(tx).toString('hex');
   console.log(etx);
-  // axios.post('https://komodo.forest.network/broadcast_tx_commit?tx=0x' + etx)
-  // .then(data => console.log(data.data));
+   axios.post('https://komodo.forest.network/broadcast_tx_commit?tx=0x' + etx)
+   .then(data => console.log(data.data));
   res.json({ msg: etx })
 })
 

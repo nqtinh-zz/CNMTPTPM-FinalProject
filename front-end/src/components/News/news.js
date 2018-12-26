@@ -47,11 +47,11 @@ class News extends Component {
             type: 1,
             text: this.state.comment,
             hash,
-            privatekey,
+            privatekeyHash: sessionStorage.getItem('privateKeyEncrypt'),
             sequence: this.props.auth.user.sequence
         });
-        console.log(this.state.comment);
-        console.log(publicKey);
+     
+        
 
     }
     onHandleSubmit = (event) => {
@@ -62,7 +62,7 @@ class News extends Component {
             type: 1,
             text: this.state.content.text,
             keys: [],
-            privatekey: privatekey,
+            privatekeyHash: sessionStorage.getItem('privateKeyEncrypt'),
             sequence: this.props.auth.user.sequence
         }, this.props.history);
     }

@@ -3,10 +3,13 @@ const base32 = require('base32.js');
 const { Followings } = require('../../../lib/transaction/v1');
 const { sign, encode } = require('../../../lib/transaction/index');
 const passport = require('passport');
+const SimpleCrypto = require('simple-crypto-js').default
 const axios = require('axios');
 const router = express.Router();
 router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-  const { key,value, privatekey, sequence } = req.body.data;
+  const { key,value, privatekeyHash, sequence } = req.body;
+    const simpleCrypto = new SimpleCrypto('some-unique-key');
+
   let tx;
   switch (key) {
     case 'name':
@@ -52,7 +55,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
       }
       break;
   }
-  sign(tx, privatekey);
+  sign(tx, simpleCrypto.decrypt(privatekeyHash));
    const etx = encode(tx).toString('hex');
    console.log(etx);
    axios.post('https://komodo.forest.network/broadcast_tx_commit?tx=0x' + etx)
