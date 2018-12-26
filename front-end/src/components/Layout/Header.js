@@ -6,7 +6,6 @@ import { logoutUser } from '../../actions/User/authAction';
 import {sendSearch, linkSearch} from '../../actions/Search/Search';
 
 class Header extends Component {
-
            constructor(props) {
         super(props);
         this.state = {
@@ -14,8 +13,6 @@ class Header extends Component {
             
         }
         }
-
-
     onHandleChange=(event)=> {
         var target=event.target;
         var name = target.name;
@@ -59,6 +56,10 @@ class Header extends Component {
                                 <ul className="nav navbar-nav navbar-right main-menu">
                                     <li className="dropdown">
                                         <Link to='/tweets'><i className="icon ion-android-home"></i>  Home </Link>
+
+                                    </li>
+                                    <li className="dropdown">
+                                        <Link to='/newfeed'><i className="icon"></i>  Newfeed </Link>
 
                                     </li>
                                 </ul>

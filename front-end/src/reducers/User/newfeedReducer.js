@@ -1,4 +1,4 @@
-import { GET_NEWFEED,NEWFEED_LOADING } from '../../config/config';
+import { GET_NEWFEED,NEWFEED_LOADING, GET_NEWFEED_USER } from '../../config/config';
 
 const initialState = {
     post: null,
@@ -18,11 +18,11 @@ export default function (state = initialState, action) {
                 post: action.payload,
                 loading: false
             };
-        // case GET_OWNER_NEWFEED:
-        //     return {
-        //         ...state,
-        //         profile: action.payload,
-        //     };
+        case GET_NEWFEED_USER:
+            return {
+                ...state,
+                profile: action.payload,
+            };
         // case CLEAR_CURRENT_NEWFEED:
         //     return {
         //         ...state,

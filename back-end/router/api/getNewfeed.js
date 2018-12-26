@@ -12,7 +12,6 @@ const AllTxSchema = require('../../models/alltx');
 router.post('/getNewfeed', passport.authenticate('jwt', { session: false }), (req, res) => {
     AllTxSchema.find({ publicKey: req.body.publicKey }).sort({ height: -1 })
       .then(data => {
-          console.log(data);
         let dataRes = [];
         for (let i = 0; i < data.length; i++) {
           let content = {};
@@ -95,4 +94,12 @@ router.post('/getNewfeed', passport.authenticate('jwt', { session: false }), (re
       .catch(err=>console.log("not found"))
   })
 
+router.post('/getNewfeedUser', passport.authenticate('jwt', { session: false }), (req, res) => {
+    console.log(req.body);
+    User.find({publicKey:req.body.publicKey})
+      .then(users=>{
+        res.send(users);
+      })
+
+  })
   module.exports = router

@@ -9,3 +9,4 @@ export const GET_OWNER_POST = "GET_OWNER_POST";
 export const GET_NEWFEED = "GET_NEWFEED";
 export const NEWFEED_LOADING = "NEWFEED_LOADING";
 export const SEARCH_DATA = "SEARCH_DATA";
+export const GET_NEWFEED_USER = "GET_NEWFEED_USER";

@@ -1,10 +1,9 @@
 import axios from 'axios';
-import { GET_NEWFEED, GET_OWNER_POST,NEWFEED_LOADING } from '../../config/config';
+import { GET_NEWFEED, GET_NEWFEED_USER,NEWFEED_LOADING } from '../../config/config';
 export const getNewfeed = (publicKey) => dispatch =>{
     dispatch(setPostLoading());
     axios.post('/api/newfeed/getNewfeed',{publicKey})
         .then(res => {
-            console.log(res.data)
             return  dispatch({
                 type:GET_NEWFEED, 
                 payload : res.data,
@@ -15,6 +14,15 @@ export const getNewfeed = (publicKey) => dispatch =>{
             type: GET_NEWFEED,
             payload: {},
         }))
+}
+export const getNewfeedUser =(publicKey)=>dispatch=>{
+    axios.post('/api/newfeed/getNewfeedUser',{publicKey})
+        .then(res=>{
+            return dispatch({
+                type:GET_NEWFEED_USER,
+                payload:res.data
+            })
+        })
 }
 // export const getOwnerNewfeed = (publicKey) =>dispatch=>{
 //     axios.get(`/api/user/${publicKey}`)
