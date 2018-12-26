@@ -150,91 +150,80 @@ router.post('/reaction', passport.authenticate('jwt', { session: false }), (req,
 router.post('/search', passport.authenticate('jwt',{session:false}),(req,res)=>{
     // const {publicKey} = req.body;
     const {dataSearch}=req.body;
+    var input= dataSearch;
+     var key = [];
+    var name=[];
+
     // console.log(dataSearch);
     // console.log(req.body);
     User.findOne({publicKey: dataSearch})  
     .then(user =>{
-        if(!user)
+        if(user)
         {
-            console.log("Không tìm thấy");
-
-             return res.status(404).json({user: 'Không tồn tại tài khoản'});
+             console.log("Tim Thay")
+            key.push(user);
+            res.json(key);
 
         }  
-        console.log("Tim Thay")
-        res.json({
-             id: user.id,
-                name: user.name,
-                avatar: user.avatar,
-                publicKey: user.publicKey,
-                sequence: user.sequence,
-                balance: user.balance,
-                energy: user.energy,
-                transactions: user.transactions,
-        })
+        else
+        {
+                 User.find({}).then((data) => {
+                for (let i = 0; i < data.length; i++) {
+                    let tmp = data[i].publicKey;
+                    let tmp_name=data[i].name;
+                    if(tmp_name!=null)
+                    {     
+                        name.push(tmp_name);
+                    }
+                }
+
+                //tìm kiếm => xuất ra mảng các tên có thể giống.
+                var re = new RegExp(input+'.+$', 'i');
+                name = name.filter(function(e, i, a){
+                    return e.search(re) != -1;
+                });
+                      
+                //loại bỏ tên trùng.
+                function deduplicate(arr) 
+                {
+                    let set = new Set(arr);
+                    return Array.from(set);
+                }
+                var temparr=deduplicate(name);
+                console.log(temparr);   
+
+
+                //lấy publickey theo tên, cả tên trùng.
+                for (let i = 0; i < temparr.length; i++) {
+
+                     User.find({}).then((data) => {
+                        for (let j = 0; j < data.length; j++) {
+                            let tmp = data[j].publicKey;
+                            let tmp_name=data[j].name;
+                            if(tmp_name === temparr[i])
+                            {
+                                // console.log(tmp_name);
+                                
+                                key.push(data[j]);
+
+                            }
+
+                            // key.push(tmp);
+                        }
+                        if(i===temparr.length-1)
+                        {
+                            res.json(key);
+                        }
+                        })     
+                }
+
+                })
+
+
+        }
+       
     })
     .catch(err=>console.log(err));
-
-
-})
-
-router.post('/searchname', passport.authenticate('jwt',{session:false}),(req,res)=>{
-    const {input} = req.body;
-     var key = [];
-    var name=[];
-
-     //lấy mảng tất cả các tên
-    User.find({}).then((data) => {
-        for (let i = 0; i < data.length; i++) {
-            let tmp = data[i].publicKey;
-            let tmp_name=data[i].name;
-            if(tmp_name!=null)
-            {     
-                name.push(tmp_name);
-            }
-        }
-
-        //tìm kiếm => xuất ra mảng các tên có thể giống.
-        var re = new RegExp(input+'.+$', 'i');
-        name = name.filter(function(e, i, a){
-            return e.search(re) != -1;
-        });
-              
-        //loại bỏ tên trùng.
-        function deduplicate(arr) 
-        {
-            let set = new Set(arr);
-            return Array.from(set);
-        }
-        var temparr=deduplicate(name);
-        console.log(temparr);   
-
-
-        //lấy publickey theo tên, cả tên trùng.
-        for (let i = 0; i < temparr.length; i++) {
-
-             User.find({}).then((data) => {
-                for (let j = 0; j < data.length; j++) {
-                    let tmp = data[j].publicKey;
-                    let tmp_name=data[j].name;
-                    if(tmp_name === temparr[i])
-                    {
-                        // console.log(tmp_name);
-                        
-                        key.push(tmp);
-
-                    }
-
-                    // key.push(tmp);
-                }
-                if(i===temparr.length-1)
-                {
-                    res.json(key);
-                }
-                })     
-        }
-
-        })
 
 
 })

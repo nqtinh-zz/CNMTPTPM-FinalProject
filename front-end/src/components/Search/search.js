@@ -8,12 +8,26 @@ class Search extends Component {
     }
     render() {
         const {users} = this.props.search;
-        console.log(users)
         let searhResult;
         if (users === null ) {
           searhResult=  <div> </div>
         } else {console.log(users);
-            searhResult=<p>name: {users.name}</p>
+            searhResult=users.map((item,index)=>{
+                return(
+                 <div className="row">
+                <br></br>
+                <br></br>
+
+                <div className="col-md-2">
+                    <img src={"data:image/jpeg;base64," + item.avatar} className="avatar_users" />
+                </div>
+                <div>
+                    <div>name: {item.name}</div>
+                    <div>publickey:{item.publicKey} </div>
+                </div>
+            </div>)
+            })
+           
            }
            return(
             <div>

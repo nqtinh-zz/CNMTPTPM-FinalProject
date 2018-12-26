@@ -182,6 +182,11 @@ section .wrapper {
     background-color: #E6ECF0;
 }
 
+.avatar_users{
+    width: 100px;
+    height: 100px;
+}
+
 .btn-primary {
     background: #27aae1;
     
