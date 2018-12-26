@@ -150,6 +150,19 @@ router.post('/reaction', passport.authenticate('jwt', { session: false }), (req,
 })
 
 
+router.get('/search/:publicKey', (req, res) => {
+    User.findOne({ publicKey: req.params.publicKey })
+        .then(user => {
+            // console.log(transactions.length)
+            // console.log(user);
+            res.json({
+                user
+            });
+        })
+        .catch(err => res.status(404).json({ msg: "No user found with that publickey" }));
+
+})
+
 router.post('/search', passport.authenticate('jwt',{session:false}),(req,res)=>{
     // const {publicKey} = req.body;
     const {dataSearch}=req.body;

@@ -1,11 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
+import {sendSearch2, linkSearch2} from '../../actions/Search/Search2';
 
 class Search extends Component {
     constructor(props) {
         super(props);
-
+         
     }
+
+  
+
+    onHandleSubmit=(publicKey,event)=>{
+        event.preventDefault();
+        this.props.sendSearch2(publicKey);
+        this.props.linkSearch2(this.props.history)
+    }   
+
+
     render() {
         const {users} = this.props.search;
         let searhResult;
@@ -17,14 +30,16 @@ class Search extends Component {
                  <div className="row">
                 <br></br>
                 <br></br>
-
-                <div className="col-md-2">
-                    <img src={"data:image/jpeg;base64," + item.avatar} className="avatar_users" />
-                </div>
-                <div>
-                    <div>name: {item.name}</div>
-                    <div>publickey:{item.publicKey} </div>
-                </div>
+                <form onSubmit={this.onHandleSubmit.bind(this,item.publicKey)} >
+                    <div className="col-md-2">
+                        <img src={"data:image/jpeg;base64," + item.avatar} className="avatar_users" />
+                    </div>
+                    <div>
+                        <div>name: {item.name}</div>
+                        <div>publickey:{item.publicKey} </div>
+                    </div>
+                    <button>Xem trang cá nhân</button>
+                </form>
             </div>)
             })
            
@@ -53,4 +68,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(Search);
+export default connect(mapStateToProps,{ sendSearch2,linkSearch2 })(withRouter(Search));
