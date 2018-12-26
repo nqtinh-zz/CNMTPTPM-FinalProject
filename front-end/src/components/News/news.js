@@ -34,22 +34,19 @@ class News extends Component {
        
         this.setState({
             comment: event,
-            hash: test
+          
             
         })
     }
-    onSubmitComment= (publicKey,event)=>{
+    onSubmitComment= (hash,event)=>{
         event.preventDefault();
         const simpleCrypto = new SimpleCrypto(sessionStorage.getItem('keyDecrypt'));
         const privatekey = simpleCrypto.decrypt(sessionStorage.getItem('privateKeyEncrypt'));
-         this.setState({
-            hash: publicKey
-        })
+       
         this.props.sendComment({
-            this.state.content.text,
-            this.state.content.type,
-            this.state.comment,
-            this.state.hash,
+            type: 1,
+            text: this.state.comment,
+            hash,
             privatekey,
             sequence: this.props.auth.user.sequence
         });
@@ -113,7 +110,7 @@ class News extends Component {
                                         <p><a href="timeline.html" className="profile-link">{comment.name} </a><i className="em em-laughing"></i> {comment.content} </p>
                                     </div>)
                             })} */}
-                                        <form onSubmit={this.onSubmitComment.bind(this,item.time)}>
+                                        <form onSubmit={this.onSubmitComment.bind(this,item.hash)}>
                                             <div className="post-comment">
                                                 <img src={"data:image/jpeg;base64," + profile.user.avatar} alt="" className="profile-photo-sm" />
                                                 <input type="text"   className="form-control" placeholder="Post a comment" id={item.publicKey} name={item.publicKey} onChange={e => this.onCommentChange(e.target.value,e.target.name)}  ></input>
