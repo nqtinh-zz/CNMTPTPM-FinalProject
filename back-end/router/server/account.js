@@ -91,132 +91,132 @@ exports.getTransactions = async () => {
 
 };
 exports.createFullInfo = async () => {
-    // //alltx.drop();
-    // let newaction = [];
-    // let tmpuser = [];
-    // let arr = [];
-    // const blocks = await block.find({}).sort({ height: -1 });
-    // //const lastheightposi = await block.find({ height: lastheightposi }).sort({ height: -1 });
-    // for (let l = 0; l < blocks.length; l++) {
-    //     if (blocks[l].height == blocks[l].lastheightposi) {
-    //         for (let t = 0; t < l; t++) {
-    //             newaction.push(blocks[t].newActionUser);
-    //         }
-    //         break;
-    //     }
-    // }
-    // for (let n = 0; n < newaction.length; n++) { tmpuser = tmpuser.concat(newaction[n]); }
-    // let actionuser = tmpuser.filter((v, i) => tmpuser.indexOf(v) === i);
-    // console.log(actionuser);
-    // for (let z = 0; z < actionuser.length; z++) {
-    //     await users.find({ publicKey: actionuser[z] }).then(async (data) => {
-    //          //Nếu có thèn khác tạo account sẽ bị lỗi đó ~~~~
-    //         //console.log('Change: ' + data[0].publicKey);
-    //         let posi = 0;
-    //         let tmp = data[0].publicKey;
-    //         let count = data[0].transactions;
-    //         let j = data[0].lastpage;
-    //         let k = data[0].lastposition;
-    //         let page;
-    //         if ((count % 30) == 0) page = parseInt(count / 30);
-    //         else page = parseInt(count / 30) + 1;
-    //         for (j; j <= page; j++) {
-    //             let blocks = await getAccount(tmp, j);
-    //             if (blocks != undefined) {
-    //                 let txs = blocks.data.result.txs;
-    //                 for (k; k < txs.length; k++) {
-    //                     var byte = Buffer.from(txs[k].tx, 'base64').length;
-    //                     arr.push(new Promise(async (resolve) => {
-    //                         const alltx = new AllTx(
-    //                             {
-    //                                 hash: txs[k].hash,
-    //                                 height: txs[k].height,
-    //                                 publicKey: tmp,
-    //                                 tx: txs[k].tx,
-    //                                 bytetx: byte,
-    //                                 time: null,
-    //                                 sequence: 0,
-    //                                 operation: null,
-    //                                 address: null,
-    //                                 addressinteract: null,
-    //                                 key: null,
-    //                                 name: null,
-    //                                 post: null,
-    //                                 picture: null,
-    //                                 following: null,
-    //                                 amount: 0,
-    //                                 comment: null,
-    //                                 reaction: 0,
-    //                             })
-    //                         await alltx.save();
-    //                         resolve("");
-    //                     }));
-    //                 }
-    //                 if (k == txs.length) k = 0;
-    //                 posi = txs.length;
-    //             } else { j = j - 1 }
-    //         }
-    //         if (posi == 30) posi = 0;
-    //         if ((count % 30) == 0) page = parseInt(count / 30) + 1;
-    //         await users.findOneAndUpdate({ publicKey: data[0].publicKey },
-    //             { $set: { lastpage: page, lastposition: posi } });
-    //     });
-    // }
-
-
-    const data = await users.find({});
+    //alltx.drop();
+    let newaction = [];
+    let tmpuser = [];
     let arr = [];
-    for (let i = 0; i < data.length; i++) {
-        let posi = 0;
-        let tmp = data[i].publicKey;
-        let count = data[i].transactions;
-        let j = data[i].lastpage;
-        let k = data[i].lastposition;
-        let page;
-        if ((count % 30) == 0) page = parseInt(count / 30);
-        else page = parseInt(count / 30) + 1;
-        for (j; j <= page; j++) {
-            let blocks = await getAccount(tmp, j);
-            console.log(i + '---' + tmp + '---' + j);
-            if (blocks != undefined) {
-                let txs = blocks.data.result.txs;
-                for (k; k < txs.length; k++) {
-                    var byte = Buffer.from(txs[k].tx, 'base64').length;
-                    arr.push(new Promise(async (resolve) => {
-                        const alltx = new AllTx(
-                            {
-                                hash: txs[k].hash,
-                                height: txs[k].height,
-                                publicKey: tmp,
-                                tx: txs[k].tx,
-                                bytetx: byte,
-                                time: null,
-                                sequence: 0,
-                                operation: null,
-                                address: null,
-                                addressinteract: null,
-                                key: null,
-                                name: null,
-                                post: null,
-                                picture: null,
-                                following: null,
-                                amount: 0,
-                                comment: null,
-                                reaction: 0,
-                            })
-                        await alltx.save();
-                        resolve("");
-                    }));
-                }
-                if (k == txs.length) k = 0;
-                posi = txs.length;
-            } else { j = j - 1 }
+    const blocks = await block.find({}).sort({ height: -1 });
+    //const lastheightposi = await block.find({ height: lastheightposi }).sort({ height: -1 });
+    for (let l = 0; l < blocks.length; l++) {
+        if (blocks[l].height == blocks[l].lastheightposi) {
+            for (let t = 0; t < l; t++) {
+                newaction.push(blocks[t].newActionUser);
+            }
+            break;
         }
-        if (posi == 30) posi = 0;
-        if ((count % 30) == 0) page = parseInt(count / 30) + 1;
-        await users.findOneAndUpdate({ publicKey: data[i].publicKey },
-            { $set: { lastpage: page, lastposition: posi } });
     }
+    for (let n = 0; n < newaction.length; n++) { tmpuser = tmpuser.concat(newaction[n]); }
+    let actionuser = tmpuser.filter((v, i) => tmpuser.indexOf(v) === i);
+    console.log(actionuser);
+    for (let z = 0; z < actionuser.length; z++) {
+        await users.find({ publicKey: actionuser[z] }).then(async (data) => {
+             //Nếu có thèn khác tạo account sẽ bị lỗi đó ~~~~
+            //console.log('Change: ' + data[0].publicKey);
+            let posi = 0;
+            let tmp = data[0].publicKey;
+            let count = data[0].transactions;
+            let j = data[0].lastpage;
+            let k = data[0].lastposition;
+            let page;
+            if ((count % 30) == 0) page = parseInt(count / 30);
+            else page = parseInt(count / 30) + 1;
+            for (j; j <= page; j++) {
+                let blocks = await getAccount(tmp, j);
+                if (blocks != undefined) {
+                    let txs = blocks.data.result.txs;
+                    for (k; k < txs.length; k++) {
+                        var byte = Buffer.from(txs[k].tx, 'base64').length;
+                        arr.push(new Promise(async (resolve) => {
+                            const alltx = new AllTx(
+                                {
+                                    hash: txs[k].hash,
+                                    height: txs[k].height,
+                                    publicKey: tmp,
+                                    tx: txs[k].tx,
+                                    bytetx: byte,
+                                    time: null,
+                                    sequence: 0,
+                                    operation: null,
+                                    address: null,
+                                    addressinteract: null,
+                                    key: null,
+                                    name: null,
+                                    post: null,
+                                    picture: null,
+                                    following: null,
+                                    amount: 0,
+                                    comment: null,
+                                    reaction: 0,
+                                })
+                            await alltx.save();
+                            resolve("");
+                        }));
+                    }
+                    if (k == txs.length) k = 0;
+                    posi = txs.length;
+                } else { j = j - 1 }
+            }
+            if (posi == 30) posi = 0;
+            if ((count % 30) == 0) page = parseInt(count / 30) + 1;
+            await users.findOneAndUpdate({ publicKey: data[0].publicKey },
+                { $set: { lastpage: page, lastposition: posi } });
+        });
+    }
+
+
+    // const data = await users.find({});
+    // let arr = [];
+    // for (let i = 0; i < data.length; i++) {
+    //     let posi = 0;
+    //     let tmp = data[i].publicKey;
+    //     let count = data[i].transactions;
+    //     let j = data[i].lastpage;
+    //     let k = data[i].lastposition;
+    //     let page;
+    //     if ((count % 30) == 0) page = parseInt(count / 30);
+    //     else page = parseInt(count / 30) + 1;
+    //     for (j; j <= page; j++) {
+    //         let blocks = await getAccount(tmp, j);
+    //         console.log(i + '---' + tmp + '---' + j);
+    //         if (blocks != undefined) {
+    //             let txs = blocks.data.result.txs;
+    //             for (k; k < txs.length; k++) {
+    //                 var byte = Buffer.from(txs[k].tx, 'base64').length;
+    //                 arr.push(new Promise(async (resolve) => {
+    //                     const alltx = new AllTx(
+    //                         {
+    //                             hash: txs[k].hash,
+    //                             height: txs[k].height,
+    //                             publicKey: tmp,
+    //                             tx: txs[k].tx,
+    //                             bytetx: byte,
+    //                             time: null,
+    //                             sequence: 0,
+    //                             operation: null,
+    //                             address: null,
+    //                             addressinteract: null,
+    //                             key: null,
+    //                             name: null,
+    //                             post: null,
+    //                             picture: null,
+    //                             following: null,
+    //                             amount: 0,
+    //                             comment: null,
+    //                             reaction: 0,
+    //                         })
+    //                     await alltx.save();
+    //                     resolve("");
+    //                 }));
+    //             }
+    //             if (k == txs.length) k = 0;
+    //             posi = txs.length;
+    //         } else { j = j - 1 }
+    //     }
+    //     if (posi == 30) posi = 0;
+    //     if ((count % 30) == 0) page = parseInt(count / 30) + 1;
+    //     await users.findOneAndUpdate({ publicKey: data[i].publicKey },
+    //         { $set: { lastpage: page, lastposition: posi } });
+    // }
     console.log("Tạo fullinfo");
     const result = await Promise.all(arr);
     return result;

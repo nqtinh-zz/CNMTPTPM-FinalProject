@@ -26,10 +26,11 @@ exports.saveBlock = async () => {
         })
     let arr = [];
     for (i; i <= curheight; i++) {
+        console.log(i);
         arr.push(new Promise(async (resolve) => {
             const blocks = await getData1(i);
 
-            console.log(i+'----'+blocks);
+            console.log(i + '----' + blocks);
             if (blocks != undefined) {
                 console.log('i----' + i)
                 const blockData = blocks.data.result;
@@ -73,10 +74,13 @@ exports.saveBlock = async () => {
                 }
 
             }
-            else { i = i - 1 }
+            
             resolve("test");
         }));
+
     }
+
+
     // let arr = [];
     // for (let i = 0; i < 35000; i++) {    
     //     arr.push(new Promise(async (resolve) => {

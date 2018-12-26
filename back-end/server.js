@@ -79,6 +79,7 @@ const demo = () => {
 app.get('/database', (req, res) => {
   demo();
   //saveBlock();
+  //user.createAccount();
   res.send("Đang xử lý dữ liệu");
 });
 
