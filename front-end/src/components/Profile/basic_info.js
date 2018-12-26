@@ -28,7 +28,8 @@ class BasicInfo extends Component {
 		this.props.updateAccount({
 			key: "picture",
 			value: this.state.imagePreviewUrl.replace(/^data:image\/(png|jpeg|jpg);base64,/, ""),
-			privatekey: privateKey
+			privatekey: privateKey,
+			sequence: this.props.auth.user.sequence
 		})
 		this.setState({imagePreviewUrl:''})
 	

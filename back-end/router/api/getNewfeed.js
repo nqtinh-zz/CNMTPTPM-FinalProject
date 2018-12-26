@@ -95,7 +95,6 @@ router.post('/getNewfeed', passport.authenticate('jwt', { session: false }), (re
   })
 
 router.post('/getNewfeedUser', passport.authenticate('jwt', { session: false }), (req, res) => {
-    console.log(req.body);
     User.find({publicKey:req.body.publicKey})
       .then(users=>{
         res.send(users);
