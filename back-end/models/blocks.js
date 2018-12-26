@@ -8,6 +8,12 @@ const BlockSchema = new Schema({
         type: Number,
         primaryKey: true,
     },
+    lastheightposi: {
+        type: Number,
+    },
+    newActionUser: {
+        type: Array,
+    },
     time: {
         type: Date,
         allowNull: false,
