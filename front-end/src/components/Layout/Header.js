@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/User/authAction';
-import {sendSearch} from '../../actions/Search/Search';
+import {sendSearch, linkSearch} from '../../actions/Search/Search';
 
 class Header extends Component {
-
            constructor(props) {
         super(props);
         this.state = {
@@ -14,8 +13,6 @@ class Header extends Component {
             
         }
         }
-
-
     onHandleChange=(event)=> {
         var target=event.target;
         var name = target.name;
@@ -28,6 +25,7 @@ class Header extends Component {
     onHandleSubmit=(event)=>{
         event.preventDefault();
         this.props.sendSearch({...this.state});
+        this.props.linkSearch(this.props.history)
     }   
 
     onLogoutClick(e) {
@@ -60,6 +58,10 @@ class Header extends Component {
                                         <Link to='/tweets'><i className="icon ion-android-home"></i>  Home </Link>
 
                                     </li>
+                                    <li className="dropdown">
+                                        <Link to='/newfeed'><i className="icon"></i>  Newfeed </Link>
+
+                                    </li>
                                 </ul>
                             </div>
                             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -80,7 +82,9 @@ class Header extends Component {
                                 <form onSubmit={this.onHandleSubmit} className="navbar-form navbar-right hidden-sm">
                                     <div className="form-group">
                                         <input onChange={this.onHandleChange} id="dataSearch" name="dataSearch" className="form-control" placeholder="Search "></input>
-                                        <button type="submit" className="btn btn-primary">tìm kiếm</button>
+                                        
+                                        <button type="submit">Tìm kiếm</button>
+                                       
                                     </div>
                                 </form>
 
@@ -135,4 +139,4 @@ Header.propTypes = {
 const mapStateToProps = (state) => ({
     auth: state.authReducer,
 })
-export default connect(mapStateToProps, { logoutUser /*,clearCurrentProfile*/,sendSearch })(Header);
+export default connect(mapStateToProps, { logoutUser /*,clearCurrentProfile*/,sendSearch,linkSearch })(withRouter(Header));

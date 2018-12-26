@@ -28,7 +28,8 @@ class BasicInfo extends Component {
 		this.props.updateAccount({
 			key: "picture",
 			value: this.state.imagePreviewUrl.replace(/^data:image\/(png|jpeg|jpg);base64,/, ""),
-			privatekey: privateKey
+			privatekey: privateKey,
+			sequence: this.props.auth.user.sequence
 		})
 		this.setState({imagePreviewUrl:''})
 	
@@ -106,52 +107,6 @@ class BasicInfo extends Component {
 							</div>
 							<br/>
 							<br/>
-							{/* <div className="row">
-								<div className="form-group col-xs-12">
-									<label for="email">My email</label>
-									<input id="email" className="form-control input-group-lg" type="text" name="Email" title="Enter Email" placeholder="My Email" value={this.props.info.email} />
-								</div>
-							</div>
-							<div className="row">
-								<p className="custom-label"><strong>Date of Birth</strong></p>
-								<div className="form-group col-sm-3 col-xs-6">
-									<label for="month" className="sr-only"></label>
-									<select className="form-control" id="day">
-										<option value="Day">Day</option>
-										<option selected>{this.props.info.birthday.day}</option>
-									</select>
-								</div>
-								<div className="form-group col-sm-3 col-xs-6">
-									<label for="month" className="sr-only"></label>
-									<select className="form-control" id="month">
-										<option value="month">Month</option>
-										<option selected>{this.props.info.birthday.month}</option>
-									</select>
-								</div>
-								<div className="form-group col-sm-6 col-xs-12">
-									<label for="year" className="sr-only"></label>
-									<select className="form-control" id="year">
-										<option value="year">Year</option>
-										<option selected>{this.props.info.birthday.year}</option>
-									</select>
-								</div>
-							</div>
-							<div className="row">
-								<div className="form-group col-xs-6">
-									<label for="city"> My city</label>
-									<input id="city" className="form-control input-group-lg" type="text" name="city" title="Enter city" placeholder="Your city" value={this.props.info.city} />
-								</div>
-								<div className="form-group col-xs-6">
-									<label for="country">My country</label>
-									<input id="country" className="form-control input-group-lg" type="text" name="country" title="Enter country" placeholder="Your country" value={this.props.info.country} />
-								</div>
-							</div>
-							<div className="row">
-								<div className="form-group col-xs-12">
-									<label for="my-info">About me</label>
-									<textarea id="my-info" name="information" className="form-control" placeholder="Some texts about me" rows="4" cols="400">{this.props.info.bio}</textarea>
-								</div>
-							</div> */}
 							<button className="btn btn-primary">Save Changes</button>
 						</form>
 					</div>

@@ -23,22 +23,20 @@ class MenuTimeline extends Component {
                                 <ul className="list-inline profile-menu">
                                     <li className="ProfileNav-li">
                                         <div className="ProfileNav">
-                                            <Link to="/tweets">Tweets</Link><br />
-                                            {this.props.tweetsNum}
+                                          <br/>  <Link to="/tweets">Tweets</Link><br />
+                                            
                                             </div>
                                     </li>
                                     <li className="ProfileNav-li">
                                         <div className="ProfileNav">
-                                            <Link to="/following">Following</Link><br />
-                                            {this.props.followingNum}
+                                        <br/>   <Link to="/following">Following</Link><br />
                                             </div>
                                     </li>
-                                    <li className="ProfileNav-li">
+                                    {/* <li className="ProfileNav-li">
                                         <div className="ProfileNav">
                                             <Link to="/followers">Followers</Link><br />
-                                            {this.props.followersNum}
                                             </div>
-                                    </li>
+                                    </li> */}
 
                                     {/*thêm nút account hiển thị bandwidth...*/}
                                     
@@ -76,11 +74,6 @@ class MenuTimeline extends Component {
 
 function mapStateToProps(state) {
     return {
-        followersNum: state.followersReducer.followersNumber,
-        followingNum: state.followingReducer.followingNumber,
-        tweetsNum: state.personalReducer.tweetsNum,
-        name: state.personalReducer.name,
-        carrer : state.personalReducer.carrer,
         auth: state.authReducer,
     }
 }

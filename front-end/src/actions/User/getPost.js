@@ -4,7 +4,7 @@ export const getPost = (publicKey) => dispatch =>{
     dispatch(setPostLoading());
     axios.post('/api/post/getUserPost',{publicKey})
         .then(res => {
-          //  console.log(res.data)
+            console.log(res.data)
             return  dispatch({
                 type:GET_POST, 
                 payload : res.data,

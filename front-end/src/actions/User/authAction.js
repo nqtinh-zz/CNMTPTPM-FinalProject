@@ -49,6 +49,7 @@ export const loginUser = ( privateKey ) =>dispatch=>{
             setAuthToken(token);
             //Decode token to get user data
             const decoded = jwt_decode(token);
+            console.log(decoded);
             localStorage.setItem('sequence',decoded.sequence);
             //set current user
             dispatch(setCurrentUser(decoded));

@@ -1,11 +1,12 @@
 const express = require('express');
 const base32 = require('base32.js');
+const { Followings } = require('../../../lib/transaction/v1');
 const { sign, encode } = require('../../../lib/transaction/index');
 const passport = require('passport');
 const axios = require('axios');
 const router = express.Router();
 router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-  const { key,value, privatekey, sequence, publicKey } = req.body;
+  const { key,value, privatekey, sequence } = req.body.data;
   let tx;
   switch (key) {
     case 'name':
@@ -33,11 +34,12 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
       }
       break;
     case 'followings':
+    console.log(value);
       let addressBuffer = { addresses: [] };
-      value.push(publicKey);
       for (i = 0; i < value.length; i++) {
         addressBuffer.addresses.push(Buffer.from(base32.decode(value[i])));
       }
+      console.log(addressBuffer);
       tx = {
         version: 1,
         sequence: Number(sequence)+1,
@@ -50,7 +52,6 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
       }
       break;
   }
-  console.log(tx);
   sign(tx, privatekey);
    const etx = encode(tx).toString('hex');
    console.log(etx);
