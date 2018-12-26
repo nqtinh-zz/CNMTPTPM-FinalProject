@@ -50,8 +50,6 @@ class News extends Component {
             privatekey,
             sequence: this.props.auth.user.sequence
         });
-
-
         console.log(this.state.comment);
         console.log(publicKey);
 
