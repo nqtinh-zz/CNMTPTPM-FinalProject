@@ -131,7 +131,7 @@ router.post('/reaction', passport.authenticate('jwt', { session: false }), (req,
     const tx = {
         version: 1,
         sequence: Number(sequence) + 1,
-        memo: Buffer.alloc(0),
+        memo: Buffer.alloc(0),  
         operation: 'interact',
         params: {
             object: hash,

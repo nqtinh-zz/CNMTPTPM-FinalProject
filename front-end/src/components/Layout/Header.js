@@ -83,7 +83,7 @@ class Header extends Component {
                                     <div className="form-group">
                                         <input onChange={this.onHandleChange} id="dataSearch" name="dataSearch" className="form-control" placeholder="Search "></input>
                                         
-                                        <button type="submit" className="btn btn-primary">tìm kiếm</button>
+                                        <button type="submit">Tìm kiếm</button>
                                        
                                     </div>
                                 </form>

@@ -48,7 +48,8 @@ class Search extends Component {
 }
 function mapStateToProps(state) {
     return {
-        search: state.searchReducer
+        search: state.searchReducer,
+        auth: state.authReducer
     }
 }
 

@@ -6,6 +6,8 @@ import SimpleCrypto from "simple-crypto-js";
 import Spinner from '../common/Spinner';
 import { postAction } from '../../actions/User/postAction';
 import { getCurrentUser } from '../../actions/User/authAction';
+import {sendComment} from '../../actions/Comment/sendComment';
+
 class News extends Component {
     constructor(props) {
         super(props);
@@ -28,14 +30,33 @@ class News extends Component {
             content: { text: event.target.value }
         })
     }
-    onCommentChange= (event)=>{
+    onCommentChange= (event,test)=>{
+       
         this.setState({
-            comment: event.target.value,
+            comment: event,
+            hash: test
+            
         })
     }
-    onSubmitComment= (event)=>{
+    onSubmitComment= (publicKey,event)=>{
         event.preventDefault();
+        const simpleCrypto = new SimpleCrypto(sessionStorage.getItem('keyDecrypt'));
+        const privatekey = simpleCrypto.decrypt(sessionStorage.getItem('privateKeyEncrypt'));
+         this.setState({
+            hash: publicKey
+        })
+        this.props.sendComment({
+            this.state.content.text,
+            this.state.content.type,
+            this.state.comment,
+            this.state.hash,
+            privatekey,
+            sequence: this.props.auth.user.sequence
+        });
+
+
         console.log(this.state.comment);
+        console.log(publicKey);
 
     }
     onHandleSubmit = (event) => {
@@ -92,12 +113,12 @@ class News extends Component {
                                         <p><a href="timeline.html" className="profile-link">{comment.name} </a><i className="em em-laughing"></i> {comment.content} </p>
                                     </div>)
                             })} */}
-                                        <form onSubmit={this.onSubmitComment.bind(this)}>
+                                        <form onSubmit={this.onSubmitComment.bind(this,item.time)}>
                                             <div className="post-comment">
                                                 <img src={"data:image/jpeg;base64," + profile.user.avatar} alt="" className="profile-photo-sm" />
-                                                <input type="text" className="form-control" placeholder="Post a comment" name={item.hash} onChange={this.onCommentChange.bind(this)}  value={this.state.comment}></input>
+                                                <input type="text"   className="form-control" placeholder="Post a comment" id={item.publicKey} name={item.publicKey} onChange={e => this.onCommentChange(e.target.value,e.target.name)}  ></input>
                                             </div>
-                                            <button type="submit" className="btn btn-primary pull-right">Comment</button>
+                                            <button type="submit"  className="btn btn-primary pull-right">Comment</button>
                                         </form>
                                     </div>
                                 </div>
@@ -150,4 +171,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { getPost, getOwnerPost, postAction, getCurrentUser })(withRouter(News));
+export default connect(mapStateToProps, { getPost, getOwnerPost, postAction, getCurrentUser,sendComment })(withRouter(News));
