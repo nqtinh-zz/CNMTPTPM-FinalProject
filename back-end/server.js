@@ -54,7 +54,7 @@ const getDataT = (i) => {
   if (i == 6) return infoaccount.getFollowing();
   if (i == 7) return infoaccount.getFullTime();
   if (i == 8) return infoaccount.getEnergy();
-  if (i == 9) setTimeout(demo, 50000); return;
+  if (i == 9) setTimeout(demo, 25000); return;
 }
 function processArray(array) {
   return array.reduce(function (p, i) {

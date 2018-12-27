@@ -356,6 +356,7 @@ exports.getAllInfo = async () => {
     // }
 
     const data = await alltx.find({});
+    console.log(data.lenght);
     let arr = [];
     for (let i = 0; i < data.length; i++) {
         let txs = decode(Buffer.from(data[i].tx, 'base64'));
@@ -431,7 +432,7 @@ exports.getAllInfo = async () => {
 
         arr.push(new Promise(async (resolve) => {
             try {
-                await alltx.findOneAndUpdate({ height: data[i].height, publicKey: data[i].publicKey, hash: data[i].hash },
+                await alltx.findOneAndUpdate({ height: data[i].height, publicKey: data[i].publicKey },
                     {
                         $set: {
                             sequence: txs.sequence,
@@ -543,7 +544,7 @@ exports.getFollowing = async () => {
             let post = [];
             let following = [];
             for (let j = 0; j < alltx.length; j++) {
-                if (((alltx[j].operation == 'interact' && alltx[j].addressinteract == alltx[j].publicKey) && alltx[j].sequence > lastsequence) || (alltx[j].publicKey != alltx[j].address && alltx[j].sequence > lastsequence)) {
+                if ((alltx[j].addressinteract == alltx[j].publicKey && alltx[j].sequence > lastsequence) || (alltx[j].publicKey == alltx[j].address && alltx[j].sequence > lastsequence)) {
                     lastsequence = alltx[j].sequence;
                 }
                 if (alltx[j].address == null || (alltx[j].publicKey != alltx[j].address)) {
