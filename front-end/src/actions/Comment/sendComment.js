@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const sendComment = (commentData)=>dispatch=>{
+export const sendComment = (commentData,history)=>dispatch=>{
     axios.post('/api/user/reaction',commentData)
-        .then(res=>console.log("Send done"))
+        .then(res=>history.push('/login'))
         .catch(err=>console.log(err));
 };

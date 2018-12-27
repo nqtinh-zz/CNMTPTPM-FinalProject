@@ -146,9 +146,22 @@ router.post('/reaction', passport.authenticate('jwt', { session: false }), (req,
     console.log(etx);
          axios.post('https://komodo.forest.network/broadcast_tx_commit?tx=0x' + etx)
            .then(data => console.log("good"));
-
+           res.json({success:true})
 })
 
+
+router.get('/search/:publicKey', (req, res) => {
+    User.findOne({ publicKey: req.params.publicKey })
+        .then(user => {
+            // console.log(transactions.length)
+            // console.log(user);
+            res.json({
+                user
+            });
+        })
+        .catch(err => res.status(404).json({ msg: "No user found with that publickey" }));
+
+})
 
 router.post('/search', passport.authenticate('jwt',{session:false}),(req,res)=>{
     // const {publicKey} = req.body;

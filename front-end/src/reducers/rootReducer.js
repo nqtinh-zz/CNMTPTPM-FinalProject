@@ -5,6 +5,8 @@ import {personalReducer} from './PersonalPage/personalReducer';
 import newfeedReducer from './User/newfeedReducer';
 import postReducer from './User/postReducer';
 import {searchReducer} from './Search/searchReducer';
+import {searchReducer2} from './Search/searchReducer2';
+
 
 const rootReducer = combineReducers({
     registerReducer,
@@ -12,7 +14,9 @@ const rootReducer = combineReducers({
     authReducer,
     postReducer,
     newfeedReducer,
-    searchReducer
+    searchReducer,
+    searchReducer2
+    
 
 });
 export default rootReducer;

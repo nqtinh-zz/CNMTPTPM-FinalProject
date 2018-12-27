@@ -27,8 +27,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
   const etx = encode(tx).toString('hex');
   console.log(etx);
    axios.post('https://komodo.forest.network/broadcast_tx_commit?tx=0x' + etx)
-   .then(data => console.log(data.data));
-  res.json({ msg: etx })
+   .then(data => res.json({success:true}));
 })
 
 router.post('/getUserPost', passport.authenticate('jwt', { session: false }), (req, res) => {
