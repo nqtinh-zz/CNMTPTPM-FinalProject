@@ -25,7 +25,6 @@ const BlockSchema = new Schema({
     hash: {
         type: String,
         allowNull: false,
-        unique: true,
     },
     appHash: {
         type: String,
