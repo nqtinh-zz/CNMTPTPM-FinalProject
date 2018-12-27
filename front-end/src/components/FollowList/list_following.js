@@ -11,8 +11,6 @@ class ListFollowing extends Component {
         this.props.getNewfeedUser(this.props.auth.user.following);
     }
     onSubmit(publicKey){
-        const simpleCrypto = new SimpleCrypto(sessionStorage.getItem('keyDecrypt'));
-        const privateKey = simpleCrypto.decrypt(sessionStorage.getItem('privateKeyEncrypt'));
         let arrFollowing=[];
         for(let i = 0; i < this.props.newfeed.profile.length;i++){
             arrFollowing.push(this.props.newfeed.profile[i].publicKey)
@@ -23,17 +21,10 @@ class ListFollowing extends Component {
                 arrFollowing.splice(i,1);
             }
         }
-        const data ={
-            key: "followings",
-			value: arrFollowing,
-            privatekey: privateKey,
-            sequence: this.props.auth.user.sequence
-        }
-        console.log(data);
         this.props.updateAccount({
             key: "followings",
             value: arrFollowing,
-            privatekey: privateKey,
+            privatekeyHash: sessionStorage.getItem('privateKeyEncrypt'),
             sequence: this.props.auth.user.sequence
         })
     }

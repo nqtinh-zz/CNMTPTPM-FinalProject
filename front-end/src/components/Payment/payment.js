@@ -80,8 +80,6 @@ class Payment extends Component {
 	                </div>
 	            </div>
 	        </div>
-
-
       </div>
     );
   }
