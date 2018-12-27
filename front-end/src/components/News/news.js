@@ -46,15 +46,13 @@ class News extends Component {
             hash,
             privatekeyHash: sessionStorage.getItem('privateKeyEncrypt'),
             sequence: this.props.auth.user.sequence
-        });
+        },this.props.history);
      
         
 
     }
     onHandleSubmit = (event) => {
         event.preventDefault();
-        const simpleCrypto = new SimpleCrypto(sessionStorage.getItem('keyDecrypt'));
-        const privatekey = simpleCrypto.decrypt(sessionStorage.getItem('privateKeyEncrypt'));
         this.props.postAction({
             type: 1,
             text: this.state.content.text,

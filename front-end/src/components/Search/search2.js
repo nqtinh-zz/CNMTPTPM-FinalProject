@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { updateAccount } from '../../actions/User/updateAccountAction';
 
 
 
@@ -9,7 +10,40 @@ class Search2 extends Component {
          
     }
 
-  
+
+  onSubmitFollow(publicKey, event){
+    event.preventDefault();
+    let arrFollowing=[];
+    for(let i = 0; i < this.props.auth.user.following.length;i++){
+        arrFollowing.push(this.props.auth.user.following[i])
+    }
+    arrFollowing.push(publicKey);
+    this.props.updateAccount({
+        key: "followings",
+        value: arrFollowing,
+        privatekeyHash: sessionStorage.getItem('privateKeyEncrypt'),
+        sequence: this.props.auth.user.sequence
+    })
+  }
+  onSubmitUnfollow(publicKey, event){
+    event.preventDefault();
+    let arrFollowing=[];
+        for(let i = 0; i < this.props.auth.user.following.length;i++){
+            arrFollowing.push(this.props.auth.user.following[i])
+        }
+        for(let i = 0; i < arrFollowing.length;i++){
+            if(arrFollowing[i] === publicKey)
+            {
+                arrFollowing.splice(i,1);
+            }
+        }
+        this.props.updateAccount({
+            key: "followings",
+            value: arrFollowing,
+            privatekeyHash: sessionStorage.getItem('privateKeyEncrypt'),
+            sequence: this.props.auth.user.sequence
+        })
+}
 
    
 
@@ -20,6 +54,12 @@ class Search2 extends Component {
         if (users === null  ) {
           searhResult=  <div> </div>
         } else {
+            let followButton= <button onClick={this.onSubmitFollow.bind(this,users.user.publicKey)} className="pull-right text-green">Follow</button>;
+            for(let i = 0 ; i < this.props.auth.user.following.length; i++){
+                if(users.user.publicKey == this.props.auth.user.following[i]){
+                    followButton = <button onClick={this.onSubmitUnfollow.bind(this,users.user.publicKey)} className="pull-right text-red">Unfollow</button>
+                }
+            }
             console.log(users);
             searhResult=
                 
@@ -39,6 +79,8 @@ class Search2 extends Component {
                         <div>
                             <p></p>
                         </div>
+                        {followButton}
+                        
                 </div>
             
            
@@ -67,4 +109,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(Search2);
+export default connect(mapStateToProps,{updateAccount})(Search2);

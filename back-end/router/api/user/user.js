@@ -146,7 +146,7 @@ router.post('/reaction', passport.authenticate('jwt', { session: false }), (req,
     console.log(etx);
          axios.post('https://komodo.forest.network/broadcast_tx_commit?tx=0x' + etx)
            .then(data => console.log("good"));
-
+           res.json({success:true})
 })
 
 
